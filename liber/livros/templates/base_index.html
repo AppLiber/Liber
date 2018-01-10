@@ -1,0 +1,77 @@
+{% load staticfiles %}
+
+<!DOCTYPE html>
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+	<title>Liber</title>
+	<meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+	<meta name="viewport" content="width=device-width" />
+	<link rel="stylesheet" href="{% static "assets/css/bootstrap.min.css" %}"/>
+	<link rel="stylesheet" href="{% static "assets/css/paper-kit.css?v=2.1.0" %}" />
+	<link href='http://fonts.googleapis.com/css?family=Montserrat:400,300,700' rel='stylesheet' type='text/css'>
+	<link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+	<link rel="stylesheet" href=" {% static "assets/css/nucleo-icons.css" %}">
+	<link rel="stylesheet" href=" {% static "assets/css/main.css" %}" >
+</head>
+
+<body>
+	<nav class="navbar navbar-expand-lg fixed-top navbar-transparent" color-on-scroll="300">
+		<div class="container">
+			<div class="navbar-translate">
+				<a class="container navbar-brand" href="index.html">
+					<img id="logotipo" src="{% static "assets/img/logo.png" %} " alt="Logotipo" height="100">
+				</a>
+				<button class="navbar-toggler navbar-toggler-right navbar-burger" type="button" data-toggle="collapse" data-target="#navbarToggler"
+				    aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-bar"></span>
+					<span class="navbar-toggler-bar"></span>
+					<span class="navbar-toggler-bar"></span>
+				</button>
+			</div>
+			<div class="collapse navbar-collapse" id="navbarToggler">
+				<ul class="navbar-nav ml-auto">
+					<li class="search">
+						<div class="input-group">
+							<input type="search" width="250" placeholder="Pesquisar por título, autor, isbn, assuntos">
+							<span class="input-group-btn">
+								<button type="button">
+									<i class="fa fa-search"></i>
+								</button>
+							</span>
+						</div>
+					</li>
+					<li class="nav-item" id="search">
+						<div class="input-group">
+							<input type="search" placeholder="Pesquisar livros">
+							<span class="input-group-btn">
+								<button type="button">
+									<i class="fa fa-search"></i>
+								</button>
+							</span>
+						</div>
+					</li>
+					<li class="nav-item">
+						<a href="#" class="nav-link">
+							<i class="nc-icon nc-bell-55"></i>Notificações</a>
+					</li>
+					<li class="nav-item">
+						<a href="register.html" target="_blank" class="nav-link">
+							<i class="nc-icon nc-circle-10"></i>Entrar</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	{% block body %}
+
+  {% endblock %}
+	<script type="text/javascript" src="{% static "assets/js/jquery-3.2.1.js" %} " ></script>
+	<script type="text/javascript" src="{% static "assets/js/jquery-ui-1.12.1.custom.min.js" %}" ></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
+	    crossorigin="anonymous"></script>
+	<script type="text/javascript" src="{% static "assets/js/bootstrap.min.js" %}"></script>
+	<script src="{% static "assets/js/paper-kit.js?v=2.1.0" %}"></script>
+
+</body>
