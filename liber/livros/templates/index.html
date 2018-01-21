@@ -1,29 +1,9 @@
-{% extends "base_index.html" %}
-{% block body %}
-
-
-<div class="mais-avaliados" id="banner">
-	<div class="container">
-		<h1>Mais bem avaliados</h1>
-		<ul class='list-inline'>
-			<li class='book'>
-				<img src='http://37signals.com/images/remote/remote_front.png' onclick="window.location.href= 'book-details.html' " />
-			</li>
-
-			<li class='book'>
-				<img src='http://www.blanq.org/text/moleskine_iphone_wallpaper.jpg' onclick="window.location.href= 'book-details.html' "
-				/>
-			</li>
-
-			<li class='book'>
-				<img src='https://d.gr-assets.com/books/1348927776l/8032112.jpg' onclick="window.location.href= 'book-details.html' " />
-			</li>
-
-			<li class='book'>
-				<img src='http://ecx.images-amazon.com/images/I/51oXKWrcYYL.jpg' onclick="window.location.href= 'book-details.html' " />
-			</li>
-		</ul>
-	</div>
-</div>
-
-{% endblock %}
+{% if lista_livros %}
+<ul>
+  {% for livro in lista_livros %}
+    <li><a href="{% url 'livros:detalhar_livro' livro.id %}">{{livro.titulo}}</a></li>
+  {% endfor %}
+</ul>
+{% else %}
+  <p>nao tem livros</p>
+{% endif %}

@@ -1,8 +1,10 @@
-from django.conf.urls import patterns, url
-from livros.views import index
-from livros import views
+from django.urls import path
+#from .views import *
 
-urlpatterns = patterns('',
-    url(r'^$', views.index, name='index'),
-    url(r'^livros/(?P<livro_id>)\d+$', views.detalhar_livro, name='detalhar')
-)
+from . import views
+
+app_name = 'livros'
+urlpatterns = [
+    path('', views.IndexView.as_view(), name='index'),
+    path('<int:pk>/', views.DetailView.as_view(), name='detalhar_livro'),
+]
