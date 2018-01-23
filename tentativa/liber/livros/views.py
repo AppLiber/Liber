@@ -22,3 +22,11 @@ class LivroCreate(generic.CreateView):
     template_name = 'livros/new.html'
     success_url = reverse_lazy('livros:livros_index')
     form_class = LivroForm
+
+class LivroUpdate(generic.UpdateView):
+    model = Livro
+    template_name = 'livros/edit.html'
+    form_class = LivroForm
+
+    def get_success_url(self):
+        return reverse_lazy('livros:livros_detail', kwargs={'pk':self.kwargs['pk']})

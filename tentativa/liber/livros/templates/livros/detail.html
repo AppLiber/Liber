@@ -16,5 +16,5 @@
 {{ form.imagem }}
 
 
-<a href="#">Editar</a>
+<a href="{% url 'livros:livros_edit' pk=livro.id %}">Editar</a>
 <input type="submit" onclick="return confirm('Hola')" value="Deletar livro">
