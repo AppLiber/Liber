@@ -30,3 +30,7 @@ class LivroUpdate(generic.UpdateView):
 
     def get_success_url(self):
         return reverse_lazy('livros:livros_detail', kwargs={'pk':self.kwargs['pk']})
+
+class LivroDelete(generic.DeleteView):
+    model = Livro
+    success_url = reverse_lazy('livros:livros_index')

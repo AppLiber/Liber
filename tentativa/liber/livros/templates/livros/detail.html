@@ -17,4 +17,7 @@
 
 
 <a href="{% url 'livros:livros_edit' pk=livro.id %}">Editar</a>
-<input type="submit" onclick="return confirm('Hola')" value="Deletar livro">
+<form action="{% url 'livros:livros_delete' pk=livro.id %}" method='post'>
+  {% csrf_token %}
+  <input type="submit" onclick="return confirm('Deseja realmente apagar o livro?')" value="Deletar livro">
+</form>
