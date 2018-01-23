@@ -1,0 +1,20 @@
+{% load staticfiles %}
+<h2> {{ livro }} </h2>
+<ul>
+  <li>Editora: {{ livro.editora }}</li>
+  {% for autor in livro.autores.all %}
+  <li>Autor: {{ autor.nome }} </li>
+  {% endfor %}
+  <li>{{ livro.imagem }}</li>
+  {% if livro.imagem.url %}
+    <br>
+  <li><img src="{{ livro.imagem.url }}" width="100px" height="100px"></img></li>
+    <br>
+     {% endif %}
+</ul>
+
+{{ form.imagem }}
+
+
+<a href="#">Editar</a>
+<input type="submit" onclick="return confirm('Hola')" value="Deletar livro">

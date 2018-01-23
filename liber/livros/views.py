@@ -1,20 +1,37 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404, HttpResponseRedirect
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.views import generic
+from .forms import *
 
 from .models import *
 
-class IndexView(generic.ListView):
+class LivroIndex(generic.ListView):
     template_name = 'index.html'
     context_object_name = 'lista_livros'
 
     def get_queryset(self):
         return Livro.objects.order_by('titulo')
 
-class DetailView(generic.DetailView):
+class LivroCreate(generic.CreateView):
     model = Livro
-    template_name = 'detalhar_livro.html'
+    template_name = 'livros/new.html'
+    success_url = reverse_lazy('livros_index')
+    form_class = LivroForm
+
+class LivroDetail(generic.DetailView):
+    model = Livro
+    template_name = 'livros/detail.html'
+
+    #Livros.objects.get(pk=self.kwargs['pk'])
+
+class LivroDelete(generic.DeleteView):
+    model = Livro
+    sucess_url = reverse_lazy('livros:index')
+
+    #def get_success_url(self):
+    #    return reverse_lazy('livros_detalhe', kwargs={'pk':self.kwargs['pk']})
+
 
 #def IndexView(request):
     #lista_livros = Livro.objects.order_by('titulo')
