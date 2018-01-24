@@ -1,0 +1,19 @@
+{% load staticfiles %}
+
+<h2> {{ usuario.nome }}</h2>
+
+<ul>
+  <li>Nome: {{ usuario.nome }}</li>
+  <li>Sexo: {{ usuario.sexo }}</li>
+  <li>Telefone: {{ usuario.telefone }}</li>
+  {% if usuario.imagem_perfil %}
+  <li><img src="{{ usuario.imagem_perfil.url }}" width="100px" height="100px"</li>
+  {% endif %}
+</ul>
+  {{ form.imagem_perfil }}
+
+<a href="{% url 'usuarios:usuarios_edit' pk=usuario.id %}"> Editar</a>
+<form action="{% url 'usuarios:usuarios_delete' pk=usuario.id %}" method='post'>
+  {% csrf_token %}
+  <input type="submit" onclick="return confirm('Deseja apagar o cadastro?')" value="Apagar conta">
+</form>
