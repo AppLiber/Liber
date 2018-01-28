@@ -1,9 +1,0 @@
-{% if lista_livros %}
-<ul>
-  {% for livro in lista_livros %}
-    <li><a href="{% url 'livros:detalhar_livro' pk=livro.id %}">{{livro.titulo}}</a></li>
-  {% endfor %}
-</ul>
-{% else %}
-  <p>nao tem livros</p>
-{% endif %}
