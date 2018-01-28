@@ -35,7 +35,7 @@ class Estante(models.Model):
 
     nome = models.CharField(max_length=30, blank=False , default="Estante")
     # perfil_dono
-    perfil_dono = models.ForeignKey(Perfil, on_delete=models.CASCADE)
+    perfil_dono = models.OneToOneField(Perfil, on_delete=models.CASCADE)
     livros = models.ManyToManyField('livros.Livro') # Livro
 
     def __str__(self):

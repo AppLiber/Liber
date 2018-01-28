@@ -10,6 +10,6 @@ app_name = 'usuarios'
 urlpatterns = [
 
     path('', login_required(views.UserIndex.as_view()), name='usuarios_index'),
-    path('<int:user>/estante', views.PerfilEstanteList.as_view(), name='estante'),
+    path('<int:user>/estante', login_required(views.PerfilEstanteList.as_view()), name='estante'),
 
 ]
