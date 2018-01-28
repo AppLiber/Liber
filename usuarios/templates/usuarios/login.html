@@ -1,0 +1,27 @@
+<form class="form-signin" role="form"
+  action="{% url 'usuarios:usuarios_new' %}" method="post">
+  {% csrf_token %}
+  <h2 class="form-signin-heading">Login</h2>
+
+  <input id="id_username" name="username" type="text" class="form-control"
+  placeholder="Nome" required autofocus>
+
+  <input id="id_password" name="password" type="password" class="form-control"
+  placeholder="Senha" required>
+
+  <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+
+  <input type="hidden" name="next" value="{{ next }}"/>
+
+
+  <hr/>
+  {% if form.errors %}
+    <div class="alert alert-danger">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+        &times;
+      </button>
+      Por favor, verifique o Email e/ou Senha informados
+    </div>
+  {% endif %}
+
+   <a href="{% url 'registrar' %}">registre-se</a>

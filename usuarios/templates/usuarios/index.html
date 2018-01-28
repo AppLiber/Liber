@@ -1,0 +1,11 @@
+{% if usuario_list %}
+<ul>
+  {% for perfil in usuario_list %}
+  <li><a href="#">{{ perfil.usuario.username }}</a></li>
+  {% endfor %}
+</ul>
+{% else %}
+  <p>Não tem usuário cadastro</p>
+  {% endif %}
+
+  <a href="#">Cadastrar</a>
