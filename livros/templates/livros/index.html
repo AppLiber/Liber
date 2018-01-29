@@ -1,11 +1,24 @@
-{% if livro_list %}
-  <ul>
-    {% for livro in livro_list %}
-    <li><a href="{% url 'livros:livros_detail' livro.id %}">{{ livro.titulo }}</a></li>
-    {% endfor %}
-  </ul>
-{% else %}
-  <p>Não tem livro registrado</p>
-{% endif %}
+{% extends "livros/base_index.html" %}
+{% load static %}
 
-<a href="{% url 'livros:livros_new' %}">Adicionar livro</a>
+{% block body %}
+<link rel="stylesheet" href=" {% static "assets/css/main.css" %}" >
+
+<div class="mais-avaliados" id="banner">
+  <div class="container">
+    <h1>Mais bem avaliados</h1>
+    {% if livro_list %}
+    <ul class='list-inline'>
+      {% for livro in livro_list %}
+      <li class='book'>
+        <img src="{{ livro.imagem.url }}" onclick="window.location.href= '/livros/{{ livro.id }}/' "/>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+      <p>Não tem livro registrado</p>
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}

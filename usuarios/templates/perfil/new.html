@@ -1,5 +1,75 @@
-<form action="{% url 'cadastrar' %}" method="post" >
-  {% csrf_token %}
-  {{ form.as_p }}
-  <input type="submit" value="Cadastrar">
-</form>
+{% extends "perfil/base_login_cadastro.html" %}
+{% load staticfiles %}
+
+        {% block body %}
+
+        <div class="wrapper">
+            <div class="page-header">
+                <div class="filter"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 ml-auto mr-auto">
+                            <div class="card card-register">
+                                <h3 class="title">Crie sua conta</h3>
+                                <form class="register-form" action="{% url 'cadastrar' %}" method="post" >
+                                  {% csrf_token %}
+                                    <label>Nome</label>
+                                    {{ form.username }}
+                                  </br>
+                                    <label>Senha</label>
+                                    {{ form.password1 }}
+                                  </br>
+                                    <label>Confirme a Senha</label>
+                                    {{ form.password2 }}
+                                  </br>
+                                    <label>Telefone</label>
+                                    {{ form.telefone }}
+                                  </br>
+                                    <label>Data de Nascimento</label>
+                                    {{ form.data_de_nascimento }}
+                                  </br>
+                                    <label>Sexo</label>
+                                    {{ form.sexo }}
+                                  </br>
+                                    <input type="submit" value="Cadastrar">
+                                </forms>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $(document).ready(function () {
+                $('#datetimepicker').datetimepicker({
+                    icons: {
+                        time: "fa fa-clock-o",
+                        date: "fa fa-calendar",
+                        up: "fa fa-chevron-up",
+                        down: "fa fa-chevron-down",
+                        previous: 'fa fa-chevron-left',
+                        next: 'fa fa-chevron-right',
+                        today: 'fa fa-screenshot',
+                        clear: 'fa fa-trash',
+                        close: 'fa fa-remove'
+                    },
+                    locale: 'pt-br',
+                    color: 'orange'
+
+                });
+            });
+        </script>
+        {% endblock %}
+
+
+
+
+
+
+
+        <form action="{% url 'cadastrar' %}" method="post" >
+          {% csrf_token %}
+          {{ form.as_p }}
+          <input type="submit" value="Cadastrar">
+        </form>
