@@ -1,7 +1,59 @@
-<h2>Login</h2>
+{% extends "perfil/base_login_cadastro.html" %}
+{% load staticfiles %}
 
-<form method="post">
-  {% csrf_token %}
-  {{ form.as_p }}
-  <button type="submit">LOGIN</button>
-</form>
+
+
+
+    {% block body %}
+
+    <link rel="stylesheet" href="{$ static 'assets/css/register.css' %}">
+    <div class="wrapper">
+            <div class="page-header">
+                <div class="filter"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-lg-4 ml-auto mr-auto">
+                            <div class="card card-register">
+                                <h3 class="title">Login</h3>
+                                <div class="social-line text-center">
+                                    <a href="#" class="btn btn-neutral btn-facebook btn-just-icon">
+                                        <i class="fa fa-facebook-square"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-neutral btn-google btn-just-icon">
+                                        <i class="fa fa-google-plus"></i>
+                                    </a>
+                                    <a href="#" class="btn btn-neutral btn-twitter btn-just-icon">
+                                        <i class="fa fa-twitter"></i>
+                                    </a>
+                                </div>
+                                <form class="register-form" method="post">
+                                  {% csrf_token %}
+
+                                  {{ form.non_field_errors }}
+
+                                  {{ form.source.erros }}
+                                  {{ form.source }}
+
+                                    <label>Username</label>
+
+                                    {{ form.username}}
+                                  </br>
+                                    <label>Senha</label>
+                                    {{ form.password }}
+
+                                     <button type="submit">LOGIN</button>
+                                
+                                        <a href="sign-up.html" class="btn btn-outline-danger btn-round" >Cadastrar</a>
+
+                                </form>
+                                <div class="forgot">
+                                    <a href="#" class="btn btn-link btn-danger">Esqueceu sua senha?</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% endblock %}

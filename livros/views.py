@@ -11,7 +11,7 @@ class LivroIndex(generic.ListView):
     context_object_name = 'livro_list'
 
     def get_queryset(self):
-        return Livro.objects.all()
+        return Livro.objects.order_by('titulo')[:4]
 
 class LivroDetail(generic.DetailView):
     model = Livro
