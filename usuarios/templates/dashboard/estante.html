@@ -1,0 +1,6 @@
+<h2>{{ estante.nome }}</h2>
+<ul>
+{% for livro in estante.livros.all %}
+  <li><a href="{% url 'livros:livros_detail' livro.id %}">{{ livro.titulo }}</li>
+{% endfor %}
+</ul>
