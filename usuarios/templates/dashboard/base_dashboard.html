@@ -61,7 +61,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="{% url 'usuarios:estante' perfil.id %}">
+                        <a href="{% url 'usuarios:estante' estante.perfil_dono.id %}">
                             <i class="ti-book"></i>
                             <p>Minha Estante</p>
                         </a>
@@ -159,6 +159,7 @@
                     </div>
                 </div>
             </nav>
+
 
 
 {% block body %}
