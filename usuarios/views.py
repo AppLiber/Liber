@@ -3,10 +3,11 @@ from django.views import generic
 from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib.auth import logout
-# from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
+
 
 from livros.models import Livro
-from .models import Perfil
+from .models import Perfil, Estante
 from .forms import CadastroForm
 
 
@@ -38,3 +39,25 @@ class UserIndex(generic.ListView):
 def logout_view(request):
     logout(request)
     return redirect('login')
+
+class PerfilEstanteList(generic.DetailView):
+    model = Estante
+    template_name = 'dashboard/estante.html'
+
+    def get_object(self):
+    #    __import__('ipdb').set_trace()
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return Estante.objects.get(perfil_dono=usuario)
+
+        #return get_object_or_404(Estante, usuario_dono_id = self.kwargs['user'])
+
+
+
+# def adiciona_livro_na_estante(request):
+#     model = Estante
+#     template_name = 'dashboard/estante.html'
+#     success_url = reverse_lazy('usuarios:estante')
+#
+#
+#
+#     Estante.livros.all()

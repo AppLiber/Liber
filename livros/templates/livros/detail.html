@@ -80,7 +80,7 @@
 
 {{ form.imagem }}
 
-<a href="#">Adicionar a estante</a>
+<a href="{% url 'livros:adiciona' pk=livro.id %}">Adicionar a estante</a>
 
 <a href="{% url 'livros:livros_edit' pk=livro.id %}">Editar</a>
 <form action="{% url 'livros:livros_delete' pk=livro.id %}" method='post'>

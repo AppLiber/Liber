@@ -25,7 +25,7 @@ from liber import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('livros/', include('livros.urls')),
-    path('usuarios/', include('usuarios.urls')),
+    path('perfil/', include('usuarios.urls')),
 
     path('login/', auth_views.login, {'template_name':'perfil/login.html'}, name="login"),
     path('logout/', logout_view, name ="logout"),
