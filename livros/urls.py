@@ -10,4 +10,5 @@ urlpatterns = [
     path('new', views.LivroCreate.as_view(), name='livros_new'),
     path('<int:pk>/edit', views.LivroUpdate.as_view(), name='livros_edit'),
     path('<int:pk>/delete', views.LivroDelete.as_view(), name='livros_delete'),
+    path('<int:pk>/adiciona', views.adiciona_livro_na_estante, name='adiciona')
 ]

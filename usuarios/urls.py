@@ -10,8 +10,6 @@ app_name = 'usuarios'
 urlpatterns = [
 
     path('', login_required(views.UserIndex.as_view()), name='usuarios_index'),
-    #path('login/', views.login , name="cadastrar"),
-    #path('login/', 'django.contrib.auth.views.login', name="login"),
-    #pathr('logout/', 'django.contrib.auth.views.logout_then_login', name="logout"),
+    path('<int:user>/estante', login_required(views.PerfilEstanteList.as_view()), name='estante'),
 
 ]

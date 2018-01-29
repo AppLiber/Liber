@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic
 from django.urls import reverse_lazy
+from django.contrib.auth.decorators import login_required
 
 from .models import Autor, Categoria, Livro
+from usuarios.models import Perfil, Estante
 from .forms import LivroForm
 
 
@@ -34,3 +36,23 @@ class LivroUpdate(generic.UpdateView):
 class LivroDelete(generic.DeleteView):
     model = Livro
     success_url = reverse_lazy('livros:livros_index')
+
+@login_required
+def adiciona_livro_na_estante(request, pk):
+
+    estante = Estante.objects.get(perfil_dono=request.user.perfil)
+    livros_da_estante = estante.livros.all()
+    livro = Livro.objects.get(pk=pk)
+
+    if (livro not in livros_da_estante):
+        estante.livros.add(livro)
+
+    return redirect('usuarios:estante', user=request.user.perfil.id)
+
+"""
+    for livro_var in livros_da_estante:
+        if livro == livro_var:
+            pass
+        else:
+            estante.livros.add(livro)
+"""
