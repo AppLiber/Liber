@@ -1,0 +1,160 @@
+{% extends 'dashboard/base_dashboard.html' %}
+
+
+{% block body %}
+
+
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-lg-2 col-sm-6">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <div class="icon-big icon-danger text-center">
+                                                <i class="fa fa-book"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <div class="numbers">
+                                                <p>Lidos</p>
+                                                8
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-sm-6">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <div class="icon-big icon-danger text-center">
+                                                <i class="fa fa-bookmark"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <div class="numbers">
+                                                <p>Quero ler</p>
+                                                3
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-sm-6">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <div class="icon-big icon-danger text-center">
+                                                <i class="ti-book"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <div class="numbers">
+                                                <p>Emprestei</p>
+                                                12
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-sm-6">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <div class="icon-big icon-danger text-center">
+                                                <i class="fa fa-handshake-o"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <div class="numbers">
+                                                <p>Peguei emprestado</p>
+                                                5
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-sm-6">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <div class="icon-big icon-danger text-center">
+                                                <i class="fa fa-line-chart"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <div class="numbers">
+                                                <p>Páginas lidas</p>
+                                                2657
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-2 col-sm-6">
+                            <div class="card">
+                                <div class="content">
+                                    <div class="row">
+                                        <div class="col-xs-5">
+                                            <div class="icon-big icon-danger text-center">
+                                                <i class="fa fa-bar-chart"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-7">
+                                            <div class="numbers">
+                                                <p>Páginas lidas por mês</p>
+                                                177
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <a href="emprestimos.html" class="btn btn-lg btn-danger btn-round">Empréstimos em Andamento</a>
+                            <a href="dashboard.html" class="btn btn-lg btn-danger btn-round">
+                                <i class="fa fa-map-marker"></i>Mudar minha localização
+                            </a>
+                        </div>
+
+
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="header">
+                                    <h4 class="title">Acompanhamento</h4>
+                                </div>
+                                <div class="content">
+                                    <div id="chartHours" class="ct-chart"></div>
+                                    <div class="footer">
+                                        <div class="chart-legend">
+                                            <i class="fa fa-circle text-info"></i> Mensal
+                                            <i class="fa fa-circle text-danger"></i> Trimestral
+                                            <i class="fa fa-circle text-warning"></i> Anual
+                                        </div>
+                                        <hr>
+                                        <div class="stats">
+                                            <i class="ti-reload"></i> Atualizado 3 minutos atrás
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+{% endblock %}

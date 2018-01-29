@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import redirect
 from django.contrib.auth import logout
 from django.shortcuts import get_object_or_404
-
+# from django.contrib.auth.decorators import login_required
 
 from livros.models import Livro
 from .models import Perfil, Estante
@@ -35,10 +35,15 @@ class UserIndex(generic.ListView):
     def get_queryset(self):
         return Perfil.objects.all()
 
+class UserDetail(generic.DetailView):
+    model = Perfil
+    template_name = 'dashboard/index.html'
+
 
 def logout_view(request):
     logout(request)
     return redirect('login')
+
 
 class PerfilEstanteList(generic.DetailView):
     model = Estante
