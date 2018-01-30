@@ -24,6 +24,11 @@ class Perfil(models.Model):
     def __str__(self):
         return self.usuario.username
 
+    class Meta:
+        verbose_name='Perfil'
+        verbose_name_plural= "Perfis"
+
+
 """
     @property
     def email(self):
@@ -37,6 +42,7 @@ class Estante(models.Model):
     # perfil_dono
     perfil_dono = models.OneToOneField(Perfil, on_delete=models.CASCADE)
     livros = models.ManyToManyField('livros.Livro') # Livro
+    disponível = models.BooleanField()
 
     def __str__(self):
         return self.nome
