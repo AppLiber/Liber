@@ -17,7 +17,8 @@ class Perfil(models.Model):
     telefone = models.CharField(max_length=15, null=True)
     data_de_nascimento = models.DateField(blank=True)
     sexo = models.CharField(max_length=1, choices=SEXO_USUARIO, blank=True, null=True)
-    #imagem_perfil = models.ImageField(upload_to='imagem_perfil/', default='imagem_perfil/user.png')
+    imagem_perfil = models.ImageField(upload_to='imagem_perfil/', default='imagem_perfil/user.png')
+    #estante = models.OneToOneField(Estante, on_delete=models.CASCADE)
 
     #contatos = models.ManyToManyField('self')
 
