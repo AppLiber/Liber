@@ -26,7 +26,6 @@ class Livro(models.Model):
     editora = models.CharField(max_length=200, null=False)
     descricao = models.TextField()
     paginas = models.IntegerField(null=False)
-#    nota = models.DecimalField(max_digits=2, decimal_places=1)
     imagem = models.ImageField(upload_to='imagem_livro/', default='imagem_livro/livro.png')
     autores = models.ManyToManyField(Autor)
     categorias = models.ManyToManyField(Categoria)
