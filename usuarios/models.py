@@ -10,25 +10,35 @@ SEXO_USUARIO = (
 )
 
 NOTA_LIDO = (
-    ('01', '01'),
-    ('02', '02'),
-    ('03', '03'),
-    ('04', '04'),
-    ('05', '05'),
-    ('06', '06'),
-    ('07', '07'),
-    ('08', '08'),
-    ('09', '09'),
-    ('10', '10'),
+    ('01', 1),
+    ('02', 2),
+    ('03', 3),
+    ('04', 4),
+    ('05', 5),
+    ('06', 6),
+    ('07', 7),
+    ('08', 8 ),
+    ('09', 9),
+    ('10', 10),
 )
+
+
 class Perfil(models.Model):
 
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     # nome = models.CharField(max_length=255, null=False)
-    # email = models.CharField(max_length=255, null=False)
+    # email = models.CharField(max_length=255, null=Falseone
     telefone = models.CharField(max_length=15, null=True)
     data_de_nascimento = models.DateField(blank=True)
     sexo = models.CharField(max_length=1, choices=SEXO_USUARIO, blank=True , null=True)
+
+
+    preferido1 = models.ForeignKey('livros.Categoria' , on_delete=models.CASCADE, related_name="Preferido1" , default = "", unique= True)
+    preferido2 = models.ForeignKey('livros.Categoria' , on_delete=models.CASCADE, related_name="Preferido2" , default = "", unique= True, blank=True)
+    preferido3 = models.ForeignKey('livros.Categoria' , on_delete=models.CASCADE, related_name="Preferido3" , default = "", unique= True, blank=True)
+    preferido4 = models.ForeignKey('livros.Categoria' , on_delete=models.CASCADE, related_name="Preferido4" , default = "", unique= True, blank=True)
+    preferido5 = models.ForeignKey('livros.Categoria' , on_delete=models.CASCADE, related_name="Preferido5" , default = "", unique= True, blank=True)
+
     #imagem_perfil = models.ImageField(upload_to='imagem_perfil/', default='imagem_perfil/user.png')
 
     #contatos = models.ManyToManyField('self')
@@ -60,11 +70,11 @@ class Estante(models.Model):
         return self.nome
 
 class AvaliaLido (models.Model):
-    nota = models.IntegerField(choices=NOTA_LIDO)
     # perfil_dono
     lido = models.BooleanField()
-    perfil_dono = models.OneToOneField(Perfil, on_delete=models.CASCADE)
+    perfil_Avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE)
     livros = models.ManyToManyField('livros.Livro') # Livro
+    nota = models.IntegerField(choices=NOTA_LIDO)
 
     def __str__(self):
         return self.nota
