@@ -72,9 +72,7 @@ class Estante(models.Model):
     #status = models.ForeignKey('self', null=True, related_name)
 
     def __str__(self):
-        return self.nome
-
-
+        return '{}-> {}'.format(self.nome, self.perfil_dono)
 """
 class EstanteLivro(models.Model):
     estante = models.ForeignKey(Estante, on_delete=models.CASCADE)
@@ -87,11 +85,14 @@ class AvaliaLido (models.Model):
 
     lido = models.BooleanField()
     perfil_Avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE)
-    livros = models.ForeignKey('livros.Livro' ,  on_delete=models.CASCADE, null = True, unique=True) # Livro
+    livros = models.ForeignKey('livros.Livro',  on_delete=models.CASCADE) # Livro
     nota = models.IntegerField(choices=NOTA_LIDO) # ver se nao é char
 
+    #def __str__(self):
+    #    return self.livros, self.perfil_Avaliador
     def __str__(self):
-        return self.livros
+        return '{} {} {}'.format(self.livros, self.perfil_Avaliador, self.nota)
+
 
 
 class Emprestimo (models.Model):
