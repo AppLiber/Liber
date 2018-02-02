@@ -87,10 +87,11 @@ class AvaliaLido (models.Model):
 
     lido = models.BooleanField()
     perfil_Avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE)
-    livros = models.ForeignKey('livros.Livro' ,  on_delete=models.CASCADE) # Livro
+    livros = models.ForeignKey('livros.Livro' ,  on_delete=models.CASCADE, null = True, unique=True) # Livro
     nota = models.IntegerField(choices=NOTA_LIDO) # ver se nao é char
 
-
+    def __str__(self):
+        return self.livros
 
 
 class Emprestimo (models.Model):
