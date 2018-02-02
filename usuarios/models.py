@@ -10,16 +10,16 @@ SEXO_USUARIO = (
 )
 
 NOTA_LIDO = (
-    ('01', 1),
-    ('02', 2),
-    ('03', 3),
-    ('04', 4),
-    ('05', 5),
-    ('06', 6),
-    ('07', 7),
-    ('08', 8),
-    ('09', 9),
-    ('10', 10),
+    (1, 1),
+    (2, 2),
+    (3, 3),
+    (4, 4),
+    (5, 5),
+    (6, 6),
+    (7, 7),
+    (8, 8),
+    (9, 9),
+    (10, 10),
 )
 
 
@@ -84,14 +84,13 @@ class EstanteLivro(models.Model):
 """
 
 class AvaliaLido (models.Model):
-    # perfil_dono
+
     lido = models.BooleanField()
-    perfil_Avaliador= models.OneToOneField(Perfil, on_delete=models.CASCADE)
-    livros = models.ManyToManyField('livros.Livro') # Livro
+    perfil_Avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE)
+    livros = models.ForeignKey('livros.Livro' ,  on_delete=models.CASCADE) # Livro
     nota = models.IntegerField(choices=NOTA_LIDO) # ver se nao é char
 
-    def __str__(self):
-        return self.nota
+
 
 
 class Emprestimo (models.Model):
