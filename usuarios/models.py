@@ -72,7 +72,7 @@ class Estante(models.Model):
         return '{}-> {}'.format(self.nome, self.perfil_dono)
 
 
-class EstanteLivro(models.Model):
+class EstanteLivro(models.Model): # testar THROUGH no livros
     estante = models.ForeignKey(Estante, on_delete=models.CASCADE)
     livro_adicionado = models.ForeignKey("livros.livro", on_delete=models.CASCADE)
     data_adicionado = models.DateField(auto_now=True)

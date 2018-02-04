@@ -52,6 +52,9 @@
                                             <h4>Emprestado</h4>
                                             <h5>Ana Maria</h5>
                                         </div>
+                                        {% if request.user.perfil.id == perfil.id %}
+                                        <a class="button buy-button" href="{% url 'usuarios:apagar_livro' user=perfil.id livro=livro.id %}">Apagar livro</a>
+                                        {% endif %}
 
                                     </div>
 

@@ -46,8 +46,24 @@ def adiciona_livro_na_estante(request, pk):
 
     if (livro not in livros_da_estante):
         estante.livros.add(livro)
+    #    livro_adicionado_na_estante = EstanteLivro.objects.create(estante=estante,livro_adicionado=livro)
+
 
     return redirect('usuarios:estante', user=request.user.perfil.id)
+
+
+def apagar_livro_da_estante(request, livro, user):
+
+    estante = Estante.objects.get(perfil_dono = request.user.perfil)
+    livros_da_estante = estante.livros.all()
+    livro = Livro.objects.get(pk=livro)
+
+    if (livro in livros_da_estante):
+        estante.livros.remove(livro)
+
+    return redirect('usuarios:estante', user=request.user.perfil.id)
+
+
 
 """
     for livro_var in livros_da_estante:

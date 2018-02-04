@@ -8,6 +8,7 @@ from django.conf.urls.static import static
 
 # Django local
 from . import views
+from livros.views import apagar_livro_da_estante
 
 app_name = 'usuarios'
 urlpatterns = [
@@ -15,5 +16,6 @@ urlpatterns = [
     path('', login_required(views.UserIndex.as_view()), name='usuarios_index'),
     path('<int:pk>', views.UserDetail.as_view(), name='home'),
     path('<int:user>/estante', login_required(views.PerfilEstanteList.as_view()), name='estante'),
+    path('<int:user>/estante/<int:livro>/apagar', apagar_livro_da_estante, name='apagar_livro' ),
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
