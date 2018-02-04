@@ -54,6 +54,11 @@ class PerfilEstanteList(generic.DetailView):
         usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
         return Estante.objects.get(perfil_dono=usuario)
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return context
+
         #return get_object_or_404(Estante, usuario_dono_id = self.kwargs['user'])
 
 

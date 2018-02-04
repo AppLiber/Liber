@@ -67,7 +67,7 @@ class Estante(models.Model):
 
     nome = models.CharField(max_length=30, blank=False , default="Estante")
     # perfil_dono
-    perfil_dono = models.OneToOneField(Perfil, on_delete=models.CASCADE, null=True) #ver esse nulo depois ??!!
+    perfil_dono = models.OneToOneField(Perfil, on_delete=models.CASCADE) #ver esse nulo depois ??!!
     livros = models.ManyToManyField('livros.Livro') # Livro
     #livros_estante = models.ManyToManyField('livros.Livro', through='EstanteLivro')
     status = models.CharField(max_length=1, choices=STATUS_LIVRO, blank=True , null=True)
