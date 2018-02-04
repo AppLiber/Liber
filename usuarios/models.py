@@ -40,6 +40,8 @@ class Perfil(models.Model):
 #    preferido5 = models.OneToOneField('livros.Categoria' , on_delete=models.CASCADE, related_name="Preferido5" , default = "", unique= True, null=True, blank=True)
 
     imagem_perfil = models.ImageField(upload_to='imagem_perfil/', default='imagem_perfil/user.png')
+    #estante = models.OneToOneField(Estante, on_delete=models.CASCADE)
+
 
     #contatos = models.ManyToManyField('self')
 

@@ -23,6 +23,7 @@ from usuarios.views import UserCreate, logout_view
 from liber import settings
 
 urlpatterns = [
+    path('', include('livros.urls')),
     path('admin/', admin.site.urls),
     path('livros/', include('livros.urls')),
     path('perfil/', include('usuarios.urls')),
