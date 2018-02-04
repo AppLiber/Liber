@@ -50,6 +50,10 @@
 						<label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
 					</fieldset>
 					<a class="button buy-button" href="{% url 'login' %}">Quero emprestado</a>
+				</br>
+					{% if user.is_authenticated %}
+					<a class="button buy-button" href="{% url 'livros:adiciona' pk=livro.id %}">Adicionar a estante</a>
+					{% endif %}
 				</div>
 			</div>
 		</article>
