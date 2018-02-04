@@ -4,7 +4,7 @@ from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
 
 from .models import Autor, Categoria, Livro
-from usuarios.models import Perfil, Estante
+from usuarios.models import Perfil, Estante, EstanteLivro
 from .forms import LivroForm
 
 
@@ -45,9 +45,7 @@ def adiciona_livro_na_estante(request, pk):
     livro = Livro.objects.get(pk=pk)
 
     if (livro not in livros_da_estante):
-        estante.livros.add(livro)
-    #    livro_adicionado_na_estante = EstanteLivro.objects.create(estante=estante,livro_adicionado=livro)
-
+        estante.estantelivro_set.create(estante=estante,livro_adicionado=livro)
 
     return redirect('usuarios:estante', user=request.user.perfil.id)
 
@@ -59,16 +57,7 @@ def apagar_livro_da_estante(request, livro, user):
     livro = Livro.objects.get(pk=livro)
 
     if (livro in livros_da_estante):
-        estante.livros.remove(livro)
+        livro_para_apagar = estante.estantelivro_set.get(livro_adicionado=livro)
+        livro_para_apagar.delete()
 
     return redirect('usuarios:estante', user=request.user.perfil.id)
-
-
-
-"""
-    for livro_var in livros_da_estante:
-        if livro == livro_var:
-            pass
-        else:
-            estante.livros.add(livro)
-"""

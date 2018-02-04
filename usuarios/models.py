@@ -23,25 +23,15 @@ NOTA_LIDO = (
 )
 
 
-
-
 class Perfil(models.Model):
 
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, unique=True)
     telefone = models.CharField(max_length=15, null=True)
     data_de_nascimento = models.DateField(blank=True)
     sexo = models.CharField(max_length=1, choices=SEXO_USUARIO, blank=True , null=True)
-    categorias_preferidas = models.ManyToManyField("livros.Categoria")
-
-#    preferido1 = models.OneToOneField('livros.Categoria' , on_delete=models.CASCADE, related_name="Preferido1" , default = "drama", unique= True, null=True, blank=True)
-#    preferido2 = models.OneToOneField('livros.Categoria' , on_delete=models.CASCADE, related_name="Preferido2" , default = "", unique= True) #,, null=True, blank=True)
-#    preferido3 = models.OneToOneField('livros.Categoria' , on_delete=models.CASCADE, related_name="Preferido3" , default = "", unique= True) #,, null=True, blank=True)
-#    preferido4 = models.OneToOneField('livros.Categoria' , on_delete=models.CASCADE, related_name="Preferido4" , default = "", unique= True, null=True, blank=True)
-#    preferido5 = models.OneToOneField('livros.Categoria' , on_delete=models.CASCADE, related_name="Preferido5" , default = "", unique= True, null=True, blank=True)
-#    estante = models.ForeignKey(Estante, on_delete=models.CASCADE)
+    categorias_preferidas = models.ManyToManyField(Categoria)
     imagem_perfil = models.ImageField(upload_to='imagem_perfil/', default='imagem_perfil/user.png')
 
-    #contatos = models.ManyToManyField('self')
 
     def __str__(self):
         return self.usuario.username
@@ -65,16 +55,15 @@ class Estante(models.Model):
 
     nome = models.CharField(max_length=30, blank=False , default="Estante")
     perfil_dono = models.OneToOneField(Perfil,  on_delete=models.CASCADE, null=True) #ver esse nulo depois ??!!
-    livros = models.ManyToManyField('livros.Livro')#, through='EstanteLivro') # Livro
-
+    livros = models.ManyToManyField(Livro, through='EstanteLivro')
 
     def __str__(self):
         return '{}-> {}'.format(self.nome, self.perfil_dono)
 
 
-class EstanteLivro(models.Model): # testar THROUGH no livros
+class EstanteLivro(models.Model): 
     estante = models.ForeignKey(Estante, on_delete=models.CASCADE)
-    livro_adicionado = models.ForeignKey("livros.livro", on_delete=models.CASCADE)
+    livro_adicionado = models.ForeignKey(Livro, on_delete=models.CASCADE)
     data_adicionado = models.DateField(auto_now=True)
     status = models.CharField(max_length=1, choices=STATUS_LIVRO, blank=False , null=False, default='D')
 
@@ -82,14 +71,13 @@ class AvaliaLido (models.Model):
 
     lido = models.BooleanField()
     perfil_Avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE)
-    livros = models.ForeignKey('livros.Livro',  on_delete=models.CASCADE) # Livro
+    livros = models.ForeignKey(Livro,  on_delete=models.CASCADE) # Livro
     nota = models.IntegerField(choices=NOTA_LIDO) # ver se nao é char
 
     #def __str__(self):
     #    return self.livros, self.perfil_Avaliador
     def __str__(self):
         return '{} {} {}'.format(self.livros, self.perfil_Avaliador, self.nota)
-
 
 
 class Emprestimo (models.Model):
