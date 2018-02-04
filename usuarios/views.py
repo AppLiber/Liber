@@ -24,6 +24,8 @@ class UserCreate(generic.CreateView):
                 #imagem_perfil=form.cleaned_data['imagem_perfil'])
 
         user.save()
+        user.perfil.estante = Estante.objects.create(perfil_dono = user.perfil)
+        user.save()
 
         return redirect(reverse_lazy('livros:livros_index'))
 
