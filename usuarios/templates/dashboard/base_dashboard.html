@@ -43,7 +43,7 @@
                         <h2> {{ perfil.usuario }}</h2>
                     </li>
                     <li class="active">
-                        <a href="dashboard.html">
+                        <a href="{% url 'usuarios:home' perfil.id %}">
                             <i class="ti-panel"></i>
                             <p>Acompanhamento</p>
                         </a>
@@ -149,7 +149,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="#">
+                                <a href="{% url 'logout' %}">
                                     <i class="fa fa-sign-out"></i>
                                     <p>Sair</p>
                                 </a>
