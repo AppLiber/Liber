@@ -2,13 +2,15 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from .models import Perfil, Estante, AvaliaLido, Emprestimo, AvaliaEmprestimo
+from .models import Perfil, Estante, AvaliaLido, Emprestimo, AvaliaEmprestimo, EstanteLivro
 
 #admin.site.register(Perfil)
 admin.site.register(Estante)
 admin.site.register(AvaliaLido)
 admin.site.register(Emprestimo)
 admin.site.register(AvaliaEmprestimo)
+admin.site.register(EstanteLivro)
+
 
 class PerfilInLine(admin.StackedInline):
     model = Perfil
