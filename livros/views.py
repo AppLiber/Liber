@@ -49,7 +49,7 @@ def adiciona_livro_na_estante(request, pk):
 
     return redirect('usuarios:estante', user=request.user.perfil.id)
 
-
+@login_required
 def apagar_livro_da_estante(request, livro, user):
 
     estante = Estante.objects.get(perfil_dono = request.user.perfil)

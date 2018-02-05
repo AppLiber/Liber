@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 # from django.contrib.auth.decorators import login_required
 
 from livros.models import Livro
-from .models import Perfil, Estante
+from .models import Perfil, Estante, Emprestimo
 from .forms import CadastroForm
 
 
@@ -59,12 +59,22 @@ class PerfilEstanteList(generic.DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
-        perfil = get_object_or_404(Perfil, pk=self.kwargs['user']) 
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
         context['estante_livros'] = perfil.estante.estantelivro_set.all()
         return context
 
         #return get_object_or_404(Estante, usuario_dono_id = self.kwargs['user'])
 
+# @login_required
+def fazer_pedido_de_emprestimo(request, user, livro):
+    perfil_solicitante = request.user.perfil
+    perfil_do_dono = get_object_or_404(Perfil, usuario=user)
+    livro = Livro.objects.get(pk=livro)
+
+    estante_livro = perfil_do_dono.estante.estantelivro_set.get(livro_adicionado=livro)
+    emprestimo = Emprestimo.objects.create(perfil_do_dono=perfil_do_dono, perfil_solicitante=perfil_solicitante, livro_emprestado=estante_livro)
+
+    return redirect('usuarios:estante', user=request.user.perfil.id)
 
 
 # def adiciona_livro_na_estante(request):

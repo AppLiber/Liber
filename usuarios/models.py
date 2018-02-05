@@ -61,11 +61,12 @@ class Estante(models.Model):
         return '{}-> {}'.format(self.nome, self.perfil_dono)
 
 
-class EstanteLivro(models.Model): 
+class EstanteLivro(models.Model):
     estante = models.ForeignKey(Estante, on_delete=models.CASCADE)
     livro_adicionado = models.ForeignKey(Livro, on_delete=models.CASCADE)
     data_adicionado = models.DateField(auto_now=True)
     status = models.CharField(max_length=1, choices=STATUS_LIVRO, blank=False , null=False, default='D')
+
 
 class AvaliaLido (models.Model):
 
@@ -79,16 +80,22 @@ class AvaliaLido (models.Model):
     def __str__(self):
         return '{} {} {}'.format(self.livros, self.perfil_Avaliador, self.nota)
 
+STATUS_EMPRESTIMO = (
+    ('EA', 'Em andamento'),
+    ('OK', 'Concluído'),
+    ('C', 'Cancelado')
+)
 
 class Emprestimo (models.Model):
-    perfil_do_dono = models.OneToOneField(Perfil, on_delete=models.CASCADE, related_name="solicitado")
-    perfil_solicitante = models.OneToOneField(Perfil, on_delete=models.CASCADE, related_name="solicitante") #on_delete=models.CASCADE,
-    livro_emprestado = models.OneToOneField(Estante, on_delete=models.CASCADE) # livro da estante
+    perfil_do_dono = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name="solicitado")
+    perfil_solicitante = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name="solicitante")
+    livro_emprestado = models.ForeignKey(EstanteLivro, on_delete=models.CASCADE) # livro da estante
     data_emprestimo= models.DateField(auto_now=True)
-    data_devolucao= models.DateField()
+    data_devolucao= models.DateField(null=True)
+    status_emprestimo = models.CharField(max_length=2, choices=STATUS_EMPRESTIMO, blank=False , null=False, default='EA')
 
     def __str__(self):
-        return self.perfil_do_dono
+        return self.perfil_do_dono.usuario.username
 
 
 class AvaliaEmprestimo (models.Model):

@@ -57,7 +57,7 @@
                                         </div>
                                         {% if request.user.perfil.id != perfil.id and estante_livro.status == 'D'  %}
                                           <div>
-                                              <button class="btn btn-primary" href="#">Pedir emprestado</button>
+                                              <a class="btn btn-primary" href="{% url 'usuarios:pedir_emprestado' user=perfil.id livro=estante_livro.livro_adicionado.id %}">Pedir emprestado</a>
                                           </div>
                                         {% endif %}
                                         <br>
