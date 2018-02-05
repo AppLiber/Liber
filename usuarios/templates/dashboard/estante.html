@@ -23,7 +23,7 @@
 
                         <div class="grid-shuffle">
                             <ul id="grid" class="row">
-                              {% for livro in estante.livros.all %}
+                              {% for estante_livro in estante_livros.all %}
                                 <li class="book-item col-lg-6 col-sm-6 card" data-groups='["classic"]' data-date-created='1937' data-title='Of Mice and Men'
                                     data-color='#fcc278'>
                                     <div class="bk-img">
@@ -31,7 +31,7 @@
                                             <div class="bk-book bk-bookdefault">
                                                 <div class="bk-front">
                                                     <div class="bk-cover">
-                                                      <img src="{{ livro.imagem.url }}" onclick="window.location.href= '/livros/{{ livro.id }}/' "/>
+                                                      <img src="{{ estante_livro.livro_adicionado.imagem.url }}" onclick="window.location.href= '{% url 'livros:livros_detail' pk=estante_livro.livro_adicionado.id %}' "/>
                                                     </div>
                                                 </div>
                                                 <div class="bk-back"></div>
@@ -40,7 +40,7 @@
                                         </div>
                                     </div>
                                     <div class="item-details">
-                                        <h3 class="book-item_title">{{ livro.titulo }}</h3>
+                                        <h3 class="book-item_title">{{ estante_livro.livro_adicionado.titulo }}</h3>
                                         <p class="author">John Steinbeck &bull; 1937</p>
                                         <div class="col-xs-2">
                                             <div class="icon-big icon-color">
@@ -49,9 +49,10 @@
                                             </div>
                                         </div>
                                         <div class="col-xs-5">
-                                            <h4>Emprestado</h4>
+                                            <h4>{{estante_livro.get_status_display }}</h4>
                                             <h5>Ana Maria</h5>
                                         </div>
+                                        
                                         {% if request.user.perfil.id == perfil.id %}
                                         <a class="button buy-button" href="{% url 'usuarios:apagar_livro' user=perfil.id livro=livro.id %}">Apagar livro</a>
                                         {% endif %}
