@@ -50,13 +50,22 @@
                                         </div>
                                         <div class="col-xs-5">
                                             <h4>{{estante_livro.get_status_display }}</h4>
-                                            <h5>Ana Maria</h5>
-                                        </div>
-                                        
-                                        {% if request.user.perfil.id == perfil.id %}
-                                        <a class="button buy-button" href="{% url 'usuarios:apagar_livro' user=perfil.id livro=livro.id %}">Apagar livro</a>
-                                        {% endif %}
 
+                                            {% if estante_livro.status == 'E'  %}
+                                            <h5>Ana Maria</h5>
+                                            {% endif %}
+                                        </div>
+                                        {% if request.user.perfil.id != perfil.id and estante_livro.status == 'D'  %}
+                                          <div>
+                                              <button class="btn btn-primary" href="#">Pedir emprestado</button>
+                                          </div>
+                                        {% endif %}
+                                        <br>
+                                        {% if request.user.perfil.id == perfil.id %}
+                                          <div>
+                                            <button class="btn btn-danger" onclick="return confirm('Deseja realmente apagar o livro?')" href="{% url 'usuarios:apagar_livro' user=perfil.id livro=estante_livro.livro_adicionado.id %} ">Apagar livro</button>
+                                          </div>
+                                        {% endif %}
                                     </div>
 
                                 </li>
