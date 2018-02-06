@@ -42,7 +42,8 @@
                         <img src="{% static "assets/img/faces/face-2.jpg"%}"></img>
                         <h2> {{ perfil.usuario }}</h2>
                     </li>
-                    <li class="active">
+                    {% block acompanhamento %}
+                    <li class="active">{% endblock %}
                         <a href="{% url 'usuarios:home' perfil.id %}">
                             <i class="ti-panel"></i>
                             <p>Acompanhamento</p>
@@ -60,7 +61,8 @@
                             <p>Ver Avaliações</p>
                         </a>
                     </li>
-                    <li>
+                    {% block estante %}
+                    <li> {% endblock %}
                         <a href="{% url 'usuarios:estante' perfil.id %}">
                             <i class="ti-book"></i>
                             <p>Minha Estante</p>
