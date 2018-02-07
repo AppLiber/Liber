@@ -16,6 +16,14 @@ class LivroIndex(generic.ListView):
     def get_queryset(self):
         return Livro.objects.order_by('titulo')[:4]
 
+
+class ListLivros(generic.ListView):
+    template_name = 'livros/listall.html'
+    context_object_name = 'livro_list'
+
+    def get_queryset(self):
+        return Livro.objects.order_by('titulo')
+
 class LivroDetail(generic.DetailView):
     model = Livro
     template_name = 'livros/detail.html'
@@ -24,11 +32,12 @@ class LivroDetail(generic.DetailView):
 
         context = super().get_context_data()
         #perfil = self.request.user.perfil
-        perfil = get_object_or_404(Perfil, pk=self.request.user.perfil.id)
-        livro = Livro.objects.get(pk=self.kwargs['pk'])
-        context['estante_livros'] = perfil.estante.estantelivro_set.filter(livro_adicionado=livro)
-        context['livros_lidos_total'] = perfil.avalialido_set.all()
-        context['livros_lidos'] = perfil.avalialido_set.filter(livro=livro)
+        if self.request.user.is_authenticated:
+            perfil = get_object_or_404(Perfil, pk=self.request.user.perfil.id)
+            livro = Livro.objects.get(pk=self.kwargs['pk'])
+            context['estante_livros'] = perfil.estante.estantelivro_set.filter(livro_adicionado=livro)
+            context['livros_lidos_total'] = perfil.avalialido_set.all()
+            context['livros_lidos'] = perfil.avalialido_set.filter(livro=livro)
         return context
 
 class LivroCreate(generic.CreateView):

@@ -26,11 +26,17 @@ class UserCreate(generic.CreateView):
         user.save()
         user.perfil.estante = Estante.objects.create(perfil_dono = user.perfil)
         user.save()
-        user.perfil.avalialido_set = AvaliaLido.objects.create(perfil_avaliador = user.perfil)
-        user.save()
+    #    user.perfil.avalialido_set = AvaliaLido.objects.create(perfil_avaliador = user.perfil)
+    #    user.save()
 
-        return redirect(reverse_lazy('livros:livros_index'))
+        return redirect(reverse_lazy('livros_index'))
+"""
+return redirect(reverse_lazy('usuarios:estante',kwargs={'user':self.kwargs['user']}))
 
+def get_success_url(self):
+return reverse_lazy('livros:livros_detail', kwargs={'pk':self.kwargs['pk']})
+
+"""
 
 class UserIndex(generic.ListView):
     template_name = 'usuarios/index.html'
@@ -43,6 +49,13 @@ class UserDetail(generic.DetailView):
     model = Perfil
     template_name = 'dashboard/index.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        #context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        perfil = self.request.user.perfil
+        context['estante_livros'] = perfil.estante.estantelivro_set.all()
+        context['livros_lidos_total'] = perfil.avalialido_set.all()
+        return context
 
 def logout_view(request):
     logout(request)
@@ -92,7 +105,7 @@ def marcar_livro_lido(request, pk):
     if (livro != p):
         perfil.avalialido_set.create(perfil_avaliador=perfil, livro=livro, lido=True)
 
-    return redirect('livros:livros_index')
+    return redirect('livros_index')
 
 
 

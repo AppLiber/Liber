@@ -19,11 +19,12 @@ from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 
 from usuarios.views import UserCreate, logout_view
+from livros.views import LivroIndex
 
 from liber import settings
 
 urlpatterns = [
-    #path('', include('livros.urls')),
+    path('', LivroIndex.as_view(), name='livros_index'),
     path('admin/', admin.site.urls),
     path('livros/', include('livros.urls')),
     path('perfil/', include('usuarios.urls')),

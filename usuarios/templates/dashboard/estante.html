@@ -71,7 +71,7 @@
                                         <br>
                                         {% if request.user.perfil.id == perfil.id %}
                                           <div>
-                                            <button class="btn btn-danger" onclick="return confirm('Deseja realmente apagar o livro?')" href="{% url 'usuarios:apagar_livro' user=perfil.id livro=estante_livro.livro_adicionado.id %} ">Apagar livro</button>
+                                            <button class="btn btn-danger" href="{% url 'usuarios:apagar_livro' user=perfil.id livro=estante_livro.livro_adicionado.id %} ">Apagar livro</button>
                                           </div>
                                         {% endif %}
                                     </div>

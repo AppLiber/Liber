@@ -54,7 +54,7 @@ STATUS_LIVRO = (
 class Estante(models.Model):
 
     nome = models.CharField(max_length=30, blank=False , default="Estante")
-    perfil_dono = models.OneToOneField(Perfil,  on_delete=models.CASCADE, null=True) #ver esse nulo depois ??!!
+    perfil_dono = models.OneToOneField(Perfil,  on_delete=models.CASCADE, null=True)
     livros = models.ManyToManyField(Livro, through='EstanteLivro')
 
     def __str__(self):
@@ -70,13 +70,11 @@ class EstanteLivro(models.Model):
 
 class AvaliaLido (models.Model):
 
-    lido = models.BooleanField(default=False) #default=False
-    perfil_avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE, unique=True)
-    livro = models.ForeignKey(Livro, on_delete=models.CASCADE) # Livro
-    nota = models.IntegerField(choices=NOTA_LIDO, null=True) # ver se nao é char
+    lido = models.BooleanField(default=False)
+    perfil_avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE, unique=False)
+    livro = models.ForeignKey(Livro, on_delete=models.CASCADE)
+    nota = models.IntegerField(choices=NOTA_LIDO, null=True)
 
-    #def __str__(self):
-    #    return self.livros, self.perfil_Avaliador
     def __str__(self):
         return '{} {} {}'.format(self.livro, self.perfil_avaliador, self.nota)
 

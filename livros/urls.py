@@ -10,7 +10,8 @@ from usuarios.views import marcar_livro_lido
 
 app_name = 'livros'
 urlpatterns = [
-    path('', views.LivroIndex.as_view(), name='livros_index'),
+    #path('', views.LivroIndex.as_view(), name='livros_index'),
+    path('', views.ListLivros.as_view(), name='lista_livros'),
     path('<int:pk>/', views.LivroDetail.as_view(), name='livros_detail'),
     path('new', views.LivroCreate.as_view(), name='livros_new'),
     path('<int:pk>/edit', views.LivroUpdate.as_view(), name='livros_edit'),
