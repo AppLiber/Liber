@@ -70,15 +70,15 @@ class EstanteLivro(models.Model):
 
 class AvaliaLido (models.Model):
 
-    lido = models.BooleanField()
-    perfil_Avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE)
-    livros = models.ForeignKey(Livro,  on_delete=models.CASCADE) # Livro
-    nota = models.IntegerField(choices=NOTA_LIDO) # ver se nao é char
+    lido = models.BooleanField(default=False) #default=False
+    perfil_avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE, unique=True)
+    livro = models.ForeignKey(Livro, on_delete=models.CASCADE) # Livro
+    nota = models.IntegerField(choices=NOTA_LIDO, null=True) # ver se nao é char
 
     #def __str__(self):
     #    return self.livros, self.perfil_Avaliador
     def __str__(self):
-        return '{} {} {}'.format(self.livros, self.perfil_Avaliador, self.nota)
+        return '{} {} {}'.format(self.livro, self.perfil_avaliador, self.nota)
 
 STATUS_EMPRESTIMO = (
     ('EA', 'Em andamento'),

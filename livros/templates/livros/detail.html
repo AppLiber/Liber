@@ -8,7 +8,21 @@
 
 <div class="book-container">
 		<article class="item-pane">
+
 			<div class="item-preview">
+				<div>
+
+					<!-- checkbox LIDO -->
+
+					{% if user.is_authenticated %}
+							{% if livros_lidos %}
+								<button type="button" class="btn btn-info" disabled>Já Lido</button>
+							{% else %}
+								<a type="button" class="button buy-button" href="{% url 'livros:livrolido' pk=livro.id %}">Lido</a>
+							{% endif %}
+					{% endif %}
+
+				</div>
 				<div class="book">
           <img src="{{ livro.imagem.url }}"/></div>
 			</div>
@@ -52,8 +66,12 @@
 					<a class="button buy-button" href="{% url 'login' %}">Quero emprestado</a>
 				</br>
 					{% if user.is_authenticated %}
-					<a class="button buy-button" href="{% url 'livros:adiciona' pk=livro.id %}">Adicionar a estante</a>
+							{% if estante_livros %}
+							{% else %}
+								<a class="button buy-button" href="{% url 'livros:adiciona' pk=livro.id %}">Adicionar a estante</a>
+							{% endif %}
 					{% endif %}
+
 				</div>
 			</div>
 		</article>
@@ -90,4 +108,19 @@
 <form action="{% url 'livros:livros_delete' pk=livro.id %}" method='post'>
   {% csrf_token %}
   <input type="submit" onclick="return confirm('Deseja realmente apagar o livro?')" value="Deletar livro">
+</form>
+
+
+<div class="form-check">
+	<input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+		<label class="form-check-label" for="defaultCheck1">
+			Lido
+		</label>
+</div>
+
+
+<form action="{% url 'livros:livros_delete' pk=livro.id %}" method='post'>
+	<div class="checkbox">
+		<label><input type="checkbox" value=""> Lido</label>
+	</div>
 </form>

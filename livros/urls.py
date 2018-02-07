@@ -5,6 +5,8 @@ from django.conf.urls.static import static
 
 # Django local
 from . import views
+from usuarios.views import marcar_livro_lido
+
 
 app_name = 'livros'
 urlpatterns = [
@@ -14,4 +16,6 @@ urlpatterns = [
     path('<int:pk>/edit', views.LivroUpdate.as_view(), name='livros_edit'),
     path('<int:pk>/delete', views.LivroDelete.as_view(), name='livros_delete'),
     path('<int:pk>/adiciona', views.adiciona_livro_na_estante, name='adiciona'),
+    path('<int:pk>/lido', marcar_livro_lido, name='livrolido'),
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

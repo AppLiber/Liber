@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.views import generic
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 
 from .models import Autor, Categoria, Livro
 from usuarios.models import Perfil, Estante, EstanteLivro
@@ -18,6 +19,17 @@ class LivroIndex(generic.ListView):
 class LivroDetail(generic.DetailView):
     model = Livro
     template_name = 'livros/detail.html'
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data()
+        #perfil = self.request.user.perfil
+        perfil = get_object_or_404(Perfil, pk=self.request.user.perfil.id)
+        livro = Livro.objects.get(pk=self.kwargs['pk'])
+        context['estante_livros'] = perfil.estante.estantelivro_set.filter(livro_adicionado=livro)
+        context['livros_lidos_total'] = perfil.avalialido_set.all()
+        context['livros_lidos'] = perfil.avalialido_set.filter(livro=livro)
+        return context
 
 class LivroCreate(generic.CreateView):
     model = Livro
