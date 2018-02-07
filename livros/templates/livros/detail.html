@@ -1,4 +1,91 @@
-{% load staticfiles %}
+{% extends "livros/base_index.html" %}
+{% load static %}
+
+
+
+{% block body %}
+<link rel="stylesheet" href="{% static 'assets/css/bookdetails.css' %}">
+
+<div class="book-container">
+		<article class="item-pane">
+
+			<div class="item-preview">
+				<div>
+
+					<!-- checkbox LIDO -->
+
+					{% if user.is_authenticated %}
+							{% if livros_lidos %}
+								<button type="button" class="btn btn-info" disabled>Já Lido</button>
+							{% else %}
+								<a type="button" class="button buy-button" href="{% url 'livros:livrolido' pk=livro.id %}">Lido</a>
+							{% endif %}
+					{% endif %}
+
+				</div>
+				<div class="book">
+          <img src="{{ livro.imagem.url }}"/></div>
+			</div>
+			<div class="item-details">
+				<h1>{{ livro.titulo }}</h1>
+        {% for autor in livro.autores.all %}
+				<span class="subtitle">{{ autor.nome }}</span>
+        {% endfor %}
+				<div class="pane__section">
+					<p>
+						{{ livro.descricao }}
+					</p>
+				</div>
+				<div class="pane__section">
+					<i class="fa fa-globe fa-3x"></i>
+					<span class="distancy">5 km de distância</span>
+				</div>
+				<div class="pane__section clearfix">
+					<fieldset class="rating">
+						<input type="radio" id="star5" name="rating" value="5" />
+						<label class="full" for="star5" title="Awesome - 5 stars"></label>
+						<input type="radio" id="star4half" name="rating" value="4 and a half" />
+						<label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+						<input type="radio" id="star4" name="rating" value="4" />
+						<label class="full" for="star4" title="Pretty good - 4 stars"></label>
+						<input type="radio" id="star3half" name="rating" value="3 and a half" />
+						<label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+						<input type="radio" id="star3" name="rating" value="3" />
+						<label class="full" for="star3" title="Meh - 3 stars"></label>
+						<input type="radio" id="star2half" name="rating" value="2 and a half" />
+						<label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+						<input type="radio" id="star2" name="rating" value="2" />
+						<label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+						<input type="radio" id="star1half" name="rating" value="1 and a half" />
+						<label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+						<input type="radio" id="star1" name="rating" value="1" />
+						<label class="full" for="star1" title="Sucks big time - 1 star"></label>
+						<input type="radio" id="starhalf" name="rating" value="half" />
+						<label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+					</fieldset>
+					<a class="button buy-button" href="{% url 'login' %}">Quero emprestado</a>
+				</br>
+					{% if user.is_authenticated %}
+							{% if estante_livros %}
+							{% else %}
+								<a class="button buy-button" href="{% url 'livros:adiciona' pk=livro.id %}">Adicionar a estante</a>
+							{% endif %}
+					{% endif %}
+
+				</div>
+			</div>
+		</article>
+	</div>
+
+{% endblock %}
+
+
+
+
+
+
+
+
 <h2> {{ livro }} </h2>
 <ul>
   <li>Editora: {{ livro.editora }}</li>
@@ -21,4 +108,19 @@
 <form action="{% url 'livros:livros_delete' pk=livro.id %}" method='post'>
   {% csrf_token %}
   <input type="submit" onclick="return confirm('Deseja realmente apagar o livro?')" value="Deletar livro">
+</form>
+
+
+<div class="form-check">
+	<input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+		<label class="form-check-label" for="defaultCheck1">
+			Lido
+		</label>
+</div>
+
+
+<form action="{% url 'livros:livros_delete' pk=livro.id %}" method='post'>
+	<div class="checkbox">
+		<label><input type="checkbox" value=""> Lido</label>
+	</div>
 </form>

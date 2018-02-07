@@ -2,9 +2,10 @@ from django.shortcuts import render, redirect
 from django.views import generic
 from django.urls import reverse_lazy
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import get_object_or_404
 
 from .models import Autor, Categoria, Livro
-from usuarios.models import Perfil, Estante
+from usuarios.models import Perfil, Estante, EstanteLivro
 from .forms import LivroForm
 
 
@@ -13,11 +14,22 @@ class LivroIndex(generic.ListView):
     context_object_name = 'livro_list'
 
     def get_queryset(self):
-        return Livro.objects.all()
+        return Livro.objects.order_by('titulo')[:4]
 
 class LivroDetail(generic.DetailView):
     model = Livro
     template_name = 'livros/detail.html'
+
+    def get_context_data(self, **kwargs):
+
+        context = super().get_context_data()
+        #perfil = self.request.user.perfil
+        perfil = get_object_or_404(Perfil, pk=self.request.user.perfil.id)
+        livro = Livro.objects.get(pk=self.kwargs['pk'])
+        context['estante_livros'] = perfil.estante.estantelivro_set.filter(livro_adicionado=livro)
+        context['livros_lidos_total'] = perfil.avalialido_set.all()
+        context['livros_lidos'] = perfil.avalialido_set.filter(livro=livro)
+        return context
 
 class LivroCreate(generic.CreateView):
     model = Livro
@@ -45,14 +57,19 @@ def adiciona_livro_na_estante(request, pk):
     livro = Livro.objects.get(pk=pk)
 
     if (livro not in livros_da_estante):
-        estante.livros.add(livro)
+        estante.estantelivro_set.create(estante=estante,livro_adicionado=livro)
 
     return redirect('usuarios:estante', user=request.user.perfil.id)
 
-"""
-    for livro_var in livros_da_estante:
-        if livro == livro_var:
-            pass
-        else:
-            estante.livros.add(livro)
-"""
+@login_required
+def apagar_livro_da_estante(request, livro, user):
+
+    estante = Estante.objects.get(perfil_dono = request.user.perfil)
+    livros_da_estante = estante.livros.all()
+    livro = Livro.objects.get(pk=livro)
+
+    if (livro in livros_da_estante):
+        livro_para_apagar = estante.estantelivro_set.get(livro_adicionado=livro)
+        livro_para_apagar.delete()
+
+    return redirect('usuarios:estante', user=request.user.perfil.id)
