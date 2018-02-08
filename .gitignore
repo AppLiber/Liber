@@ -2,3 +2,5 @@
 *pycache*
 *migrations*
 *.sqlite3
+public/
+dump.json
