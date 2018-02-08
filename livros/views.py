@@ -77,6 +77,8 @@ def apagar_livro_da_estante(request, livro, user):
     livros_da_estante = estante.livros.all()
     livro = Livro.objects.get(pk=livro)
 
+    #import ipdb; ipdb.set_trace()
+
     if (livro in livros_da_estante):
         livro_para_apagar = estante.estantelivro_set.get(livro_adicionado=livro)
         livro_para_apagar.delete()

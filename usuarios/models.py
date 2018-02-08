@@ -31,6 +31,7 @@ class Perfil(models.Model):
     sexo = models.CharField(max_length=1, choices=SEXO_USUARIO, blank=True , null=True)
     categorias_preferidas = models.ManyToManyField(Categoria)
     imagem_perfil = models.ImageField(upload_to='imagem_perfil/', default='imagem_perfil/user.png')
+    livros = models.ManyToManyField(Livro, through='AvaliaLido' )
 
 
     def __str__(self):
@@ -71,7 +72,7 @@ class EstanteLivro(models.Model):
 class AvaliaLido (models.Model):
 
     lido = models.BooleanField(default=False)
-    perfil_avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE, unique=False)
+    perfil_avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE)
     livro = models.ForeignKey(Livro, on_delete=models.CASCADE)
     nota = models.IntegerField(choices=NOTA_LIDO, null=True)
 
@@ -87,7 +88,7 @@ STATUS_EMPRESTIMO = (
 class Emprestimo (models.Model):
     perfil_do_dono = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name="solicitado")
     perfil_solicitante = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name="solicitante")
-    livro_emprestado = models.ForeignKey(EstanteLivro, on_delete=models.CASCADE) # livro da estante
+    livro_emprestado = models.ForeignKey(EstanteLivro, on_delete=models.CASCADE)
     data_emprestimo= models.DateField(auto_now=True)
     data_devolucao= models.DateField(null=True)
     status_emprestimo = models.CharField(max_length=2, choices=STATUS_EMPRESTIMO, blank=False , null=False, default='EA')
