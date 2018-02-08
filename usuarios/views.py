@@ -54,7 +54,25 @@ class UserDetail(generic.DetailView):
         #context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
         perfil = self.request.user.perfil
         context['estante_livros'] = perfil.estante.estantelivro_set.all()
+        livros_lidos_total = perfil.avalialido_set.all()
         context['livros_lidos_total'] = perfil.avalialido_set.all()
+        context['var'] = paginas_lidas_total(self.request)
+
+
+        """
+        #livros_lidos = perfil.avalialido_set.all()
+        quantidade_livros_lidos = livros_lidos_total.count()
+
+        #livro1 = perfil.avalialido_set.first()
+        #livro1.livro.paginas
+        var = 0
+        for livro_lido in livros_lidos_total:
+            var += livro_lido.livro.paginas
+            return var;
+
+        var
+        """
+
         return context
 
 def logout_view(request):
@@ -91,7 +109,7 @@ def fazer_pedido_de_emprestimo(request, user, livro):
 
     return redirect('usuarios:estante', user=request.user.perfil.id)
 
-#@login_required
+@login_required
 def marcar_livro_lido(request, pk):
     perfil = request.user.perfil
     livro = Livro.objects.get(pk=pk)
@@ -107,6 +125,21 @@ def marcar_livro_lido(request, pk):
 
     return redirect('livros_index')
 
+
+def paginas_lidas_total(request):
+    perfil = request.user.perfil
+    #livro = Livro.objects.get(pk=livro)
+    livros_lidos = perfil.avalialido_set.all()
+    quantidade_livros_lidos = livros_lidos.count()
+
+    #livro1 = perfil.avalialido_set.first()
+    #livro1.livro.paginas
+    var = 0
+
+    for livro_lido in livros_lidos:
+        var += livro_lido.livro.paginas
+
+    return var
 
 
 # def adiciona_livro_na_estante(request):
