@@ -39,7 +39,7 @@
 
                 <ul class="nav">
                     <li>
-                        <img src="{% static "assets/img/faces/face-2.jpg"%}"></img>
+                        <img src="{{ perfil.imagem_perfil.url }}"></img>
                         <h2> {{ perfil.usuario }}</h2>
                     </li>
                     {% block acompanhamento %}
