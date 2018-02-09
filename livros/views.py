@@ -32,6 +32,7 @@ class LivroDetail(generic.DetailView):
 
         context = super().get_context_data()
         #perfil = self.request.user.perfil
+
         if self.request.user.is_authenticated:
             perfil = get_object_or_404(Perfil, pk=self.request.user.perfil.id)
             livro = Livro.objects.get(pk=self.kwargs['pk'])
@@ -39,6 +40,10 @@ class LivroDetail(generic.DetailView):
             context['livros_lidos_total'] = perfil.avalialido_set.all()
             context['livros_lidos'] = perfil.avalialido_set.filter(livro=livro)
         return context
+
+    
+
+
 
 class LivroCreate(generic.CreateView):
     model = Livro

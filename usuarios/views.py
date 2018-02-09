@@ -141,7 +141,14 @@ def paginas_lidas_total(request):
 
     return var
 
-
+def media_livro(request):
+    livroComNotas = Livro.objects.get(pk=self.kwargs['pk'])
+    notas=livroComNotas.avalialido_set.all()
+    somaNotas=0
+    for nota in notas:
+        somaNotas += nota.AvaliaLido.nota
+        media=somaNotas/notas.count()
+    return media
 # def adiciona_livro_na_estante(request):
 #     model = Estante
 #     template_name = 'dashboard/estante.html'
