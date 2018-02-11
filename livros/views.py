@@ -28,6 +28,7 @@ class LivroDetail(generic.DetailView):
     model = Livro
     template_name = 'livros/detail.html'
 
+
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data()
@@ -39,9 +40,9 @@ class LivroDetail(generic.DetailView):
             context['estante_livros'] = perfil.estante.estantelivro_set.filter(livro_adicionado=livro)
             context['livros_lidos_total'] = perfil.avalialido_set.all()
             context['livros_lidos'] = perfil.avalialido_set.filter(livro=livro)
-        return context
+            context['medialivros'] = media_cada_livro(self.request, pk=self.kwargs['pk'])
 
-    
+        return context
 
 
 
@@ -89,3 +90,15 @@ def apagar_livro_da_estante(request, livro, user):
         livro_para_apagar.delete()
 
     return redirect('usuarios:estante', user=request.user.perfil.id)
+
+
+def media_cada_livro(request, pk):
+
+    livroComNotas =  Livro.objects.get(pk=pk)
+    notas=livroComNotas.avalialido_set.all()
+    somaNotas=0
+    medialivros=0
+    for nota in notas:
+        somaNotas += nota.nota
+        medialivros=somaNotas/notas.count()
+    return medialivros

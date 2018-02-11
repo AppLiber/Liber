@@ -34,15 +34,18 @@
 				<div class="pane__section">
 					<p>
 						{{ livro.descricao }}
+
+
 					</p>
 				</div>
 				<div class="pane__section">
 					<i class="fa fa-globe fa-3x"></i>
-					<span class="distancy">{{media}} km de distância</span>
-						{{media}}
+					<span class="distancy"> km de distância</span>
+
 				</div>
-				{{media}}
+
 				<div class="pane__section clearfix">
+					<li href="{% url 'livros:medialivros' pk=livro.id %}">Média{{medialivros}}</li>
 					<fieldset class="rating">
 						<input type="radio" id="star5" name="rating" value="5" />
 						<label class="full" for="star5" title="Awesome - 5 stars"></label>
@@ -82,13 +85,6 @@
 	</div>
 
 {% endblock %}
-
-
-
-
-
-
-
 
 <h2> {{ livro }} </h2>
 <ul>
