@@ -18,5 +18,7 @@ urlpatterns = [
     path('<int:user>/estante', login_required(views.PerfilEstanteList.as_view()), name='estante'),
     path('<int:user>/estante/<int:livro>/apagar', apagar_livro_da_estante, name='apagar_livro' ),
     path('<int:user>/estante/<int:livro>/emprestimo', views.fazer_pedido_de_emprestimo, name='pedir_emprestado'),
+    path('<int:user>/avaliacaolivro',(views.LivrosAvaliados.as_view()), name='avaliacaolivro'),
+
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

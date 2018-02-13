@@ -68,13 +68,15 @@ class EstanteLivro(models.Model):
     data_adicionado = models.DateField(auto_now=True)
     status = models.CharField(max_length=1, choices=STATUS_LIVRO, blank=False , null=False, default='D')
 
+    def __str__(self):
+        return '{}-> {}'.format(self.estante, self.livro_adicionado)
 
 class AvaliaLido (models.Model):
 
     lido = models.BooleanField(default=False)
     perfil_avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE)
     livro = models.ForeignKey(Livro, on_delete=models.CASCADE)
-    nota = models.IntegerField(choices=NOTA_LIDO, null=True)
+    nota = models.IntegerField(choices=NOTA_LIDO, null=False, default=5)
 
     def __str__(self):
         return '{} {} {}'.format(self.livro, self.perfil_avaliador, self.nota)
@@ -94,7 +96,7 @@ class Emprestimo (models.Model):
     status_emprestimo = models.CharField(max_length=2, choices=STATUS_EMPRESTIMO, blank=False , null=False, default='EA')
 
     def __str__(self):
-        return self.perfil_do_dono.usuario.username
+        return'Dono >{}, para {},{}'.format(self.perfil_do_dono.usuario.username, self.perfil_solicitante, self.livro_emprestado)
 
 
 class AvaliaEmprestimo (models.Model):

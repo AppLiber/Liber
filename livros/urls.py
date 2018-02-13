@@ -20,4 +20,5 @@ urlpatterns = [
     path('<int:pk>/lido', marcar_livro_lido, name='livrolido'),
     path('<int:pk>/medialivros', views.media_cada_livro, name='medialivros'),
 
+
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

@@ -1,3 +1,4 @@
+from django.views.generic.base import TemplateView
 from django.shortcuts import render, redirect
 from django.views import generic
 from django.urls import reverse_lazy

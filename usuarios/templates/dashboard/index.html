@@ -16,10 +16,13 @@
                                                 <i class="fa fa-book"></i>
                                             </div>
                                         </div>
+
                                         <div class="col-xs-7">
                                             <div class="numbers">
-                                                <p>Lidos</p>
-                                                {{ livros_lidos_total.count }}
+                                                <a href="{% url 'usuarios:avaliacaolivro' perfil.id %}">
+                                                    <p>Lidos</p>
+                                                    {{ livros_lidos_total.count }}
+                                                </a>
                                             </div>
                                         </div>
                                     </div>

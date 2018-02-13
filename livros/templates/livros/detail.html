@@ -12,13 +12,12 @@
 			<div class="item-preview">
 				<div>
 
-					<!-- checkbox LIDO -->
-
 					{% if user.is_authenticated %}
 							{% if livros_lidos %}
 								<button type="button" class="btn btn-info" disabled>Já Lido</button>
 							{% else %}
-								<a type="button" class="button buy-button" href="{% url 'livros:livrolido' pk=livro.id %}">Lido</a>
+								<a type="button" class="button buy-button" href="{% url 'livros:livrolido' pk=livro.id %} {%livros.AvaliaLido.nota}" target="_blank">Lido</a>
+								<a class="button buy-button" href="{% url 'livros:adiciona' pk=livro.id %}">Adicionar a estante</a>
 							{% endif %}
 					{% endif %}
 
@@ -40,7 +39,7 @@
 				</div>
 				<div class="pane__section">
 					<i class="fa fa-globe fa-3x"></i>
-					<span class="distancy"> km de distância</span>
+					<span class="distancy">5 km de distância</span>
 
 				</div>
 

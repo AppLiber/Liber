@@ -7,10 +7,10 @@ from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 from livros.models import Livro
-from .models import Perfil, Estante, Emprestimo, AvaliaLido
 from .forms import CadastroForm
 
 
+from .models import Perfil, Estante, Emprestimo, AvaliaLido
 class UserCreate(generic.CreateView):
     template_name = 'perfil/new.html'
     form_class = CadastroForm
@@ -57,7 +57,6 @@ class UserDetail(generic.DetailView):
         livros_lidos_total = perfil.avalialido_set.all()
         context['livros_lidos_total'] = perfil.avalialido_set.all()
         context['var'] = paginas_lidas_total(self.request)
-        context['medialivros'] = media_cada_livro(self.request)
 
 
         """
@@ -142,6 +141,38 @@ def paginas_lidas_total(request):
 
     return var
 
+
+class LivrosAvaliados(generic.ListView):
+    model = AvaliaLido
+    template_name = 'dashboard/avaliacao_livro.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        context['estante_livros'] = perfil.estante.estantelivro_set.all()
+        return context
+
+    def get_object(self):
+    #    __import__('ipdb').set_trace()
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return AvaliaLido.objects.get(perfil_avaliador=usuario)
+
+
+    def Livros_Avaliados(request, pk):
+        perfil = request.user.perfil
+        livro = Livro.objects.get(pk=pk)
+        #livro_lido = perfil.avalialido_set.get(livro=livro).livro
+        livros_lidos = perfil.avalialido_set.all()
+    #    l = perfil.avalialido_set.get(livro=pk).livro
+        p = perfil.avalialido_set.filter(livro=livro)
+        #for livro_lido in livros_lidos:
+
+        #if(livro != livro_lido):
+        if (livro != p):
+            perfil.avalialido_set.create(perfil_avaliador=perfil, livro=livro, lido=True)
+
+        return livros_lidos
 
 
 # def adiciona_livro_na_estante(request):

@@ -51,11 +51,30 @@
 							</span>
 						</div>
 					</li>
+                    <li>
+                        <div class="">
+                            <a class="buy-button" href="perfil/">
+                                <i class="fa fa-user-circle-o">Usuarios</i>
+                                <br>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="">
+                            <a class="buy-button" href="livros">
+                                <i class="fa fa-book">Lista de livros</i>
+                                <br>
+                            </a>
+                        </div>
+                    </li>
+
+
           {% if user.is_authenticated %}
-					<li class="nav-item">
-						<a href="#" class="nav-link">
-							<i class="nc-icon nc-bell-55"></i>Estante</a>
-					</li>
+                        <a href="">
+                            <i class="ti-book"></i>
+                            <p>Minha Estante</p>
+                        </a>
+
           {% endif %}
           {% if user.is_anonymous %}
 					<li class="nav-item">
