@@ -34,4 +34,4 @@ class Livro(models.Model):
     categorias = models.ManyToManyField(Categoria)
 
     def __str__(self):
-        return self.titulo
+        return '{}-> {}'.format(self.titulo, self.categorias.all())

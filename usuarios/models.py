@@ -73,7 +73,7 @@ class EstanteLivro(models.Model):
 
 class AvaliaLido (models.Model):
 
-    lido = models.BooleanField(default=False)
+    lido = models.BooleanField(default=True)
     perfil_avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE)
     livro = models.ForeignKey(Livro, on_delete=models.CASCADE)
     nota = models.IntegerField(choices=NOTA_LIDO, null=False, default=5)
