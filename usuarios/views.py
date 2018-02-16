@@ -376,10 +376,25 @@ def sugestoes(request):
 
 
         for sugere in lista_todos:
-            for sug in sugere[:3]:
+            for sug in sugere[:10]:
                 lista_final.append(sug)
 
-        return lista_final
+        livrosLidos=perfil.avalialido_set.all()
+
+        listafinalfinal=[]
+        for y in livrosLidos:
+            for x in lista_final:
+                if x.titulo == y.livro.titulo:
+                    lista_final.remove(x)
+
+        listaExclui=lista_final
+
+        for y in lista_final:
+            for x in listaExclui:
+                if x.titulo == y.titulo:
+                    listaExclui.remove(y)
+
+        return listaExclui
 
 
         return render(request, 'sugestao.html', {"lista_sugere3": lista})
