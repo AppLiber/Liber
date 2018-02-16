@@ -83,11 +83,19 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        {{livrossugerido1}}
-                                        <img class="img-responsive" src='https://d.gr-assets.com/books/1348927776l/8032112.jpg' onclick="window.location.href= 'book-details.html' "
-                                        />
-                                        <img class="img-responsive" src='http://ecx.images-amazon.com/images/I/51oXKWrcYYL.jpg' onclick="window.location.href= 'book-details.html' "
-                                        />
+                                        {% if sugestao %}
+                                          <ul>
+                                            {% for livross in sugestao %}
+                                            <li><a href= "{% url 'livros:livros_detail' pk=livross.id %}" >{{ livross.titulo }}, de {{livross.autores.first}}</a></li>
+                                                {%for cat in livross.categorias.all%}
+                                                    {{cat}},
+                                                {% endfor %}
+                                            {% endfor %}
+                                          </ul>
+                                        {% else %}
+                                          <p>Não tem livro registrado</p>
+                                        {% endif %}
+
                                     </div>
                                     <div class="modal-footer">
                                         <div class="divider"></div>

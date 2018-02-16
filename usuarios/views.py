@@ -61,6 +61,7 @@ class UserDetail(generic.DetailView):
         livros_lidos_total = perfil.avalialido_set.all()
         context['livros_lidos_total'] = perfil.avalialido_set.all()
         context['var'] = paginas_lidas_total(self.request)
+        context['sugestao'] = sugestoes(self.request)
 #        context['sugestao'] = perfil_de_sugestao(self.request)
 
 
@@ -155,7 +156,7 @@ def sugestoes(request):
     a=1
     if a > 0:
 
-        if preferidas.filter(descricao__icontains='espo'):
+        if preferidas.filter(descricao__icontains='espor'):
             esportepref=50
         else:
             esportepref=0
@@ -230,7 +231,7 @@ def sugestoes(request):
         somaNota=0
 
         for nota in esporte:
-            somaNota= nota.nota
+            somaNota+= nota.nota
             media=somaNota/esporte.count()
             esporte_nota=media*5
 
@@ -244,7 +245,7 @@ def sugestoes(request):
         for nota in drama :
             somaNota=0
             media=0
-            somaNota= nota.nota
+            somaNota+= nota.nota
             media=somaNota/drama.count()
             drama_nota=media*5
 
@@ -252,7 +253,7 @@ def sugestoes(request):
         for nota in humor:
             somaNota=0
             media=0
-            somaNota= nota.nota
+            somaNota+= nota.nota
             media=somaNota/humor.count()
             humor_nota=media*5
 
@@ -260,7 +261,7 @@ def sugestoes(request):
         for nota in autoajuda:
             somaNota=0
             media=0
-            somaNota= nota.nota
+            somaNota+= nota.nota
             media=somaNota/autoajuda.count()
             autoajuda_nota=media*5
 
@@ -268,7 +269,7 @@ def sugestoes(request):
         for nota in religioso:
             somaNota=0
             media=0
-            somaNota= nota.nota
+            somaNota+= nota.nota
             media=somaNota/religioso.count()
             religioso_nota=media*5
 
@@ -276,7 +277,7 @@ def sugestoes(request):
         for nota in culinaria:
             somaNota=0
             media=0
-            somaNota= nota.nota
+            somaNota+= nota.nota
             media=somaNota/culinaria.count()
             culinaria_nota=media*5
 
@@ -284,28 +285,28 @@ def sugestoes(request):
         for nota in bibliografia:
             somaNota=0
             media=0
-            somaNota= nota.nota
+            somaNota+= nota.nota
             media=somaNota/bibliografia.count()
             bibliografia_nota=media*5
 
         for nota in ficcao:
             somaNota=0
             media=0
-            somaNota= nota.nota
+            somaNota+= nota.nota
             media=somaNota/ficcao.count()
             ficcao_nota=media*5
 
         for nota in fantasia:
             somaNota=0
             media=0
-            somaNota= nota.nota
+            somaNota+= nota.nota
             media=somaNota/fantasia.count()
             fantasia_nota=media*5
 
         for nota in terror:
             somaNota=0
             media=0
-            somaNota= nota.nota
+            somaNota+= nota.nota
             media=somaNota/terror.count()
             terror_nota=media*5
 
@@ -337,6 +338,7 @@ def sugestoes(request):
         listaSugestao=[esporteTotal, romanceTotal, dramaTotal, humorTotal,autoajudaTotal, religiosoTotal, culinariaTotal, bibliografiaTotal, ficcaoTotal, fantasiaTotal, terrorTotal]
         listaSugestao.sort()  #ordenando do menor pro maior
         listaSugestao.reverse()   #invertendo a lista . Agora está do maior pro menor
+
 
 
         for x in range(11): #organizando a lista
@@ -374,10 +376,10 @@ def sugestoes(request):
 
         lista_final = []
 
-
         for sugere in lista_todos:
-            for sug in sugere[:10]:
-                lista_final.append(sug)
+            for sug in sugere[:3]:
+                if sug not in lista_final:
+                    lista_final.append(sug)
 
         livrosLidos=perfil.avalialido_set.all()
 
@@ -387,14 +389,7 @@ def sugestoes(request):
                 if x.titulo == y.livro.titulo:
                     lista_final.remove(x)
 
-        listaExclui=lista_final
-
-        for y in lista_final:
-            for x in listaExclui:
-                if x.titulo == y.titulo:
-                    listaExclui.remove(y)
-
-        return listaExclui
+        return lista_final[:3]
 
 
         return render(request, 'sugestao.html', {"lista_sugere3": lista})
