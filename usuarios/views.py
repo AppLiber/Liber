@@ -384,7 +384,7 @@ def sugestoes(request):
         lista_final = []
 
         for sugere in lista_todos:
-                for sug in sugere
+                for sug in sugere:
                     if sug not in lista_final:
                         lista_final.append(sug)
 
@@ -396,7 +396,7 @@ def sugestoes(request):
                 if x.livro.titulo == y.livro.titulo:
                     lista_final.remove(x)
 
-        return lista_final[:2]
+        return lista_final
 
 
 
