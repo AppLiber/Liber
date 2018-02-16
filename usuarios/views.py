@@ -233,13 +233,15 @@ def sugestoes(request):
         for nota in esporte:
             somaNota+= nota.nota
             media=somaNota/esporte.count()
-            esporte_nota=media*5
+            qtd= 5*esporte.count()
+            esporte_nota=media*5+qtd
 
         for nota in romance:
             somaNota=0
             media=0
             somaNota= nota.nota
             media=somaNota/romance.count()
+            qtd= 5*romance.count()
             romance_nota=media*5
 
         for nota in drama :
@@ -247,39 +249,40 @@ def sugestoes(request):
             media=0
             somaNota+= nota.nota
             media=somaNota/drama.count()
-            drama_nota=media*5
-
+            qtd= 5*drama.count()
+            drama_nota=media*5+qtd
 
         for nota in humor:
             somaNota=0
             media=0
             somaNota+= nota.nota
             media=somaNota/humor.count()
-            humor_nota=media*5
-
+            qtd= 5*humor.count()
+            humor_nota=media*5+qtd
 
         for nota in autoajuda:
             somaNota=0
             media=0
             somaNota+= nota.nota
             media=somaNota/autoajuda.count()
-            autoajuda_nota=media*5
-
+            qtd= 5*autoajuda.count()
+            autoajuda_nota=media*5+qtd
 
         for nota in religioso:
             somaNota=0
             media=0
             somaNota+= nota.nota
             media=somaNota/religioso.count()
-            religioso_nota=media*5
-
+            qtd= 5*religioso.count()
+            religioso_nota=media*5+qtd
 
         for nota in culinaria:
             somaNota=0
             media=0
             somaNota+= nota.nota
             media=somaNota/culinaria.count()
-            culinaria_nota=media*5
+            qtd= 5*culinaria.count()
+            culinaria_nota=media*5+qtd
 
 
         for nota in bibliografia:
@@ -287,28 +290,32 @@ def sugestoes(request):
             media=0
             somaNota+= nota.nota
             media=somaNota/bibliografia.count()
-            bibliografia_nota=media*5
+            qtd= 5*bibliografia.count()
+            bibliografia_nota=media*5+qtd
 
         for nota in ficcao:
             somaNota=0
             media=0
             somaNota+= nota.nota
             media=somaNota/ficcao.count()
-            ficcao_nota=media*5
+            qtd= 5*ficcao.count()
+            ficcao_nota=media*5+qtd
 
         for nota in fantasia:
             somaNota=0
             media=0
             somaNota+= nota.nota
             media=somaNota/fantasia.count()
-            fantasia_nota=media*5
+            qtd= 5*fantasia.count()
+            fantasia_nota=media*5+qtd
 
         for nota in terror:
             somaNota=0
             media=0
             somaNota+= nota.nota
             media=somaNota/terror.count()
-            terror_nota=media*5
+            qtd= 5*terror.count()
+            terror_nota=media*5+qtd
 
     # Calculando o total de cada categoria..  preferidas+avaliadas
         esporteTotal=0
@@ -366,30 +373,32 @@ def sugestoes(request):
                 listaSugestao[x]='terror'
 
 
-        livrossugerido1=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[0])#está retornando uma queryset
-        livrossugerido2=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[1])#tente pegar os livros e mostrar no template
-        livrossugerido3=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[2])
-        livrossugerido4=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[3])
-        livrossugerido5=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[4])
+        livrossugerido1=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[0])#está retornando uma queryset
+        livrossugerido2=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[1])#tente pegar os livros e mostrar no template
+        livrossugerido3=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[2])
+        livrossugerido4=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[3])
+        livrossugerido5=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[4])
 
-        lista_todos =[livrossugerido1, livrossugerido2, livrossugerido3, livrossugerido4, livrossugerido5]
+        lista_todos =[livrossugerido1.order_by('-nota'), livrossugerido2.order_by('-nota'), livrossugerido3.order_by('-nota'), livrossugerido4.order_by('-nota'), livrossugerido5.order_by('-nota')]
 
         lista_final = []
 
         for sugere in lista_todos:
-            for sug in sugere[:3]:
-                if sug not in lista_final:
-                    lista_final.append(sug)
+                for sug in sugere
+                    if sug not in lista_final:
+                        lista_final.append(sug)
 
         livrosLidos=perfil.avalialido_set.all()
 
         listafinalfinal=[]
         for y in livrosLidos:
             for x in lista_final:
-                if x.titulo == y.livro.titulo:
+                if x.livro.titulo == y.livro.titulo:
                     lista_final.remove(x)
 
-        return lista_final[:3]
+        return lista_final[:2]
+
+
 
 
         return render(request, 'sugestao.html', {"lista_sugere3": lista})

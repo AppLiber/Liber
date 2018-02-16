@@ -1,7 +1,10 @@
 {% if sugestao %}
   <ul>
     {% for livross in sugestao %}
-    <li>{{ livross }}</li>
+    <li><a href= "{% url 'livros:livros_detail' pk=livross.id %}" >{{ livross.livro.titulo }} - {{ livross.livro.autores.first}} </a></li>
+        {%for cat in livross.livro.categorias.all%}
+            {{cat}},
+        {% endfor %}
     {% endfor %}
   </ul>
 {% else %}

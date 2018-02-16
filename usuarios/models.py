@@ -22,6 +22,12 @@ NOTA_LIDO = (
     (10, 10),
 )
 
+STATUS_EMPRESTIMO = (
+    ('EA', 'Em andamento'),
+    ('OK', 'Concluído'),
+    ('C', 'Cancelado')
+)
+
 
 class Perfil(models.Model):
 
@@ -81,11 +87,6 @@ class AvaliaLido (models.Model):
     def __str__(self):
         return '{} {} {}'.format(self.livro, self.perfil_avaliador, self.nota)
 
-STATUS_EMPRESTIMO = (
-    ('EA', 'Em andamento'),
-    ('OK', 'Concluído'),
-    ('C', 'Cancelado')
-)
 
 class Emprestimo (models.Model):
     perfil_do_dono = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name="solicitado")

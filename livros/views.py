@@ -104,4 +104,5 @@ def media_cada_livro(request, pk):
     for nota in notas:
         somaNotas += nota.nota
         medialivros=somaNotas/notas.count()
+
     return medialivros

@@ -69,19 +69,20 @@
                     </li>
 
 
-          {% if user.is_authenticated %}
+            {% if user.is_authenticated %}
                         <a href="">
                             <i class="ti-book"></i>
-                            <p>Minha Estante</p>
+                            <p></p>
                         </a>
+            {%else %}
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="nav-link">
+                            <i class="nc-icon nc-circle-10"></i>Entrar</a>
+                    </li>
 
-          {% endif %}
-          {% if user.is_anonymous %}
-					<li class="nav-item">
-						<a href="{% url 'login' %}" target="_blank" class="nav-link">
-							<i class="nc-icon nc-circle-10"></i>Entrar</a>
-					</li>
-          {% endif %}
+            {% endif %}
+
+
 				</ul>
 			</div>
 		</div>
