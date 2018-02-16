@@ -19,7 +19,7 @@ urlpatterns = [
     path('<int:user>/estante/<int:livro>/apagar', apagar_livro_da_estante, name='apagar_livro' ),
     path('<int:user>/estante/<int:livro>/emprestimo', views.fazer_pedido_de_emprestimo, name='pedir_emprestado'),
     path('<int:user>/avaliacaolivro',(views.LivrosAvaliados.as_view()), name='avaliacaolivro'),
-    path('<int:user>/sugestao', views.perfil_de_sugestao, name='sugestao' ),
+    path('<int:user>/sugestao', views.SugestaoLivro.as_view(), name='sugestao' ),
 
 
 

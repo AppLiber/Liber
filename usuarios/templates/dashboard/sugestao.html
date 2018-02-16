@@ -1,0 +1,9 @@
+{% if sugestao %}
+  <ul>
+    {% for livross in sugestao %}
+    <li>{{ livross.titulo }}</li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Não tem livro registrado</p>
+{% endif %}

@@ -16,8 +16,7 @@
 							{% if livros_lidos %}
 								<button type="button" class="btn btn-info" disabled>Já Lido</button>
 							{% else %}
-								<a type="button" class="button buy-button" href="{% url 'livros:livrolido' pk=livro.id %} {%livros.AvaliaLido.nota}" target="_blank">Lido</a>
-								<a class="button buy-button" href="{% url 'livros:adiciona' pk=livro.id %}">Adicionar a estante</a>
+								<a type="button" class="button buy-button" href="{% url 'livros:livrolido' pk=livro.id %}">Lido</a>
 							{% endif %}
 					{% endif %}
 

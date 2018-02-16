@@ -42,6 +42,9 @@ class LivroDetail(generic.DetailView):
             context['livros_lidos'] = perfil.avalialido_set.filter(livro=livro)
             context['medialivros'] = media_cada_livro(self.request, pk=self.kwargs['pk'])
 
+
+
+
         return context
 
 

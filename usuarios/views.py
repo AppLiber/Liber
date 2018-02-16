@@ -5,6 +5,10 @@ from django.shortcuts import redirect
 from django.contrib.auth import logout
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render_to_response
+from django.http import HttpResponse
+from django.shortcuts import render
+
 
 from livros.models import Livro
 from .forms import CadastroForm
@@ -47,7 +51,7 @@ class UserIndex(generic.ListView):
 
 class UserDetail(generic.DetailView):
     model = Perfil
-    template_name = 'dashboard/index.html', 'dashboard/base_dashboard.html'
+    template_name = 'dashboard/index.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -57,7 +61,7 @@ class UserDetail(generic.DetailView):
         livros_lidos_total = perfil.avalialido_set.all()
         context['livros_lidos_total'] = perfil.avalialido_set.all()
         context['var'] = paginas_lidas_total(self.request)
-        context['sugestao'] = perfil_de_sugestao(self.request)
+#        context['sugestao'] = perfil_de_sugestao(self.request)
 
 
 
@@ -143,200 +147,242 @@ def paginas_lidas_total(request):
 
     return var
 
-def perfil_de_sugestao(request):
+
+def sugestoes(request):
     perfil = request.user.perfil
 
-
     preferidas = perfil.categorias_preferidas.all()
+    a=1
+    if a > 0:
 
-    if preferidas.filter(descricao__icontains='espo'):
-        esportepref=50
-    if preferidas.filter(descricao__icontains='roma'):
-        romancepref=50
-    if preferidas.filter(descricao__icontains='dra'):
-        dramapref=50
-    if preferidas.filter(descricao__icontains='hum'):
-        humorepref=50
-    if preferidas.filter(descricao__icontains='ajud'):
-        autoajudapref=50
-    if preferidas.filter(descricao__icontains='reli'):
-        religiosoepref=50
-    if preferidas.filter(descricao__icontains='cul'):
-        culinariapref=50
-    if preferidas.filter(descricao__icontains='bib'):
-        bibliografiapref=50
-    if preferidas.filter(descricao__icontains='fic'):
-        ficcaopref=50
-    if preferidas.filter(descricao__icontains='fant'):
-        fantasiapref=50
-    if preferidas.filter(descricao__icontains='ter'):
-        terrorpref=50
+        if preferidas.filter(descricao__icontains='espo'):
+            esportepref=50
+        else:
+            esportepref=0
+        if preferidas.filter(descricao__icontains='roma'):
+            romancepref=50
+        else:
+            romancepref=0
+        if preferidas.filter(descricao__icontains='dra'):
+            dramapref=50
+        else:
+            dramapref=0
+        if preferidas.filter(descricao__icontains='hum'):
+            humorepref=50
+        else:
+            humorepref=0
+        if preferidas.filter(descricao__icontains='ajud'):
+            autoajudapref=50
+        else:
+            autoajudapref=0
+        if preferidas.filter(descricao__icontains='reli'):
+            religiosoepref=50
+        else:
+            religiosoepref=0
+        if preferidas.filter(descricao__icontains='cul'):
+            culinariapref=50
+        else:
+            culinariapref=0
+        if preferidas.filter(descricao__icontains='bib'):
+            bibliografiapref=50
+        else:
+            bibliografiapref=0
+        if preferidas.filter(descricao__icontains='fic'):
+            ficcaopref=50
+        else:
+            ficcaopref=0
+        if preferidas.filter(descricao__icontains='fant'):
+            fantasiapref=50
+        else:
+            fantasiapref=0
+        if preferidas.filter(descricao__icontains='ter'):
+            terrorpref=50
+        else:
+            terrorpref=0
+
+        esporte=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='espo')
+        romance=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='roma')
+        drama=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='dra')
+        humor=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='hum')
+        autoajuda=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='ajud')
+        religioso=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='reli')
+        culinaria=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='cul')
+        bibliografia=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='bib')
+        ficcao=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='fic')
+        fantasia=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='fant')
+        terror=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='ter')
+
+        esporte_nota=0
+        romance_nota=0
+        drama_nota=0
+        humor_nota=0
+        autoajuda_nota=0
+        religioso_nota=0
+        culinaria_nota=0
+        bibliografia_nota=0
+        ficcao_nota=0
+        fantasia_nota=0
+        terror_nota=0
 
 
-    esporte=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='espo')
-    romance=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='roma')
-    drama=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='dra')
-    humor=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='hum')
-    autoajuda=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='ajud')
-    religioso=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='reli')
-    culinaria=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='cul')
-    bibliografia=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='bib')
-    ficcao=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='fic')
-    fantasia=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='fant')
-    terror=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='ter')
+    #média das avaliações de cada categoria avaliada
 
-
-#média das avaliações de cada categoria avaliada
-    somaNota=0
-    for nota in esporte:
         somaNota=0
-        media=0
-        somaNota= nota.nota
-        media=somaNota/esporte.count()
-        esporte_nota=media*5
-    return esporte_nota
 
-    for nota in romance:
-        somaNota=0
-        media=0
-        somaNota= nota.nota
-        media=somaNota/romance.count()
-        romance_nota=media*5
-    return romance_nota
+        for nota in esporte:
+            somaNota= nota.nota
+            media=somaNota/esporte.count()
+            esporte_nota=media*5
 
-    for nota in drama :
-        somaNota=0
-        media=0
-        somaNota= nota.nota
-        media=somaNota/drama.count()
-        drama_nota=media*5
-    return drama_nota
+        for nota in romance:
+            somaNota=0
+            media=0
+            somaNota= nota.nota
+            media=somaNota/romance.count()
+            romance_nota=media*5
 
-    for nota in humor:
-        somaNota=0
-        media=0
-        somaNota= nota.nota
-        media=somaNota/humor.count()
-        humor_nota=media*5
-    return humor_nota
+        for nota in drama :
+            somaNota=0
+            media=0
+            somaNota= nota.nota
+            media=somaNota/drama.count()
+            drama_nota=media*5
 
-    for nota in autoajuda:
-        somaNota=0
-        media=0
-        somaNota= nota.nota
-        media=somaNota/autoajuda.count()
-        autoajuda_nota=media*5
-    return autoajuda_nota
 
-    for nota in religioso:
-        somaNota=0
-        media=0
-        somaNota= nota.nota
-        media=somaNota/religioso.count()
-        religioso_nota=media*5
-    return religioso_nota
+        for nota in humor:
+            somaNota=0
+            media=0
+            somaNota= nota.nota
+            media=somaNota/humor.count()
+            humor_nota=media*5
 
-    for nota in culinaria:
-        somaNota=0
-        media=0
-        somaNota= nota.nota
-        media=somaNota/culinaria.count()
-        culinaria_nota=media*5
-    return culinaria_nota
 
-    for nota in bibliografia:
-        somaNota=0
-        media=0
-        somaNota= nota.nota
-        media=somaNota/bibliografia.count()
-        bibliografia_nota=media*5
-    return bibliografia_nota
+        for nota in autoajuda:
+            somaNota=0
+            media=0
+            somaNota= nota.nota
+            media=somaNota/autoajuda.count()
+            autoajuda_nota=media*5
 
-    for nota in ficcao:
-        somaNota=0
-        media=0
-        somaNota= nota.nota
-        media=somaNota/ficcao.count()
-        ficcao_nota=media*5
-    return ficcao_nota
 
-    for nota in fantasia:
-        somaNota=0
-        media=0
-        somaNota= nota.nota
-        media=somaNota/fantasia.count()
-        fantasia_nota=media*5
-    return fantasia_nota
+        for nota in religioso:
+            somaNota=0
+            media=0
+            somaNota= nota.nota
+            media=somaNota/religioso.count()
+            religioso_nota=media*5
 
-    for nota in terror:
-        somaNota=0
-        media=0
-        somaNota= nota.nota
-        media=somaNota/terror.count()
-        terror_nota=media*5
-    return terror_nota
 
-# Calculando o total de cada categoria..  preferidas+avaliadas
-    esporteTotal=0
-    romaceTotal=0
-    dramaTotal=0
-    humorTotal=0
-    autoajudaTotal=0
-    religiosoTotal=0
-    culinariaTotal=0
-    bibliografiaTotal=0
-    ficcaoTotal=0
-    fantasiaTotal=0
-    terrorTotal=0
+        for nota in culinaria:
+            somaNota=0
+            media=0
+            somaNota= nota.nota
+            media=somaNota/culinaria.count()
+            culinaria_nota=media*5
 
-    esporteTotal=esportepref+esporte_nota
-    romaceTotal=romancepref+romance_nota
-    dramaTotal=dramapref+drama_nota
-    humorTotal=humorepref+humor_nota
-    autoajudaTotal=autoajudapref+autoajuda_nota
-    religiosoTotal=religiosoepref+religioso_nota
-    culinariaTotal=culinariapref+culinaria_nota
-    bibliografiaTotal=bibliografiapref+bibliografia_nota
-    ficcaoTotal=ficcaopref+ficcao_nota
-    fantasiaTotal=fantasiapref+fantasia_nota
-    terrorTotal=terrorpref+terror_nota
 
-    listaSugestao=[esporteTotal, romaceTotal, dramaTotal, humorTotal,autoajudaTotal, religiosoTotal, culinariaTotal, bibliografiaTotal, ficcaoTotal, fantasiaTotal, terrorTotal]
-    listaSugestao.sort()  #ordenando do menor pro maior
-    listaSugestao.reverse()   #invertendo a lista . Agora está do maior pro menor
+        for nota in bibliografia:
+            somaNota=0
+            media=0
+            somaNota= nota.nota
+            media=somaNota/bibliografia.count()
+            bibliografia_nota=media*5
 
-    for x in range(11): #organizando a lista
-        if esporte_nota == listaSugestao[x]:
-            lista[x]='esporte'
-        if romance_nota == listaSugestao[x]:
-            lista[x]='romance'
-        if drama_nota == listaSugestao[x]:
-            lista[x]='drama'
-        if humor_nota == listaSugestao[x]:
-            lista[x]='humor'
-        if autoajuda_nota == listaSugestao[x]:
-            lista[x]='autoajuda'
-        if religioso_nota == listaSugestao[x]:
-            lista[x]='religioso'
-        if culinaria_nota == listaSugestao[x]:
-            lista[x]='culinaria'
-        if bibliografia_nota == listaSugestao[x]:
-            lista[x]='bibliografia'
-        if ficcao_nota == listaSugestao[x]:
-            lista[x]='ficcao'
-        if fantasia_nota == listaSugestao[x]:
-            lista[x]='fantasia'
-        if terror_nota == listaSugestao[x]:
-            lista[x]='terror'
+        for nota in ficcao:
+            somaNota=0
+            media=0
+            somaNota= nota.nota
+            media=somaNota/ficcao.count()
+            ficcao_nota=media*5
 
-    return listaSugestao  #Aqui já é as categorias ordenadas da maior nota para a menor
+        for nota in fantasia:
+            somaNota=0
+            media=0
+            somaNota= nota.nota
+            media=somaNota/fantasia.count()
+            fantasia_nota=media*5
 
-    livrossugerido1=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[0])#está retornando uma queryset
-    livrossugerido2=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[1])#tente pegar os livros e mostrar no template
-    livrossugerido3=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[2])
-    livrossugerido4=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[3])
-    livrossugerido5=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[4])
+        for nota in terror:
+            somaNota=0
+            media=0
+            somaNota= nota.nota
+            media=somaNota/terror.count()
+            terror_nota=media*5
 
+    # Calculando o total de cada categoria..  preferidas+avaliadas
+        esporteTotal=0
+        romanceTotal=0
+        dramaTotal=0
+        humorTotal=0
+        autoajudaTotal=0
+        religiosoTotal=0
+        culinariaTotal=0
+        bibliografiaTotal=0
+        ficcaoTotal=0
+        fantasiaTotal=0
+        terrorTotal=0
+
+        esporteTotal=esportepref+esporte_nota
+        romanceTotal=romancepref+romance_nota
+        dramaTotal=dramapref+drama_nota
+        humorTotal=humorepref+humor_nota
+        autoajudaTotal=autoajudapref+autoajuda_nota
+        religiosoTotal=religiosoepref+religioso_nota
+        culinariaTotal=culinariapref+culinaria_nota
+        bibliografiaTotal=bibliografiapref+bibliografia_nota
+        ficcaoTotal=ficcaopref+ficcao_nota
+        fantasiaTotal=fantasiapref+fantasia_nota
+        terrorTotal=terrorpref+terror_nota
+
+        listaSugestao=[esporteTotal, romanceTotal, dramaTotal, humorTotal,autoajudaTotal, religiosoTotal, culinariaTotal, bibliografiaTotal, ficcaoTotal, fantasiaTotal, terrorTotal]
+        listaSugestao.sort()  #ordenando do menor pro maior
+        listaSugestao.reverse()   #invertendo a lista . Agora está do maior pro menor
+
+
+        for x in range(11): #organizando a lista
+            if esporteTotal == listaSugestao[x]:
+                listaSugestao[x]='esporte'
+            if romanceTotal == listaSugestao[x]:
+                listaSugestao[x]='romance'
+            if dramaTotal == listaSugestao[x]:
+                listaSugestao[x]='drama'
+            if humorTotal == listaSugestao[x]:
+                listaSugestao[x]='humor'
+            if autoajudaTotal== listaSugestao[x]:
+                listaSugestao[x]='autoajuda'
+            if religiosoTotal == listaSugestao[x]:
+                listaSugestao[x]='religioso'
+            if culinariaTotal == listaSugestao[x]:
+                listaSugestao[x]='culinaria'
+            if bibliografiaTotal == listaSugestao[x]:
+                listaSugestao[x]='bibliografia'
+            if ficcaoTotal == listaSugestao[x]:
+                listaSugestao[x]='ficcao'
+            if fantasiaTotal == listaSugestao[x]:
+                listaSugestao[x]='fantasia'
+            if terrorTotal == listaSugestao[x]:
+                listaSugestao[x]='terror'
+
+
+        livrossugerido1=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[0])#está retornando uma queryset
+        livrossugerido2=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[1])#tente pegar os livros e mostrar no template
+        livrossugerido3=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[2])
+        livrossugerido4=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[3])
+        livrossugerido5=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[4])
+
+        lista_todos =[livrossugerido1, livrossugerido2, livrossugerido3, livrossugerido4, livrossugerido5]
+
+        lista_final = []
+
+
+        for sugere in lista_todos:
+            for sug in sugere[:3]:
+                lista_final.append(sug)
+
+        return lista_final
+
+
+        return render(request, 'sugestao.html', {"lista_sugere3": lista})
 
 
 class LivrosAvaliados(generic.ListView):
@@ -380,3 +426,35 @@ class LivrosAvaliados(generic.ListView):
 #
 #
 #     Estante.livros.all()
+
+class SugestaoLivro(generic.ListView):
+
+    context_object_name = 'lista_sugere3'
+    template_name = 'dashboard/sugestao.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        context['sugestao'] = sugestoes(self.request)
+        #__import__('ipdb').set_trace()
+
+        return context
+
+    def get_object(self):
+    #    __import__('ipdb').set_trace()
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return AvaliaLido.objects.get(perfil_avaliador=usuario)
+
+    def get_queryset(self):
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return AvaliaLido.objects.filter(perfil_avaliador=usuario)
+"""
+def livro3(request):
+    perfil=request.user.perfil
+    sugestao=sugestoes(request)
+    lista3=[]
+    for i in range(len(sugestao)):
+        lista3.append(sugestao[i].titulo)
+    return lista3
+"""
