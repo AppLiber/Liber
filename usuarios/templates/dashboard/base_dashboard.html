@@ -83,9 +83,10 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        {% if sugestao %}
+                                      
+                                        {% if teste1 %}
                                           <ul>
-                                            {% for livross in sugestao %}
+                                            {% for livross in teste1 %}
                                             <li><a href= "{% url 'livros:livros_detail' pk=livross.id %}" >{{ livross.titulo }}, de {{livross.autores.first}}</a></li>
                                                 {%for cat in livross.categorias.all%}
                                                     {{cat}},
@@ -101,7 +102,7 @@
                                         <div class="divider"></div>
                                         <div class="right-side">
                                             <button type="button" class="btn btn-danger btn-link">Mais sugestões</button>
-                                        </  div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -1,9 +1,12 @@
-{% if sugestao %}
+{% if teste1 %}
   <ul>
-    {% for livross in sugestao %}
-    <li>{{ livross }}</li>
+    {% for livross in teste1 %}
+    <li>{{ livross.titulo }}</li>
     {% endfor %}
   </ul>
 {% else %}
   <p>Não tem livro registrado</p>
 {% endif %}
+
+
+{{ teste }}

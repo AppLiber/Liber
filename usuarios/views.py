@@ -10,7 +10,7 @@ from django.http import HttpResponse
 from django.shortcuts import render
 
 
-from livros.models import Livro
+from livros.models import Livro, Categoria
 from .forms import CadastroForm
 
 
@@ -30,8 +30,6 @@ class UserCreate(generic.CreateView):
         user.save()
         user.perfil.estante = Estante.objects.create(perfil_dono = user.perfil)
         user.save()
-    #    user.perfil.avalialido_set = AvaliaLido.objects.create(perfil_avaliador = user.perfil)
-    #    user.save()
 
         return redirect(reverse_lazy('livros_index'))
 """
@@ -61,24 +59,7 @@ class UserDetail(generic.DetailView):
         livros_lidos_total = perfil.avalialido_set.all()
         context['livros_lidos_total'] = perfil.avalialido_set.all()
         context['var'] = paginas_lidas_total(self.request)
-        context['sugestao'] = sugestoes(self.request)
-#        context['sugestao'] = perfil_de_sugestao(self.request)
-
-
-
-        """
-        #livros_lidos = perfil.avalialido_set.all()
-        quantidade_livros_lidos = livros_lidos_total.count()
-
-        #livro1 = perfil.avalialido_set.first()
-        #livro1.livro.paginas
-        var = 0
-        for livro_lido in livros_lidos_total:
-            var += livro_lido.livro.paginas
-            return var;
-
-        var
-        """
+        context['sugestao'] = sugestoes_por_media_dos_livros(self.request)
 
         return context
 
@@ -120,13 +101,9 @@ def fazer_pedido_de_emprestimo(request, user, livro):
 def marcar_livro_lido(request, pk):
     perfil = request.user.perfil
     livro = Livro.objects.get(pk=pk)
-    #livro_lido = perfil.avalialido_set.get(livro=livro).livro
     livros_lidos = perfil.avalialido_set.all()
-#    l = perfil.avalialido_set.get(livro=pk).livro
     p = perfil.avalialido_set.filter(livro=livro)
-    #for livro_lido in livros_lidos:
 
-    #if(livro != livro_lido):
     if (livro != p):
         perfil.avalialido_set.create(perfil_avaliador=perfil, livro=livro, lido=True)
 
@@ -135,12 +112,9 @@ def marcar_livro_lido(request, pk):
 
 def paginas_lidas_total(request):
     perfil = request.user.perfil
-    #livro = Livro.objects.get(pk=livro)
     livros_lidos = perfil.avalialido_set.all()
     quantidade_livros_lidos = livros_lidos.count()
 
-    #livro1 = perfil.avalialido_set.first()
-    #livro1.livro.paginas
     var = 0
 
     for livro_lido in livros_lidos:
@@ -148,251 +122,49 @@ def paginas_lidas_total(request):
 
     return var
 
+def avaliacao_de_livros_por_categoria(request):
 
-def sugestoes(request):
     perfil = request.user.perfil
-
-    preferidas = perfil.categorias_preferidas.all()
-    a=1
-    if a > 0:
-
-        if preferidas.filter(descricao__icontains='espor'):
-            esportepref=50
-        else:
-            esportepref=0
-        if preferidas.filter(descricao__icontains='roma'):
-            romancepref=50
-        else:
-            romancepref=0
-        if preferidas.filter(descricao__icontains='dra'):
-            dramapref=50
-        else:
-            dramapref=0
-        if preferidas.filter(descricao__icontains='hum'):
-            humorepref=50
-        else:
-            humorepref=0
-        if preferidas.filter(descricao__icontains='ajud'):
-            autoajudapref=50
-        else:
-            autoajudapref=0
-        if preferidas.filter(descricao__icontains='reli'):
-            religiosoepref=50
-        else:
-            religiosoepref=0
-        if preferidas.filter(descricao__icontains='cul'):
-            culinariapref=50
-        else:
-            culinariapref=0
-        if preferidas.filter(descricao__icontains='bib'):
-            bibliografiapref=50
-        else:
-            bibliografiapref=0
-        if preferidas.filter(descricao__icontains='fic'):
-            ficcaopref=50
-        else:
-            ficcaopref=0
-        if preferidas.filter(descricao__icontains='fant'):
-            fantasiapref=50
-        else:
-            fantasiapref=0
-        if preferidas.filter(descricao__icontains='ter'):
-            terrorpref=50
-        else:
-            terrorpref=0
-
-        esporte=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='espo')
-        romance=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='roma')
-        drama=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='dra')
-        humor=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='hum')
-        autoajuda=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='ajud')
-        religioso=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='reli')
-        culinaria=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='cul')
-        bibliografia=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='bib')
-        ficcao=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='fic')
-        fantasia=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='fant')
-        terror=AvaliaLido.objects.filter(perfil_avaliador=perfil).filter(livro__categorias__descricao__icontains='ter')
-
-        esporte_nota=0
-        romance_nota=0
-        drama_nota=0
-        humor_nota=0
-        autoajuda_nota=0
-        religioso_nota=0
-        culinaria_nota=0
-        bibliografia_nota=0
-        ficcao_nota=0
-        fantasia_nota=0
-        terror_nota=0
+    categorias_preferidas = perfil.categorias_preferidas.all()
+    livros_lidos = perfil.avalialido_set.all()
+    categorias = Categoria.objects.all()
 
 
-    #média das avaliações de cada categoria avaliada
+    lista = {}
 
-        somaNota=0
+    for categoria in categorias:
+        nota = 0
+        media = 0
+        peso = 0
+        if categoria in categorias_preferidas:
+            peso = 50
+        cats = livros_lidos.filter(livro__categorias__descricao=categoria.descricao)
+        if cats:
+            for cat in cats:
+                nota += cat.nota
+            media = nota/len(cats) + peso
+            lista[categoria.descricao] = media
 
-        for nota in esporte:
-            somaNota+= nota.nota
-            media=somaNota/esporte.count()
-            esporte_nota=media*5
+    return lista
 
-        for nota in romance:
-            somaNota=0
-            media=0
-            somaNota= nota.nota
-            media=somaNota/romance.count()
-            romance_nota=media*5
+import operator
+from livros.views import media_cada_livro
 
-        for nota in drama :
-            somaNota=0
-            media=0
-            somaNota+= nota.nota
-            media=somaNota/drama.count()
-            drama_nota=media*5
+def sugestoes_por_media_dos_livros(request):
+    lista = avaliacao_de_livros_por_categoria(request)
+    sorted_lista = sorted(lista.items(), key=operator.itemgetter(1))
+    sorted_lista.reverse()
 
+    livros = Livro.objects.all()
+    lista_livros_sugestao = []
 
-        for nota in humor:
-            somaNota=0
-            media=0
-            somaNota+= nota.nota
-            media=somaNota/humor.count()
-            humor_nota=media*5
+    for item in sorted_lista:
+        livros_cat = livros.filter(categorias__descricao=item[0])
+        sorted_cat = sorted(livros_cat, key=lambda livro: livro.nota_media())
+        sorted_cat.reverse()
+        lista_livros_sugestao.extend(sorted_cat)
 
-
-        for nota in autoajuda:
-            somaNota=0
-            media=0
-            somaNota+= nota.nota
-            media=somaNota/autoajuda.count()
-            autoajuda_nota=media*5
-
-
-        for nota in religioso:
-            somaNota=0
-            media=0
-            somaNota+= nota.nota
-            media=somaNota/religioso.count()
-            religioso_nota=media*5
-
-
-        for nota in culinaria:
-            somaNota=0
-            media=0
-            somaNota+= nota.nota
-            media=somaNota/culinaria.count()
-            culinaria_nota=media*5
-
-
-        for nota in bibliografia:
-            somaNota=0
-            media=0
-            somaNota+= nota.nota
-            media=somaNota/bibliografia.count()
-            bibliografia_nota=media*5
-
-        for nota in ficcao:
-            somaNota=0
-            media=0
-            somaNota+= nota.nota
-            media=somaNota/ficcao.count()
-            ficcao_nota=media*5
-
-        for nota in fantasia:
-            somaNota=0
-            media=0
-            somaNota+= nota.nota
-            media=somaNota/fantasia.count()
-            fantasia_nota=media*5
-
-        for nota in terror:
-            somaNota=0
-            media=0
-            somaNota+= nota.nota
-            media=somaNota/terror.count()
-            terror_nota=media*5
-
-    # Calculando o total de cada categoria..  preferidas+avaliadas
-        esporteTotal=0
-        romanceTotal=0
-        dramaTotal=0
-        humorTotal=0
-        autoajudaTotal=0
-        religiosoTotal=0
-        culinariaTotal=0
-        bibliografiaTotal=0
-        ficcaoTotal=0
-        fantasiaTotal=0
-        terrorTotal=0
-
-        esporteTotal=esportepref+esporte_nota
-        romanceTotal=romancepref+romance_nota
-        dramaTotal=dramapref+drama_nota
-        humorTotal=humorepref+humor_nota
-        autoajudaTotal=autoajudapref+autoajuda_nota
-        religiosoTotal=religiosoepref+religioso_nota
-        culinariaTotal=culinariapref+culinaria_nota
-        bibliografiaTotal=bibliografiapref+bibliografia_nota
-        ficcaoTotal=ficcaopref+ficcao_nota
-        fantasiaTotal=fantasiapref+fantasia_nota
-        terrorTotal=terrorpref+terror_nota
-
-        listaSugestao=[esporteTotal, romanceTotal, dramaTotal, humorTotal,autoajudaTotal, religiosoTotal, culinariaTotal, bibliografiaTotal, ficcaoTotal, fantasiaTotal, terrorTotal]
-        listaSugestao.sort()  #ordenando do menor pro maior
-        listaSugestao.reverse()   #invertendo a lista . Agora está do maior pro menor
-
-
-
-        for x in range(11): #organizando a lista
-            if esporteTotal == listaSugestao[x]:
-                listaSugestao[x]='esporte'
-            if romanceTotal == listaSugestao[x]:
-                listaSugestao[x]='romance'
-            if dramaTotal == listaSugestao[x]:
-                listaSugestao[x]='drama'
-            if humorTotal == listaSugestao[x]:
-                listaSugestao[x]='humor'
-            if autoajudaTotal== listaSugestao[x]:
-                listaSugestao[x]='autoajuda'
-            if religiosoTotal == listaSugestao[x]:
-                listaSugestao[x]='religioso'
-            if culinariaTotal == listaSugestao[x]:
-                listaSugestao[x]='culinaria'
-            if bibliografiaTotal == listaSugestao[x]:
-                listaSugestao[x]='bibliografia'
-            if ficcaoTotal == listaSugestao[x]:
-                listaSugestao[x]='ficcao'
-            if fantasiaTotal == listaSugestao[x]:
-                listaSugestao[x]='fantasia'
-            if terrorTotal == listaSugestao[x]:
-                listaSugestao[x]='terror'
-
-
-        livrossugerido1=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[0])#está retornando uma queryset
-        livrossugerido2=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[1])#tente pegar os livros e mostrar no template
-        livrossugerido3=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[2])
-        livrossugerido4=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[3])
-        livrossugerido5=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[4])
-
-        lista_todos =[livrossugerido1, livrossugerido2, livrossugerido3, livrossugerido4, livrossugerido5]
-
-        lista_final = []
-
-        for sugere in lista_todos:
-            for sug in sugere[:3]:
-                if sug not in lista_final:
-                    lista_final.append(sug)
-
-        livrosLidos=perfil.avalialido_set.all()
-
-        listafinalfinal=[]
-        for y in livrosLidos:
-            for x in lista_final:
-                if x.titulo == y.livro.titulo:
-                    lista_final.remove(x)
-
-        return lista_final[:3]
-
-
-        return render(request, 'sugestao.html', {"lista_sugere3": lista})
+    return lista_livros_sugestao
 
 
 class LivrosAvaliados(generic.ListView):
@@ -428,15 +200,6 @@ class LivrosAvaliados(generic.ListView):
         return livros_lidos
 
 
-# def adiciona_livro_na_estante(request):
-#     model = Estante
-#     template_name = 'dashboard/estante.html'
-#     success_url = reverse_lazy('usuarios:estante')
-#
-#
-#
-#     Estante.livros.all()
-
 class SugestaoLivro(generic.ListView):
 
     context_object_name = 'lista_sugere3'
@@ -448,6 +211,8 @@ class SugestaoLivro(generic.ListView):
         perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
         context['sugestao'] = sugestoes(self.request)
         #__import__('ipdb').set_trace()
+        context['teste'] = avaliacao_de_livros_por_categoria(self.request)
+        context['teste1'] = sugestoes_por_media_dos_livros(self.request)
 
         return context
 
@@ -459,12 +224,3 @@ class SugestaoLivro(generic.ListView):
     def get_queryset(self):
         usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
         return AvaliaLido.objects.filter(perfil_avaliador=usuario)
-"""
-def livro3(request):
-    perfil=request.user.perfil
-    sugestao=sugestoes(request)
-    lista3=[]
-    for i in range(len(sugestao)):
-        lista3.append(sugestao[i].titulo)
-    return lista3
-"""

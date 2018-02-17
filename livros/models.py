@@ -33,5 +33,19 @@ class Livro(models.Model):
     autores = models.ManyToManyField(Autor)
     categorias = models.ManyToManyField(Categoria)
 
+    def nota_media(self):
+        avaliados = self.avalialido_set.all()
+        media = 0
+        if avaliados:
+            notas = 0
+
+
+            for avaliado in avaliados:
+                notas += avaliado.nota
+
+            media = notas/len(avaliados)
+
+        return media
+
     def __str__(self):
         return '{}-> {}'.format(self.titulo, self.categorias.all())
