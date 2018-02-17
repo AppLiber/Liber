@@ -1,0 +1,7 @@
+<h2>Avalia livro</h2>
+
+<form action="{% url 'livros:avalia_livro' pk=livro.id %}" method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form }}
+  <input type="submit" value="OK">
+</form>

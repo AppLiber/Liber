@@ -11,7 +11,7 @@ from django.shortcuts import render
 
 
 from livros.models import Livro
-from .forms import CadastroForm
+from .forms import CadastroForm, AvaliaForm
 
 
 from .models import Perfil, Estante, Emprestimo, AvaliaLido
@@ -477,3 +477,22 @@ def livro3(request):
         lista3.append(sugestao[i].titulo)
     return lista3
 """
+
+class AvaliaLidoCreate(generic.CreateView):
+    model = AvaliaLido
+    template_name = 'dashboard/avaliacao.html'
+    success_url = reverse_lazy('livros_index')
+    form_class = AvaliaForm
+
+    def form_valid(self, form):
+        livro = Livro.objects.get(pk=self.kwargs['pk'])
+        form.instance.perfil_avaliador = self.request.user.perfil
+        form.instance.livro = livro
+        form.instance.lido = True
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['livro'] = get_object_or_404(Livro, pk=self.kwargs['pk'])
+
+        return context
