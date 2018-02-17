@@ -9,13 +9,17 @@ from .models import Autor, Categoria, Livro
 from usuarios.models import Perfil, Estante, EstanteLivro
 from .forms import LivroForm
 
+import operator
 
 class LivroIndex(generic.ListView):
     template_name = 'livros/index.html'
     context_object_name = 'livro_list'
 
     def get_queryset(self):
-        return Livro.objects.order_by('titulo')[:4]
+        livros = Livro.objects.all()
+        sorted_livro = sorted(livros, key=lambda livro: livro.nota_media())
+        sorted_livro.reverse()
+        return sorted_livro[:4]
 
 
 class ListLivros(generic.ListView):
