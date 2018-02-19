@@ -108,7 +108,7 @@ class PerfilEstanteList(generic.DetailView):
 @login_required
 def fazer_pedido_de_emprestimo(request, user, livro):
     perfil_solicitante = request.user.perfil
-    perfil_do_dono = get_object_or_404(Perfil, usuario=user)
+    perfil_do_dono = get_object_or_404(Perfil, pk=user)
     livro = Livro.objects.get(pk=livro)
 
     estante_livro = perfil_do_dono.estante.estantelivro_set.get(livro_adicionado=livro)
