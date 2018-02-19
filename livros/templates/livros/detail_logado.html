@@ -1,0 +1,114 @@
+{% extends "livros/base_index.html" %}
+{% load static %}
+
+<head>
+<link rel="stylesheet" href="{% static "assets/css/bookdetails.css" %}" >
+<link href="{% static "assets/css/paper-kit.css?v=2.1.0" %" rel="stylesheet" />
+</head>
+
+{% block body %}
+<link rel="stylesheet" href="{% static "assets/css/bookdetails.css" %}" >
+<link href="{% static "assets/css/paper-kit.css?v=2.1.0" %" rel="stylesheet" />
+
+
+<div class="book-container">
+  <article class="item-pane">
+    <div class="item-preview">
+      <div class="book"></div>
+    </div>
+    <div class="item-details">
+      <h1>O Retrato de Dorian Gray</h1>
+      <span class="subtitle">Oscar Wilde</span>
+      <div class="pane__section">
+        <p>
+          O Retrato de Dorian Gray (em inglês: The Picture of Dorian Gray) é um romance filosófico do escritor e dramaturgo Oscar Wilde.
+          Apesar da censura, O Retrato de Dorian Gray ofendeu a sensibilidade moral dos críticos literários britânicos, alguns
+          dos quais disseram que Oscar Wilde merecia ser acusado de violar as leis que protegiam a moralidade pública. Em resposta,
+          Wilde defendeu agressivamente seu romance e arte em correspondência com a imprensa britânica.
+        </p>
+      </div>
+      <div class="pane__section">
+                      <dl>
+                              <dt>Ano</dt>
+                              <dd>2013</dd>
+                              <dt>Páginas</dt>
+                              <dd>208</dd>
+                              <dt>Edição</dt>
+                              <dd>1</dd>
+                              <dt>ISBN</dt>
+                              <dd>1234567890</dd>
+                            </dl>
+      </div>
+      <div class="pane__section clearfix">
+        <a class="button buy-button" href="#" >Adicionar na Estante</a>
+              </div>
+    </div>
+
+          <div class="content">
+              <ul class="list-unstyled team-members">
+                          <li>
+                                  <div class="row">
+                                          <div class="header">
+                                                  <h4 class="title">Veja quem tem esse livro próximo de você</h4>
+                                              </div>
+                                  </div>
+                              <div class="row">
+                                  <div class="col-xs-3">
+                                      <div class="avatar">
+                                          <img src="{% static "assets/img/faces/face-0.jpg"%}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                      </div>
+                                  </div>
+                                  <div class="col-xs-6">
+                                      Júlia
+                                      <br />
+                                      <span class="text-success"><small>10 km</small></span>
+                                  </div>
+
+                                  <div class="col-xs-3 text-right">
+                                      <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-plus"></i></btn>
+                                  </div>
+                              </div>
+                          </li>
+                          <li>
+                              <div class="row">
+                                  <div class="col-xs-3">
+                                      <div class="avatar">
+                                          <img src="{% static "assets/img/faces/face-1.jpg"%}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                      </div>
+                                  </div>
+                                  <div class="col-xs-6">
+                                      Pedro
+                                      <br />
+                                      <span class="text-success"><small>5 km</small></span>
+                                  </div>
+
+                                  <div class="col-xs-3 text-right">
+                                      <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-plus"></i></btn>
+                                  </div>
+                              </div>
+                          </li>
+                          <li>
+                              <div class="row">
+                                  <div class="col-xs-3">
+                                      <div class="avatar">
+                                          <img src="{% static "assets/img/faces/face-3.jpg"%}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
+                                      </div>
+                                  </div>
+                                  <div class="col-xs-6">
+                                      Júlio
+                                      <br />
+                                      <span class="text-success"><small>9 km</small></span>
+                                  </div>
+
+                                  <div class="col-xs-3 text-right">
+                                      <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-plus"></i></btn>
+                                  </div>
+                              </div>
+                          </li>
+                      </ul>
+          </div>
+      </div>
+  </article>
+  </div>
+
+{% endblock %}
