@@ -11,7 +11,11 @@
     <ul class='list-inline'>
       {% for livro in livro_list %}
       <li class='book'>
-        <img src="{{ livro.imagem.url }}" onclick="window.location.href= '/livros/{{ livro.id }}/' "/>
+        {% if user.is_authenticated %}
+        <img src="{{ livro.imagem.url }}" onclick="window.location.href= '{% url 'livros:livros_detail_logado' pk=livro.id %}' "/>
+        {% else %}
+        <img src="{{ livro.imagem.url }}" onclick="window.location.href= '{% url 'livros:livros_detail' pk=livro.id %}' "/>
+        {% endif %}
       </li>
       {% endfor %}
     </ul>
