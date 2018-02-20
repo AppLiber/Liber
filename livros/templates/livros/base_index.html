@@ -70,10 +70,11 @@
 
 
             {% if user.is_authenticated %}
-                        <a href="">
-                            <i class="ti-book"></i>
-                            <p></p>
-                        </a>
+                    <li class="nav-item">
+                        <a href="{% url 'usuarios:home' pk=request.user.perfil.id %}" class="nav-link">
+                            <i class="nc-icon nc-circle-10"></i>Dashboard</a>
+                    </li>
+
             {%else %}
                     <li class="nav-item">
                         <a href="{% url 'login' %}" class="nav-link">
