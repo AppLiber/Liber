@@ -1,7 +1,7 @@
 {% if usuario_list %}
 <ul>
   {% for perfil in usuario_list %}
-  <li><a href="{% url 'usuarios:home' perfil.id %}">{{ perfil.usuario.username }}</a></li>
+  <li><a href="{% url 'usuarios:estante' perfil.id %}">{{ perfil.usuario.username }}</a></li>
   {% endfor %}
 </ul>
 {% else %}
