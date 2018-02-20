@@ -127,7 +127,7 @@
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
                             <li>
-                                <a href="emprestimos.html">
+                                <a href="{% url 'usuarios:emprestimos' user=perfil.id %}">
                                     <i class="ti-clipboard"></i>
                                     <p>Meus Empréstimos</p>
                                 </a>
