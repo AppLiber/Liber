@@ -55,7 +55,8 @@
                             <p>Perfil de Usuário</p>
                         </a>
                     </li>
-                    <li>
+                    {% block avaliacao %}
+                    <li> {% endblock %}
                         <a href="{% url 'usuarios:avaliacao' user=perfil.id %}">
                             <i class="ti-search"></i>
                             <p>Ver Avaliações</p>
