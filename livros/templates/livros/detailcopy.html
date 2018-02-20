@@ -10,10 +10,19 @@
 		<article class="item-pane">
 
 			<div class="item-preview">
+				<div>
 
-				<div class="book">
-          <img src="{{ livro.imagem.url }}"/>
+					{% if user.is_authenticated %}
+							{% if livros_lidos %}
+								<button type="button" class="btn btn-info" disabled>Já Lido</button>
+							{% else %}
+								<a type="button" class="button buy-button" href="{% url 'livros:avalia_livro' pk=livro.id %}">Lido</a>
+							{% endif %}
+					{% endif %}
+
 				</div>
+				<div class="book">
+          <img src="{{ livro.imagem.url }}"/></div>
 			</div>
 			<div class="item-details">
 				<h1>{{ livro.titulo }}</h1>
@@ -222,8 +231,18 @@
 						</fieldset>
 					</div>
 				{% endif %}
-				<div class="pane__section clearfix">
+
+					{% if user.is_anonymous %}
 					<a class="button buy-button" href="{% url 'login' %}">Quero emprestado</a>
+					{% endif %}
+				</br>
+					{% if user.is_authenticated %}
+							{% if estante_livros %}
+							{% else %}
+								<a class="button buy-button" href="{% url 'livros:adiciona' pk=livro.id %}">Adicionar a estante</a>
+							{% endif %}
+					{% endif %}
+
 				</div>
 			</div>
 		</article>

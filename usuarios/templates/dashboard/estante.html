@@ -39,7 +39,7 @@
                                             <div class="bk-book bk-bookdefault">
                                                 <div class="bk-front">
                                                     <div class="bk-cover">
-                                                      <img src="{{ estante_livro.livro_adicionado.imagem.url }}" onclick="window.location.href= '{% url 'livros:livros_detail' pk=estante_livro.livro_adicionado.id %}' "/>
+                                                      <img src="{{ estante_livro.livro_adicionado.imagem.url }}" onclick="window.location.href= '{% url 'livros:livros_detail_logado' pk=estante_livro.livro_adicionado.id %}' "/>
                                                     </div>
                                                 </div>
                                                 <div class="bk-back"></div>

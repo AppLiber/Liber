@@ -34,12 +34,12 @@ class LivroDetail(generic.DetailView):
 
     model = Livro
     template_name = 'livros/detail.html'
-
+"""
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data()
         #perfil = self.request.user.perfil
-"""
+
         if self.request.user.is_authenticated:
             perfil = get_object_or_404(Perfil, pk=self.request.user.perfil.id)
             livro = Livro.objects.get(pk=self.kwargs['pk'])
