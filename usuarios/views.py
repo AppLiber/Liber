@@ -520,3 +520,28 @@ class Avaliacao (generic.ListView):
     def get_queryset(self):
         usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
         return AvaliaLido.objects.filter(perfil_avaliador=usuario)
+
+
+
+class historico_emprestimo (generic.ListView):
+
+    context_object_name = 'emprestimos'
+    template_name = 'dashboard/emprestimos.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        context['sugestao'] = sugestoes(self.request)
+        #__import__('ipdb').set_trace()
+
+        return context
+
+    def get_object(self):
+    #    __import__('ipdb').set_trace()
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return AvaliaLido.objects.get(perfil_avaliador=usuario)
+
+    def get_queryset(self):
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return AvaliaLido.objects.filter(perfil_avaliador=usuario)

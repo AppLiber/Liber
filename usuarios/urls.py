@@ -21,6 +21,7 @@ urlpatterns = [
     path('<int:user>/avaliacaolivro',(views.LivrosAvaliados.as_view()), name='avaliacaolivro'),
     path('<int:user>/sugestao', views.SugestaoLivro.as_view(), name='sugestao' ),
     path('<int:user>/avaliacao',views.Avaliacao.as_view(), name='avaliacao'),
+    path('<int:user>/emprestimos', views.historico_emprestimo.as_view(), name='emprestimos'),
 
 
 
