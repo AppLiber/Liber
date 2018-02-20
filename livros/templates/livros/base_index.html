@@ -19,7 +19,7 @@
 	<nav class="navbar navbar-expand-lg fixed-top navbar-transparent" color-on-scroll="300">
 		<div class="container">
 			<div class="navbar-translate">
-				<a class="container navbar-brand" href="index.html">
+				<a class="container navbar-brand" href="{% url 'livros_index' %}">
 					<img id="logotipo" src="{% static "assets/img/logo.png" %} " alt="Logotipo" height="100">
 				</a>
 				<button class="navbar-toggler navbar-toggler-right navbar-burger" type="button" data-toggle="collapse" data-target="#navbarToggler"
@@ -51,14 +51,39 @@
 							</span>
 						</div>
 					</li>
-					<li class="nav-item">
-						<a href="#" class="nav-link">
-							<i class="nc-icon nc-bell-55"></i>Notificações</a>
-					</li>
-					<li class="nav-item">
-						<a href="{% url 'login' %}" target="_blank" class="nav-link">
-							<i class="nc-icon nc-circle-10"></i>Entrar</a>
-					</li>
+                    <li>
+                        <div class="">
+                            <a class="buy-button" href="{% url 'usuarios:usuarios_index' %}">
+                                <i class="fa fa-user-circle-o">Usuarios</i>
+                                <br>
+                            </a>
+                        </div>
+                    </li>
+                    <li>
+                        <div class="">
+                            <a class="buy-button" href="{% url 'livros:lista_livros' %}">
+                                <i class="fa fa-book">Lista de livros</i>
+                                <br>
+                            </a>
+                        </div>
+                    </li>
+
+
+            {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a href="{% url 'usuarios:home' pk=request.user.perfil.id %}" class="nav-link">
+                            <i class="nc-icon nc-circle-10"></i>Dashboard</a>
+                    </li>
+
+            {%else %}
+                    <li class="nav-item">
+                        <a href="{% url 'login' %}" class="nav-link">
+                            <i class="nc-icon nc-circle-10"></i>Entrar</a>
+                    </li>
+
+            {% endif %}
+
+
 				</ul>
 			</div>
 		</div>

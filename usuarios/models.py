@@ -22,6 +22,12 @@ NOTA_LIDO = (
     (10, 10),
 )
 
+STATUS_EMPRESTIMO = (
+    ('EA', 'Em andamento'),
+    ('OK', 'Concluído'),
+    ('C', 'Cancelado')
+)
+
 
 class Perfil(models.Model):
 
@@ -31,6 +37,7 @@ class Perfil(models.Model):
     sexo = models.CharField(max_length=1, choices=SEXO_USUARIO, blank=True , null=True)
     categorias_preferidas = models.ManyToManyField(Categoria)
     imagem_perfil = models.ImageField(upload_to='imagem_perfil/', default='imagem_perfil/user.png')
+    livros = models.ManyToManyField(Livro, through='AvaliaLido' )
 
 
     def __str__(self):
@@ -54,7 +61,7 @@ STATUS_LIVRO = (
 class Estante(models.Model):
 
     nome = models.CharField(max_length=30, blank=False , default="Estante")
-    perfil_dono = models.OneToOneField(Perfil,  on_delete=models.CASCADE, null=True) #ver esse nulo depois ??!!
+    perfil_dono = models.OneToOneField(Perfil,  on_delete=models.CASCADE, null=True)
     livros = models.ManyToManyField(Livro, through='EstanteLivro')
 
     def __str__(self):
@@ -67,35 +74,30 @@ class EstanteLivro(models.Model):
     data_adicionado = models.DateField(auto_now=True)
     status = models.CharField(max_length=1, choices=STATUS_LIVRO, blank=False , null=False, default='D')
 
+    def __str__(self):
+        return '{}-> {}'.format(self.estante, self.livro_adicionado)
 
 class AvaliaLido (models.Model):
 
-    lido = models.BooleanField(default=False) #default=False
-    perfil_avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE, unique=True)
-    livro = models.ForeignKey(Livro, on_delete=models.CASCADE) # Livro
-    nota = models.IntegerField(choices=NOTA_LIDO, null=True) # ver se nao é char
+    lido = models.BooleanField(default=False)
+    perfil_avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE)
+    livro = models.ForeignKey(Livro, on_delete=models.CASCADE)
+    nota = models.IntegerField(choices=NOTA_LIDO, null=False)
 
-    #def __str__(self):
-    #    return self.livros, self.perfil_Avaliador
     def __str__(self):
         return '{} {} {}'.format(self.livro, self.perfil_avaliador, self.nota)
 
-STATUS_EMPRESTIMO = (
-    ('EA', 'Em andamento'),
-    ('OK', 'Concluído'),
-    ('C', 'Cancelado')
-)
 
 class Emprestimo (models.Model):
     perfil_do_dono = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name="solicitado")
     perfil_solicitante = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name="solicitante")
-    livro_emprestado = models.ForeignKey(EstanteLivro, on_delete=models.CASCADE) # livro da estante
+    livro_emprestado = models.ForeignKey(EstanteLivro, on_delete=models.CASCADE)
     data_emprestimo= models.DateField(auto_now=True)
     data_devolucao= models.DateField(null=True)
     status_emprestimo = models.CharField(max_length=2, choices=STATUS_EMPRESTIMO, blank=False , null=False, default='EA')
 
     def __str__(self):
-        return self.perfil_do_dono.usuario.username
+        return'Dono >{}, para {},{}'.format(self.perfil_do_dono.usuario.username, self.perfil_solicitante, self.livro_emprestado)
 
 
 class AvaliaEmprestimo (models.Model):

@@ -1,8 +1,9 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
+from django.forms import ModelForm
 
-from .models import Perfil
+from .models import Perfil, AvaliaLido
 
 class CadastroForm(UserCreationForm):
 
@@ -43,3 +44,8 @@ class RegistrarUsuarioForm(forms.Form):
         errors = self._errors.setdefault(forms.forms.NON_FIELD_ERRORS, forms.utils.ErrorList())
         errors.append(message)
 """
+
+class AvaliaForm(ModelForm):
+    class Meta:
+        model = AvaliaLido
+        fields = ['nota']

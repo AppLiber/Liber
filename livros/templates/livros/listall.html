@@ -1,0 +1,12 @@
+
+
+    <h1>Todos os livros</h1>
+    {% if livro_list %}
+    <ul>
+      {% for livro in livro_list %}
+      <li><a href= "{% url 'livros:livros_detail' pk=livro.id %}" >{{ livro.titulo }}</a></li>
+      {% endfor %}
+    </ul>
+    {% else %}
+      <p>Não tem livro registrado</p>
+    {% endif %}

@@ -1,0 +1,12 @@
+{% if sugestao %}
+  <ul>
+    {% for livross in sugestao %}
+    <li><a href= "{% url 'livros:livros_detail' pk=livross.id %}" >{{ livross.livro.titulo }} - {{ livross.livro.autores.first}} </a></li>
+        {%for cat in livross.livro.categorias.all%}
+            {{cat}},
+        {% endfor %}
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>Não tem livro registrado</p>
+{% endif %}

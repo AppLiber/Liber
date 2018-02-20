@@ -32,14 +32,14 @@
         <div class="sidebar" data-background-color="white" data-active-color="danger">
             <div class="sidebar-wrapper">
                 <div class="logo">
-                    <a href="index.html" class="simple-text">
+                    <a href="{% url 'livros_index' %}" class="simple-text">
                         <img src="{% static "assets/img/logo-letras.png"%}" class="logotipo" />
                     </a>
                 </div>
 
                 <ul class="nav">
                     <li>
-                        <img src="{% static "assets/img/faces/face-2.jpg"%}"></img>
+                        <img src="{{ perfil.imagem_perfil.url }}"></img>
                         <h2> {{ perfil.usuario }}</h2>
                     </li>
                     {% block acompanhamento %}
@@ -56,7 +56,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="avaliacoes.html">
+                        <a href="{% url 'usuarios:avaliacao' user=perfil.id %}">
                             <i class="ti-search"></i>
                             <p>Ver Avaliações</p>
                         </a>
@@ -83,16 +83,25 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <img class="img-responsive" src='https://d.gr-assets.com/books/1348927776l/8032112.jpg' onclick="window.location.href= 'book-details.html' "
-                                        />
-                                        <img class="img-responsive" src='http://ecx.images-amazon.com/images/I/51oXKWrcYYL.jpg' onclick="window.location.href= 'book-details.html' "
-                                        />
+                                        {% if sugestao %}
+                                          <ul>
+                                            {% for livross in sugestao %}
+                                            <li><a href= "{% url 'livros:livros_detail' pk=livross.id %}" >{{ livross.livro.titulo }}, de {{livross.livro.autores.first}}</a></li>
+                                                {%for cat in livross.livro.categorias.all%}
+                                                    {{cat}},
+                                                {% endfor %}
+                                            {% endfor %}
+                                          </ul>
+                                        {% else %}
+                                          <p>Não tem livro registrado</p>
+                                        {% endif %}
+
                                     </div>
                                     <div class="modal-footer">
                                         <div class="divider"></div>
                                         <div class="right-side">
                                             <button type="button" class="btn btn-danger btn-link">Mais sugestões</button>
-                                        </div>
+                                        </  div>
                                     </div>
                                 </div>
                             </div>

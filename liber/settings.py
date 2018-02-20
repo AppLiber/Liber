@@ -124,7 +124,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_REDIRECT_URL = 'livros:livros_index'
+LOGIN_REDIRECT_URL = 'livros_index'
 LOGIN_URL = 'login'
 LOGOUT_URL = 'login'
 
