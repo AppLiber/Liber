@@ -372,7 +372,6 @@ def sugestoes(request):
             if terrorTotal == listaSugestao[x]:
                 listaSugestao[x]='terror'
 
-
         livrossugerido1=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[0])#está retornando uma queryset
         livrossugerido2=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[1])#tente pegar os livros e mostrar no template
         livrossugerido3=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[2])
@@ -397,11 +396,6 @@ def sugestoes(request):
                     lista_final.remove(x)
 
         return lista_final
-
-
-
-
-        return render(request, 'sugestao.html', {"lista_sugere3": lista})
 
 
 class LivrosAvaliados(generic.ListView):
@@ -468,6 +462,7 @@ class SugestaoLivro(generic.ListView):
     def get_queryset(self):
         usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
         return AvaliaLido.objects.filter(perfil_avaliador=usuario)
+
 """
 def livro3(request):
     perfil=request.user.perfil
@@ -547,3 +542,39 @@ class historico_emprestimo (generic.ListView):
     def get_queryset(self):
         usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
         return AvaliaLido.objects.filter(perfil_avaliador=usuario)
+
+class teste_historico_emprestimo (generic.ListView):
+
+    context_object_name = 'testeemprestimo'
+    template_name = 'dashboard/testeemprestimo.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        context['solicitado'] = listaSolicitado(self.request)
+        context['solicitante'] = listSolicitante(self.request)
+
+        #__import__('ipdb').set_trace()
+        return context
+
+    def get_object(self):
+    #    __import__('ipdb').set_trace()
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return AvaliaLido.objects.get(perfil_avaliador=usuario)
+
+    def get_queryset(self):
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return AvaliaLido.objects.filter(perfil_avaliador=usuario)
+
+def listaSolicitado(request):
+    perfil = request.user.perfil
+    donoEmprestimos=Emprestimo.objects.filter(perfil_do_dono=perfil)
+
+    return donoEmprestimos
+
+def listSolicitante(request):
+    perfil = request.user.perfil
+    solicitanteEmprestimos=Emprestimo.objects.filter(perfil_solicitante=perfil)
+
+    return solicitanteEmprestimos
