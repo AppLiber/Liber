@@ -115,7 +115,7 @@
                                   </div>
 
                                   <div class="col-xs-3 text-right">
-                                      <a class="btn btn-sm btn-success btn-icon" href="#"><i class="fa fa-plus"></i></a>
+                                      <a class="btn btn-sm btn-success btn-icon" href="{% url 'usuarios:pedir_emprestado' user=estante.estante.perfil_dono.id livro=estante.livro_adicionado.id %}"><i class="fa fa-plus"></i></a>
                                   </div>
                               </div>
                           </li>
