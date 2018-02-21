@@ -68,6 +68,7 @@ class LivroDetailLogado(generic.DetailView):
             context['livros_lidos_total'] = perfil.avalialido_set.all()
             context['livros_lidos'] = perfil.avalialido_set.filter(livro=livro)
             context['medialivros'] = media_cada_livro(self.request, pk=self.kwargs['pk'])
+            context['estantes_com_livro'] = EstanteLivro.objects.filter(livro_adicionado=livro)
 
         return context
 
@@ -150,3 +151,11 @@ class AvaliaLidoCreate(generic.CreateView):
         context['livro'] = get_object_or_404(Livro, pk=self.kwargs['pk'])
 
         return context
+
+"""
+apagar isso se funcionar
+def retorna_estantes_com_o_livro(request):
+    estantes = Estante.objects.all()
+    livro = Livro.objects.get(pk=livro)
+    estantes_com_livro = EstanteLivro.objects.filter(livro_adicionado=livro)
+"""
