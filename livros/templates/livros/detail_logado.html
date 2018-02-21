@@ -21,11 +21,42 @@
 <div class="book-container">
   <article class="item-pane">
     <div class="item-preview">
-      {% if livros_lidos %}
-        <button type="button" class="btn btn-info" disabled>Já Lido</button>
-      {% else %}
-        <a type="button" class="button buy-button" href="{% url 'livros:avalia_livro' pk=livro.id %}">Lido</a>
-      {% endif %}
+      <div>
+        {% if livros_lidos %}
+          <button type="button" class="btn btn-info" disabled>Já Lido</button>
+        {% else %}
+          <button type="button" class="button buy-button" data-toggle="modal" data-target="#avaliacaoLivro" data-whatever="@getbootstrap">Lido</button>
+          <div class="modal fade" id="avaliacaoLivro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Avalie o livro</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="{% url 'livros:avalia_livro' pk=livro.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form }}
+                    <input type="submit" value="OK">
+                  </form>
+                  <form>
+                    <div class="form-group">
+                      <label for="message-text" class="form-control-label">Sobre o livro:</label>
+                      <textarea class="form-control" id="message-text"></textarea>
+                    </div>
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                  <button type="button" class="btn btn-primary">Avalia</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      </div>
       <div class="book">
         <img src="{{ livro.imagem.url }}"/>
       </div>

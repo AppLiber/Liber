@@ -477,10 +477,12 @@ def livro3(request):
         lista3.append(sugestao[i].titulo)
     return lista3
 """
+"""
+apagar aqui do usuários e deixar no livros
 
 class AvaliaLidoCreate(generic.CreateView):
     model = AvaliaLido
-    template_name = 'dashboard/avaliacao.html'
+    template_name = 'livros/detail_logado.html'
     success_url = reverse_lazy('livros_index')
     form_class = AvaliaForm
 
@@ -497,7 +499,7 @@ class AvaliaLidoCreate(generic.CreateView):
 
         return context
 
-
+"""
 class Avaliacao (generic.ListView):
 
     context_object_name = 'lista_sugere3'
