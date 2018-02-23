@@ -135,7 +135,7 @@ def media_cada_livro(request, pk):
 
 class AvaliaLidoCreate(generic.CreateView):
     model = AvaliaLido
-    template_name = ['livros/detail_logado.html', 'dashboard/emprestimos.html' ]
+    template_name = 'livros/detail_logado.html'
     success_url = reverse_lazy('livros_index')
     form_class = AvaliaForm
 
