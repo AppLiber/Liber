@@ -22,12 +22,8 @@ urlpatterns = [
     path('<int:user>/sugestao', views.SugestaoLivro.as_view(), name='sugestao' ),
     path('<int:user>/avaliacao',views.Avaliacao.as_view(), name='avaliacao'),
     path('<int:user>/emprestimos', views.historico_emprestimo.as_view(), name='emprestimos'),
-<<<<<<< HEAD
     path('<int:user>/testeemprestimo', views.teste_historico_emprestimo.as_view(), name='testeemprestimo'),
     path('<int:user>/testeemprestimo/<int:emprestimo>/aceita', views.aceitar_emprestimo, name='aceita_emprestimo'),
-=======
-    #path('<int:user>/testeemprestimo', views.teste_historico_emprestimo.as_view(), name='testeemprestimo'),
->>>>>>> 6fdc1d37c598e0d478af3f9399783574951acb5c
 
 
 

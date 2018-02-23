@@ -529,10 +529,9 @@ class historico_emprestimo (generic.ListView):
         context = super().get_context_data()
         context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
         perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
-        context['solicitado'] = listaSolicitado(self.request)
-        context['solicitante'] = listSolicitante(self.request)
-
+        context['sugestao'] = sugestoes(self.request)
         #__import__('ipdb').set_trace()
+
         return context
 
     def get_object(self):
@@ -544,7 +543,6 @@ class historico_emprestimo (generic.ListView):
         usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
         return AvaliaLido.objects.filter(perfil_avaliador=usuario)
 
-"""
 class teste_historico_emprestimo (generic.ListView):
 
     model = Emprestimo
@@ -572,13 +570,13 @@ class teste_historico_emprestimo (generic.ListView):
 """
 def listaSolicitado(request):
     perfil = request.user.perfil
-    donoEmprestimos=Emprestimo.objects.filter(perfil_do_dono=perfil).order_by(  '-status_emprestimo', 'data_emprestimo')
+    donoEmprestimos=Emprestimo.objects.filter(perfil_do_dono=perfil)
 
     return donoEmprestimos
 
 def listSolicitante(request):
     perfil = request.user.perfil
-    solicitanteEmprestimos=Emprestimo.objects.filter(perfil_solicitante=perfil).order_by('-status_emprestimo','data_emprestimo' )
+    solicitanteEmprestimos=Emprestimo.objects.filter(perfil_solicitante=perfil)
 
     return solicitanteEmprestimos
 
