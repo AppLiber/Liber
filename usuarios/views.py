@@ -519,7 +519,7 @@ class Avaliacao (generic.ListView):
         return AvaliaLido.objects.filter(perfil_avaliador=usuario)
 
 
-
+"""
 class historico_emprestimo (generic.ListView):
 
     context_object_name = 'emprestimos'
@@ -545,7 +545,7 @@ class historico_emprestimo (generic.ListView):
         return AvaliaLido.objects.filter(perfil_avaliador=usuario)
 
 """
-class teste_historico_emprestimo (generic.ListView):
+class historico_emprestimo (generic.ListView):
 
     model = Emprestimo
     context_object_name = 'testeemprestimo'
@@ -565,11 +565,7 @@ class teste_historico_emprestimo (generic.ListView):
     #    __import__('ipdb').set_trace()
         usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
         return AvaliaLido.objects.get(perfil_avaliador=usuario)
-"""
-    def get_queryset(self):
-        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
-        return AvaliaLido.objects.filter(perfil_avaliador=usuario)
-"""
+
 def listaSolicitado(request):
     perfil = request.user.perfil
     donoEmprestimos=Emprestimo.objects.filter(perfil_do_dono=perfil).order_by(  '-status_emprestimo', 'data_emprestimo')
