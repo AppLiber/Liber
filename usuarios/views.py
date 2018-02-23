@@ -548,8 +548,8 @@ class historico_emprestimo (generic.ListView):
 class teste_historico_emprestimo (generic.ListView):
 
     model = Emprestimo
-    context_object_name = 'emprestimos'
-    template_name = 'dashboard/emprestimos.html'
+    context_object_name = 'testeemprestimo'
+    template_name = 'dashboard/testeemprestimo.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
