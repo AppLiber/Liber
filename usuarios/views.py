@@ -11,7 +11,7 @@ from django.shortcuts import render
 
 
 from livros.models import Livro
-from .forms import CadastroForm, AvaliaForm, EmprestimoForm
+from .forms import CadastroForm, AvaliaForm
 
 
 from .models import Perfil, Estante, Emprestimo, AvaliaLido
@@ -545,7 +545,6 @@ class historico_emprestimo (generic.ListView):
 
 class teste_historico_emprestimo (generic.ListView):
 
-    model = Emprestimo
     context_object_name = 'testeemprestimo'
     template_name = 'dashboard/testeemprestimo.html'
 
@@ -555,19 +554,19 @@ class teste_historico_emprestimo (generic.ListView):
         perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
         context['solicitado'] = listaSolicitado(self.request)
         context['solicitante'] = listSolicitante(self.request)
-        context['form'] = EmprestimoForm()
 
+        #__import__('ipdb').set_trace()
         return context
 
     def get_object(self):
     #    __import__('ipdb').set_trace()
         usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
         return AvaliaLido.objects.get(perfil_avaliador=usuario)
-"""
+
     def get_queryset(self):
         usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
         return AvaliaLido.objects.filter(perfil_avaliador=usuario)
-"""
+
 def listaSolicitado(request):
     perfil = request.user.perfil
     donoEmprestimos=Emprestimo.objects.filter(perfil_do_dono=perfil)
@@ -579,49 +578,3 @@ def listSolicitante(request):
     solicitanteEmprestimos=Emprestimo.objects.filter(perfil_solicitante=perfil)
 
     return solicitanteEmprestimos
-
-
-def aceitar_emprestimo(request, user, emprestimo):
-
-    emprestimo_confirmado = Emprestimo.objects.get(pk=emprestimo)
-
-    #__import__('ipdb').set_trace()
-    if request.method == 'POST':
-        form = EmprestimoForm(request.POST, instance=emprestimo_confirmado)
-        if form.is_valid():
-
-            form.instance.status_emprestimo = 'OK'
-
-            form.save()
-
-        else:
-            form = EmprestimoForm()
-
-    return redirect('usuarios:estante', user=request.user.perfil.id)
-
-
-
-
-"""
-class aceitar_emprestimo(generic.ListView):
-    model = Emprestimo
-    template_name = 'usuarios/testeemprestimo.html'
-    success_url = reverse_lazy('livros_index')
-    form_class = EmprestimoForm
-
-    def form_valid(self, form):
-        #livro = Livro.objects.get(pk=self.kwargs['pk'])
-        #form.instance.perfil_avaliador = self.request.user.perfil
-        #pk=request.user.perfil.id
-        form.instance.status_emprestimo = 'OK'
-        form.instance.mensagem_cancelamento = ''
-        return super().form_valid(form)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
-        #context['livro'] = get_object_or_404(Livro, pk=self.kwargs['pk'])
-        #context['emprestimos'] = Emprestimo.objects.filter(pk=perfil])
-
-        return context
-"""

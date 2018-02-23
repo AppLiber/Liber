@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
-from .models import Perfil, AvaliaLido, Emprestimo
+from .models import Perfil, AvaliaLido
 
 class CadastroForm(UserCreationForm):
 
@@ -15,12 +15,6 @@ class CadastroForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('username','password1','password2','telefone','data_de_nascimento','sexo')
-
-
-class EmprestimoForm(ModelForm):
-    class Meta:
-        model = Emprestimo
-        fields = ['data_devolucao', 'mensagem_cancelamento']
 
 """
 class RegistrarUsuarioForm(forms.Form):
