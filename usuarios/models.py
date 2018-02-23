@@ -23,6 +23,7 @@ NOTA_LIDO = (
 )
 
 STATUS_EMPRESTIMO = (
+    ('S', "Solicitado"),
     ('EA', 'Em andamento'),
     ('OK', 'Concluído'),
     ('C', 'Cancelado')
@@ -94,7 +95,7 @@ class Emprestimo (models.Model):
     livro_emprestado = models.ForeignKey(EstanteLivro, on_delete=models.CASCADE)
     data_emprestimo= models.DateField(auto_now=True)
     data_devolucao= models.DateField(null=True)
-    status_emprestimo = models.CharField(max_length=2, choices=STATUS_EMPRESTIMO, blank=False , null=False, default='EA')
+    status_emprestimo = models.CharField(max_length=2, choices=STATUS_EMPRESTIMO, blank=False , null=False, default='S')
     mensagem_cancelamento = models.TextField(null=True, blank=True)
 
     def __str__(self):
