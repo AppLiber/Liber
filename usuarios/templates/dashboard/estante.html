@@ -60,7 +60,12 @@
                                             <h4>{{estante_livro.get_status_display }}</h4>
 
                                             {% if estante_livro.status == 'E'  %}
-                                            <h5>Ana Maria</h5>
+                                            {% endif %}
+                                            {% if solicitado %}
+                                            {% for oi in solicitado %}
+                                            <a href="{% url 'usuarios:avaliacao' oi.perfil_solicitante.id %}">{{ oi.perfil_solicitante }}</a>
+                                            {% endfor %}
+
                                             {% endif %}
                                         </div>
                                         {% if request.user.perfil.id != perfil.id and estante_livro.status == 'D'  %}

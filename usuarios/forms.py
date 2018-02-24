@@ -54,4 +54,4 @@ class AvaliaForm(ModelForm):
 class EmprestimoForm(ModelForm):
     class Meta:
         model = Emprestimo
-        fields = ['data_devolucao', 'mensagem_cancelamento']
+        fields = [ 'mensagem_cancelamento']

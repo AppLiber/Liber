@@ -4,7 +4,7 @@
     {% if livro_list %}
     <ul>
       {% for livro in livro_list %}
-      <li><a href= "{% url 'livros:livros_detail' pk=livro.id %}" >{{ livro.titulo }}</a></li>
+      <li><a href= "{% url 'livros:livros_detail_logado' pk=livro.id %}" >{{ livro.titulo }}</a></li>
       {% endfor %}
     </ul>
     {% else %}

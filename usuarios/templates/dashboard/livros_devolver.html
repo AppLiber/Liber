@@ -16,8 +16,8 @@
         <center>
             <br>
             <div style="height:240px">
-                <img src="{{ ola.livro_emprestado.livro_adicionado.imagem.url }}" />
-                <h3 class="book-item_title"> <a href="{% url 'livros:livros_detail' pk=ola.livro_emprestado.livro_adicionado.id %}"> {{ola.livro_emprestado.livro_adicionado.titulo}}</a></h3>
+                <img src="{{ ola.livro_emprestado.livro_adicionado.imagem.url }}"   />
+                <h3 class="book-item_title"> <a href="{% url 'livros:livros_detail_logado' pk=ola.livro_emprestado.livro_adicionado.id %}"> {{ola.livro_emprestado.livro_adicionado.titulo}}</a></h3>
                 <p class="author">{% for autor in livro.autores.all %}
                     <span class="subtitle">{{ autor.nome }}</span> {% endfor %}
                 </p>
@@ -30,17 +30,39 @@
                 <h8><b>Devolução em:</b> {{ ola.data_devolucao }}</h8>
             </div>
             <h6><b>Status: {% if ola.status_emprestimo == 'EA'  %}
-                        Em Andamento
+                    <font color='#e62e00'>Em Andamento</font>
+                        <br> <br> <br> <br> <br>
                         {% endif %}
                         {% if ola.status_emprestimo == 'S'  %}
-                        Solicitado
+                        <font color='#330a00'>Solicitado</font>
+                        <br> <br>
+                        <button type="button" style="font-size:12pt;Black:white;background-color:white;border:2px solid #990000;padding:5px"
+                        class="button buy-button" data-toggle="modal" data-target="#cancelar_emprestimo" data-whatever="@getbootstrap">Cancelar</button>
+
                     {% endif %}
                 </b></h6>
-            <h5>
-                <button type="button"  class="button buy-button">Aceitar</button>
 
-                 <button type="button" class="button buy-button">Negar</button>
-        </h5>
+                <div class="modal fade" id="cancelar_emprestimo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Cancelar Empréstimo</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form action="{% url 'usuarios:dev_cancelar_emprestimo' user=request.user.perfil.id emprestimo=ola.id  %}" method="post" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          {{ form.NON_FIELD_ERRORS }}
+                          <button type="submit" class="btn btn-primary">Confirmar</button>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
         </center>
         {% endif %}
     </div>
