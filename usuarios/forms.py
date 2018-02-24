@@ -49,14 +49,14 @@ class AvaliaForm(ModelForm):
     class Meta:
         model = AvaliaLido
         fields = ['nota','comentario']
-"""
+
 class PedirLivroEmprestadoForm(ModelForm):
     class Meta:
         model = Emprestimo
         fields = [ 'data_devolucao', 'mensagem_de_quem_pede']
-"""
+
 class EmprestimoForm(ModelForm):
     class Meta:
         model = Emprestimo
-        fields = [ 'data_devolucao', 'mensagem_de_quem_pede','mensagem_resposta']
-        mensagem_de_quem_pede = forms.CharField(required=False, widget=forms.Textarea(attrs={'class':'form-control','rows':1,'cols':10,'placeholder':'keword values'}))
+        fields = ['mensagem_resposta']
+        #mensagem_de_quem_pede = forms.CharField(required=False, widget=forms.Textarea(attrs={'class':'form-control','rows':1,'cols':10,'placeholder':'keword values'}))

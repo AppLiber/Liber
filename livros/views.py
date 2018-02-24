@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 
 from .models import Autor, Categoria, Livro
 from usuarios.models import Perfil, Estante, EstanteLivro, AvaliaLido
-from usuarios.forms import AvaliaForm, EmprestimoForm
+from usuarios.forms import AvaliaForm, EmprestimoForm , PedirLivroEmprestadoForm
 from .forms import LivroForm
 
 import operator
@@ -69,8 +69,8 @@ class LivroDetailLogado(generic.DetailView):
             context['livros_lidos'] = perfil.avalialido_set.filter(livro=livro)
             context['medialivros'] = media_cada_livro(self.request, pk=self.kwargs['pk'])
             context['estantes_com_livro'] = EstanteLivro.objects.filter(livro_adicionado=livro)
-            #context['form'] = AvaliaForm()
-            context['form_emprestimo'] = EmprestimoForm()
+            context['form'] = AvaliaForm()
+            context['form_emprestimo'] = PedirLivroEmprestadoForm()
 
         return context
 
