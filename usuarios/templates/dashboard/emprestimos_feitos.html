@@ -28,6 +28,10 @@
                 <h8><b>Telefone:</b> {{oi.perfil_solicitante.telefone}}</h8> <br>
                 <h8><b>Solicitado em:</b> {{ oi.data_emprestimo}}</h8> <br>
                 <h8><b>Devolução em:</b> {{ oi.data_devolucao }}</h8>
+                {% if oi.mensagem_de_quem_pede %}
+                <h8><b>Mensagem:</b> {{ oi.mensagem_de_quem_pede }}</h8>
+                {% endif %}
+
             </div>
 
             <h6><b>
@@ -95,9 +99,9 @@
                         {{ form.NON_FIELD_ERRORS }}
 
                         <div class='fieldWrapper'>
-                          {{ form.mensagem_cancelamento.errors }}
-                          <label for={{form.mensagem_cancelamento.id_for_label}}>Mensagem:</label>
-                          {{form.mensagem_cancelamento}}
+                          {{ form.mensagem_resposta.errors }}
+                          <label for={{form.mensagem_resposta.id_for_label}}>Porque não vai acontecer o empréstimo:</label>
+                          {{form.mensagem_resposta}}
                         </div>
 
                         <button type="submit" class="btn btn-primary">Confirmar</button>
