@@ -53,7 +53,7 @@
                       <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
                       <button class="btn btn-primary" type="submit" value="OK">Avalia</button>
                     </div>
-                    
+
                   </form>
                 </div>
               </div>
@@ -95,69 +95,39 @@
       </div>
     </div>
 
-          <div class="content">
-              <ul class="list-unstyled team-members">
-                          <li>
-                                  <div class="row">
-                                          <div class="header">
-                                                  <h4 class="title">Veja quem tem esse livro próximo de você</h4>
-                                              </div>
-                                  </div>
-                              <div class="row">
-                                  <div class="col-xs-3">
-                                      <div class="avatar">
-                                          <img src="{% static "assets/img/faces/face-0.jpg"%}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                                      </div>
-                                  </div>
-                                  <div class="col-xs-6">
-                                      Júlia
-                                      <br />
-                                      <span class="text-success"><small>10 km</small></span>
-                                  </div>
+    <div class="content">
+        <ul class="list-unstyled team-members">
+                    <li>
+                            <div class="row">
+                                    <div class="header">
+                                            <h4 class="title">Veja quem tem esse livro próximo de você</h4>
+                                        </div>
+                            </div>
+                    </li>
+                    {% for estante in estantes_com_livro %}
+                    {% if estante.estante.perfil_dono != request.user.perfil %}
+                    <li>
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="avatar">
+                                    <img src="{{ estante.estante.perfil_dono.imagem_perfil.url }}" alt="Circle Image" class="img-circle img-no-padding img-responsive" onclick="window.location.href= '{% url 'usuarios:estante' estante.estante.perfil_dono.id %}'" >
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                {{ estante.estante.perfil_dono }}
+                                <br />
+                                <span class="text-success"><small>5 km</small></span>
+                            </div>
 
-                                  <div class="col-xs-3 text-right">
-                                      <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-plus"></i></btn>
-                                  </div>
-                              </div>
-                          </li>
-                          <li>
-                              <div class="row">
-                                  <div class="col-xs-3">
-                                      <div class="avatar">
-                                          <img src="{% static "assets/img/faces/face-1.jpg"%}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                                      </div>
-                                  </div>
-                                  <div class="col-xs-6">
-                                      Pedro
-                                      <br />
-                                      <span class="text-success"><small>5 km</small></span>
-                                  </div>
-
-                                  <div class="col-xs-3 text-right">
-                                      <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-plus"></i></btn>
-                                  </div>
-                              </div>
-                          </li>
-                          <li>
-                              <div class="row">
-                                  <div class="col-xs-3">
-                                      <div class="avatar">
-                                          <img src="{% static "assets/img/faces/face-3.jpg"%}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                                      </div>
-                                  </div>
-                                  <div class="col-xs-6">
-                                      Júlio
-                                      <br />
-                                      <span class="text-success"><small>9 km</small></span>
-                                  </div>
-
-                                  <div class="col-xs-3 text-right">
-                                      <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-plus"></i></btn>
-                                  </div>
-                              </div>
-                          </li>
-                      </ul>
-          </div>
+                            <div class="col-xs-3 text-right">
+                                <a class="btn btn-sm btn-success btn-icon" href="#"><i class="fa fa-plus"></i></a>
+                            </div>
+                        </div>
+                    </li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+    </div>
       </div>
   </article>
   </div>
