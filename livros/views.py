@@ -69,6 +69,7 @@ class LivroDetailLogado(generic.DetailView):
             context['livros_lidos'] = perfil.avalialido_set.filter(livro=livro)
             context['medialivros'] = media_cada_livro(self.request, pk=self.kwargs['pk'])
             context['estantes_com_livro'] = EstanteLivro.objects.filter(livro_adicionado=livro)
+            context['form'] = AvaliaForm()
 
         return context
 
@@ -151,6 +152,7 @@ class AvaliaLidoCreate(generic.CreateView):
         context['livro'] = get_object_or_404(Livro, pk=self.kwargs['pk'])
 
         return context
+
 
 """
 apagar isso se funcionar

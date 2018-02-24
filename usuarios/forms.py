@@ -48,7 +48,7 @@ class RegistrarUsuarioForm(forms.Form):
 class AvaliaForm(ModelForm):
     class Meta:
         model = AvaliaLido
-        fields = ['nota']
+        fields = ['nota','comentario']
 
 
 class EmprestimoForm(ModelForm):

@@ -84,6 +84,7 @@ class AvaliaLido (models.Model):
     perfil_avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE)
     livro = models.ForeignKey(Livro, on_delete=models.CASCADE)
     nota = models.IntegerField(choices=NOTA_LIDO, null=False)
+    comentario = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return '{} {} {}'.format(self.livro, self.perfil_avaliador, self.nota)

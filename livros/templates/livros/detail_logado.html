@@ -38,19 +38,23 @@
                 <div class="modal-body">
                   <form action="{% url 'livros:avalia_livro' pk=livro.id %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ form }}
-                    <input type="submit" value="OK">
-                  </form>
-                  <form>
-                    <div class="form-group">
-                      <label for="message-text" class="form-control-label">Sobre o livro:</label>
-                      <textarea class="form-control" id="message-text"></textarea>
+                    {{ form.non_field_errors }}
+                    <div class='fieldWrapper'>
+                      {{ form.nota.errors }}
+                      <label for="{{form.nota.id_for_label}}">Nota:</label>
+                      {{ form.nota }}
                     </div>
+                    <div class='fieldWrapper'>
+                      {{ form.comentario.errors }}
+                      <label for="{{form.nota.id_for_label}}">Sobre o livro:</label>
+                      {{ form.comentario }}
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                      <button class="btn btn-primary" type="submit" value="OK">Avalia</button>
+                    </div>
+                    
                   </form>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                  <button type="button" class="btn btn-primary">Avalia</button>
                 </div>
               </div>
             </div>
