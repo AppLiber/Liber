@@ -59,3 +59,4 @@ class EmprestimoForm(ModelForm):
     class Meta:
         model = Emprestimo
         fields = [ 'data_devolucao', 'mensagem_de_quem_pede','mensagem_resposta']
+        mensagem_de_quem_pede = forms.CharField(required=False, widget=forms.Textarea(attrs={'class':'form-control','rows':1,'cols':10,'placeholder':'keword values'}))
