@@ -30,6 +30,8 @@ class Livro(models.Model):
     paginas = models.IntegerField(null=False, default=50)
     idioma= models.CharField(max_length=200, null=False, default="pt-br")
     imagem = models.ImageField(upload_to='imagem_livro/', default='imagem_livro/livro.png')
+    edicao = models.IntegerField(null=False, default=1)
+    ano = models.IntegerField(null=False, default=2014)
     autores = models.ManyToManyField(Autor)
     categorias = models.ManyToManyField(Categoria)
 
