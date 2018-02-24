@@ -543,11 +543,11 @@ class historico_emprestimo (generic.ListView):
         usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
         return AvaliaLido.objects.filter(perfil_avaliador=usuario)
 """
-class livros_emprestados (generic.ListView):
+class historico_emprestimo (generic.ListView):
 
     model=Emprestimo
     context_object_name = 'emprestimo'
-    template_name = 'dashboard/emprestimos_feitos.html'
+    template_name = 'dashboard/emprestimo2.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -578,51 +578,6 @@ def listSolicitante(request):
 
     return solicitanteEmprestimos
 
-
-class livros_devolver (generic.ListView):
-
-    model=Emprestimo
-    context_object_name = 'devolver'
-    template_name = 'dashboard/livros_devolver.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
-        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
-        context['solicitado'] = listaSolicitado(self.request)
-        context['solicitante'] = listSolicitante(self.request)
-        context['form'] = EmprestimoForm()
-
-        #__import__('ipdb').set_trace()
-        return context
-
-    def get_object(self):
-    #    __import__('ipdb').set_trace()
-        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
-        return AvaliaLido.objects.get(perfil_avaliador=usuario)
-
-
-class historico (generic.ListView):
-
-    model=Emprestimo
-    context_object_name = 'historico'
-    template_name = 'dashboard/historico.html'
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
-        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
-        context['solicitado'] = listaSolicitado(self.request)
-        context['solicitante'] = listSolicitante(self.request)
-        context['form'] = EmprestimoForm()
-
-        #__import__('ipdb').set_trace()
-        return context
-
-    def get_object(self):
-    #    __import__('ipdb').set_trace()
-        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
-        return AvaliaLido.objects.get(perfil_avaliador=usuario)
 
 def aceitar_emprestimo(request, user, emprestimo):
 

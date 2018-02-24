@@ -21,8 +21,12 @@ urlpatterns = [
     path('<int:user>/avaliacaolivro',(views.LivrosAvaliados.as_view()), name='avaliacaolivro'),
     path('<int:user>/sugestao', views.SugestaoLivro.as_view(), name='sugestao' ),
     path('<int:user>/avaliacao',views.Avaliacao.as_view(), name='avaliacao'),
-    path('<int:user>/emprestimos', views.historico_emprestimo.as_view(), name='emprestimos'),
-    path('<int:user>/testeemprestimo', views.teste_historico_emprestimo.as_view(), name='testeemprestimo'),
+    path('<int:user>/emprestimos', views.livros_emprestados.as_view(), name='emprestados'),
+    path('<int:user>/emprestimos/<int:emprestimo>/aceita', views.aceitar_emprestimo, name='aceita_emprestimo'),
+    path('<int:user>/devolver', views.livros_devolver.as_view(), name='livros_devolver'),
+    path('<int:user>/historico', views.historico.as_view(), name='historico'),
+    #path('<int:user>/testeemprestimo', views.teste_historico_emprestimo.as_view(), name='testeemprestimo'),
+    #path('<int:user>/testeemprestimo/<int:emprestimo>/aceita', views.aceitar_emprestimo, name='aceita_emprestimo'),
 
 
 

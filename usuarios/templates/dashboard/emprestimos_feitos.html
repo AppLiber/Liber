@@ -1,0 +1,115 @@
+{% extends 'dashboard/base_emprestimos.html' %}
+
+ {% load staticfiles %}
+
+{% block meus_livros_emprestados %}
+<li class="active">
+{% endblock %}
+
+{% block listas %}
+
+<div class="tab-pane fade in active">
+    {% if solicitado %} {% for oi in solicitado %}
+    <div class="bk-img" style="width:300px">
+        {% if oi.status_emprestimo == 'S' or oi.status_emprestimo == 'EA' %}
+
+        <center>
+            <br>
+            <div style="height:240px">
+                <img src="{{ oi.livro_emprestado.livro_adicionado.imagem.url }}" />
+                <h3 class="book-item_title"> <a href="{% url 'livros:livros_detail' pk=oi.livro_emprestado.livro_adicionado.id %}"> {{oi.livro_emprestado.livro_adicionado.titulo}}</a></h3>
+                <button type="button" class="button buy-button" data-toggle="modal" data-target="#confirmar_emprestimo" data-whatever="@getbootstrap">Aceitar</button> 
+                <button type="button" class="button buy-button" data-toggle="modal" data-target="#cancelar_emprestimo" data-whatever="@getbootstrap">Negar</button>
+
+                <p class="author">
+                </p>
+            </div>
+            <br>
+            <div class="col-xs-6.5 info">
+                <h4><b>Solicitante:</b> <a href="{% url 'usuarios:avaliacao' oi.perfil_solicitante.id %}">{{ oi.perfil_solicitante }}</a></h4>
+                <h8><b>Telefone:</b> {{oi.perfil_solicitante.telefone}}</h8> <br>
+                <h8><b>Solicitado em:</b> {{ oi.data_emprestimo}}</h8> <br>
+                <h8><b>Devolução em:</b> {{ oi.data_devolucao }}</h8>
+            </div>
+
+            <h6><b>
+                Status: {% if oi.status_emprestimo == 'EA'  %}
+                        Em Andamento
+                        {% endif %}
+                        {% if oi.status_emprestimo == 'S'  %}
+                        Solicitado
+
+                    {% endif %}
+                </b></h6>
+            <h5>
+              <!-- botão confirmar -->
+              <div class="modal fade" id="confirmar_emprestimo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Confirmar empréstimo</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="{% url 'usuarios:aceita_emprestimo' user=request.user.perfil.id emprestimo=oi.id  %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.NON_FIELD_ERRORS }}
+                        <div class='fieldWrapper'>
+                          {{ form.data_devolucao.errors }}
+                          <label for="{{form.data_devolucao.id_for_label }}">Data de devolução:</label>
+                          {{ form.data_devolucao }}
+                        </div>
+                        <div class='fieldWrapper'>
+                          {{ form.mensagem_cancelamento.errors }}
+                          <label for={{form.mensagem_cancelamento.id_for_label}}>Mensagem:</label>
+                          {{form.mensagem_cancelamento}}
+                        </div>
+                        <input type="submit" value="OK">
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                      <button type="button" class="btn btn-primary">Avalia</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- fim botão confirmar -->
+
+              <!-- botão cancelar -->
+              <div class="modal fade" id="cancelar_emprestimo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Avalie o livro</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div class="form-group">
+                          <label for="message-text" class="form-control-label">Sobre o livro:</label>
+                          <textarea class="form-control" id="message-text"></textarea>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                      <button type="button" class="btn btn-primary">Avalia</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- fim botão cancelar -->
+
+        </h5>
+        </center>
+
+    </div>
+    {% endif %} {% endfor %} {% endif %}
+</div>
+
+{% endblock %}

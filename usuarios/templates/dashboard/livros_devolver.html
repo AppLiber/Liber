@@ -1,0 +1,53 @@
+{% extends 'dashboard/base_emprestimos.html' %}
+
+{% load staticfiles %}
+
+{% block livros_devolver %}
+<li class="active">
+{% endblock %}
+
+{% block listas %}
+<div class="tab-pane fade in active">
+    {% if solicitante %}
+      {% for ola in solicitante %}
+    <div class="bk-img" style="width:300px">
+        {% if ola.status_emprestimo == 'S' or ola.status_emprestimo == 'EA' %}
+
+        <center>
+            <br>
+            <div style="height:240px">
+                <img src="{{ ola.livro_emprestado.livro_adicionado.imagem.url }}" />
+                <h3 class="book-item_title"> <a href="{% url 'livros:livros_detail' pk=ola.livro_emprestado.livro_adicionado.id %}"> {{ola.livro_emprestado.livro_adicionado.titulo}}</a></h3>
+                <p class="author">{% for autor in livro.autores.all %}
+                    <span class="subtitle">{{ autor.nome }}</span> {% endfor %}
+                </p>
+            </div>
+            <br>
+            <div class="col-xs-6.5 info">
+                <h4><b>Solicitante:</b> <a href="{% url 'usuarios:avaliacao' ola.perfil_solicitante.id %}">{{ ola.perfil_solicitante }}</a></h4>
+                <h8><b>Telefone:</b> {{ola.perfil_solicitante.telefone}}</h8> <br>
+                <h8><b>Solicitado em:</b> {{ ola.data_emprestimo}}</h8> <br>
+                <h8><b>Devolução em:</b> {{ ola.data_devolucao }}</h8>
+            </div>
+            <h6><b>Status: {% if ola.status_emprestimo == 'EA'  %}
+                        Em Andamento
+                        {% endif %}
+                        {% if ola.status_emprestimo == 'S'  %}
+                        Solicitado
+                    {% endif %}
+                </b></h6>
+            <h5>
+                <button type="button"  class="button buy-button">Aceitar</button>
+
+                 <button type="button" class="button buy-button">Negar</button>
+        </h5>
+        </center>
+        {% endif %}
+    </div>
+    {% endfor %}
+    {% else %}
+    <p>Não tem pedido de livros realizados por você.</p>
+     {% endif %}
+</div>
+
+{% endblock %}
