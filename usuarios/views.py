@@ -112,8 +112,8 @@ def fazer_pedido_de_emprestimo(request, user, livro):
 
     estante_livro = perfil_do_dono.estante.estantelivro_set.get(livro_adicionado=livro)
     emprestimo = Emprestimo.objects.create(perfil_do_dono=perfil_do_dono, perfil_solicitante=perfil_solicitante, livro_emprestado=estante_livro)
-
-    return redirect('usuarios:estante', user=perfil_do_dono.pk)
+    #return redirect('usuarios:estante', user=request.user.perfil.id)
+    return redirect('livros:livros_detail_logado', pk=livro.id)
 
 @login_required
 def marcar_livro_lido(request, pk):
