@@ -65,12 +65,12 @@
         <img src="{{ livro.imagem.url }}"/>
       </div>
     </div>
-    <div class="item-details">
+    <div class="item-details" style="width:500px">
       <h1>{{ livro.titulo }}</h1>
       {% for autor in livro.autores.all %}
       <span class="subtitle">{{ autor.nome }}</span>
       {% endfor %}
-      <div class="pane__section">
+      <div class="pane__section"  style="width:385px" >
         <p>
           {{ livro.descricao }}
         </p>
@@ -98,25 +98,33 @@
     <div class="content">
         <ul class="list-unstyled team-members">
                     <li>
-                            <div class="row">
+                            <center>
+                            <div class="row" style="margin:0">
                                     <div class="header">
-                                            <h4 class="title">Veja quem tem esse livro próximo de você</h4>
+                                            <h4 class="title">Veja quem tem esse livro <br> próximo a você</h4>
                                         </div>
                             </div>
+                        </center>
                     </li>
                     {% for estante in estantes_com_livro %}
                     {% if estante.estante.perfil_dono != request.user.perfil %}
                     <li>
-                        <div class="row">
+                        <div class="row" style="margin:5px">
                             <div class="col-xs-3">
                                 <div class="avatar">
-                                    <img src="{{ estante.estante.perfil_dono.imagem_perfil.url }}" alt="Circle Image" class="img-circle img-no-padding img-responsive" onclick="window.location.href= '{% url 'usuarios:estante' estante.estante.perfil_dono.id %}'" >
+                                    <img src="{{ estante.estante.perfil_dono.imagem_perfil.url }}" style="margin:5px; width:40px"  alt="Circle Image" class="img-circle img-no-padding img-responsive" onclick="window.location.href= '{% url 'usuarios:estante' estante.estante.perfil_dono.id %}'" >
                                 </div>
                             </div>
                             <div class="col-xs-6">
-                                {{ estante.estante.perfil_dono }}
+                                <h5>
+                                <a href="{% url 'usuarios:estante' estante.estante.perfil_dono.id %}">
+                                <b> {{ estante.estante.perfil_dono }} </b>
+
+                                </a>
                                 <br />
-                                <span class="text-success"><small>5 km</small></span>
+                               <span class="text-success"><small>  <b> 5 km</b>  </small></span>
+                           </h5>
+                           
                             </div>
 
                             <div class="col-xs-3 text-right">

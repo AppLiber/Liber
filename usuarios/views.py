@@ -387,13 +387,13 @@ def sugestoes(request):
             if terrorTotal == listaSugestao[x]:
                 listaSugestao[x]='terror'
 
-        livrossugerido1=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[0])#está retornando uma queryset
-        livrossugerido2=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[1])#tente pegar os livros e mostrar no template
-        livrossugerido3=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[2])
-        livrossugerido4=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[3])
-        livrossugerido5=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[4])
+        livrossugerido1=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[0])#está retornando uma queryset
+        livrossugerido2=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[1])#tente pegar os livros e mostrar no template
+        livrossugerido3=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[2])
+        livrossugerido4=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[3])
+        livrossugerido5=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[4])
 
-        lista_todos =[livrossugerido1.order_by('-nota'), livrossugerido2.order_by('-nota'), livrossugerido3.order_by('-nota'), livrossugerido4.order_by('-nota'), livrossugerido5.order_by('-nota')]
+        lista_todos =[livrossugerido1, livrossugerido2, livrossugerido3, livrossugerido4, livrossugerido5]
 
         lista_final = []
 
@@ -402,12 +402,11 @@ def sugestoes(request):
                     if sug not in lista_final:
                         lista_final.append(sug)
 
-        livrosLidos=perfil.avalialido_set.all()
+        livrosLidos=perfil.avalialido_set.all().order_by('-nota')
 
-        listafinalfinal=[]
         for y in livrosLidos:
             for x in lista_final:
-                if x.livro.titulo == y.livro.titulo:
+                if x.titulo == y.livro.titulo:
                     lista_final.remove(x)
 
         return lista_final

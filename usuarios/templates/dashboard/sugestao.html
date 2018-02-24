@@ -1,8 +1,8 @@
 {% if sugestao %}
   <ul>
     {% for livross in sugestao %}
-    <li><a href= "{% url 'livros:livros_detail' pk=livross.id %}" >{{ livross.livro.titulo }} - {{ livross.livro.autores.first}} </a></li>
-        {%for cat in livross.livro.categorias.all%}
+    <li><a href= "{% url 'livros:livros_detail' pk=livross.id %}" >{{ livross.titulo }} - {{ livross.autores.first}} </a></li>
+        {%for cat in livross.categorias.all%}
             {{cat}},
         {% endfor %}
     {% endfor %}
