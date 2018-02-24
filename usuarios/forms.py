@@ -49,9 +49,13 @@ class AvaliaForm(ModelForm):
     class Meta:
         model = AvaliaLido
         fields = ['nota','comentario']
-
-
+"""
+class PedirLivroEmprestadoForm(ModelForm):
+    class Meta:
+        model = Emprestimo
+        fields = [ 'data_devolucao', 'mensagem_de_quem_pede']
+"""
 class EmprestimoForm(ModelForm):
     class Meta:
         model = Emprestimo
-        fields = [ 'mensagem_cancelamento']
+        fields = [ 'data_devolucao', 'mensagem_de_quem_pede','mensagem_resposta']

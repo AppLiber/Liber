@@ -97,7 +97,8 @@ class Emprestimo (models.Model):
     data_emprestimo= models.DateField(auto_now=True)
     data_devolucao= models.DateField(null=True)
     status_emprestimo = models.CharField(max_length=2, choices=STATUS_EMPRESTIMO, blank=False , null=False, default='S')
-    mensagem_cancelamento = models.TextField(null=True, blank=True)
+    mensagem_de_quem_pede = models.TextField(null=True, blank=True)
+    mensagem_resposta = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return'Dono >{}, para {},{}'.format(self.perfil_do_dono.usuario.username, self.perfil_solicitante, self.livro_emprestado)

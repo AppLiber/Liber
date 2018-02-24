@@ -120,7 +120,42 @@
                             </div>
 
                             <div class="col-xs-3 text-right">
-                                <a class="btn btn-sm btn-success btn-icon" href="{% url 'usuarios:pedir_emprestado' user=estante.estante.perfil_dono.id livro=estante.livro_adicionado.id %}"><i class="fa fa-plus"></i></a>
+                              <!--<button type="button" class="button buy-button" data-toggle="modal" data-target="#avaliacaoLivro" data-whatever="@getbootstrap">Lido</button> -->
+                                <a class="btn btn-sm btn-success btn-icon" data-toggle="modal" data-target="#emprestimoLivro" data-whatever="@getbootstrap"><i class="fa fa-plus"></i></a>
+
+                                <div class="modal fade" id="emprestimoLivro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                  <div class="modal-dialog" role="document">
+                                    <div class="modal-content">
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Pedido de empréstimo</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                      <div class="modal-body">
+                                        <form action="{% url 'usuarios:pedir_emprestado' user=estante.estante.perfil_dono.id livro=estante.livro_adicionado.id %}" method="post" enctype="multipart/form-data">
+                                          {% csrf_token %}
+                                          {{ form_emprestimo.non_field_errors }}
+                                          <div class='fieldWrapper'>
+                                            {{ form_emprestimo.data_devolucao.errors }}
+                                            <label for="{{form.nota.id_for_label}}">Data de devolução desejada:</label>
+                                            {{ form_emprestimo.data_devolucao }}
+                                          </div>
+                                          <div class='fieldWrapper'>
+                                            {{ form_emprestimo.mensagem_de_quem_pede.errors }}
+                                            <label for="{{form.nota.id_for_label}}">Quer acrescentar alguma mensagem:</label>
+                                            {{ form_emprestimo.mensagem_de_quem_pede }}
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                            <button class="btn btn-primary" type="submit" value="OK">Avalia</button>
+                                          </div>
+
+                                        </form>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
                             </div>
                         </div>
                     </li>
