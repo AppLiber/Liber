@@ -546,8 +546,8 @@ class livros_emprestados (generic.ListView):
 
     model=Emprestimo
     context_object_name = 'emprestimo'
-    template_name = 'dashboard/emprestimos_feitos.html' ,
-    
+    template_name = 'dashboard/emprestimos_feitos.html'
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
         context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
@@ -582,7 +582,7 @@ class livros_devolver (generic.ListView):
 
     model=Emprestimo
     context_object_name = 'devolver'
-    template_name ='dashboard/livros_devolver.html'
+    template_name = 'dashboard/livros_devolver.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -658,6 +658,24 @@ def cancelar_emprestimo(request, user, emprestimo):
         if form.is_valid():
 
             form.instance.status_emprestimo = 'C'
+
+            form.save()
+
+        else:
+            form = EmprestimoForm()
+
+    return redirect('usuarios:livros_devolver', user=request.user.perfil.id)
+
+def devolver_livro(request, user, emprestimo):
+
+    emprestimo_confirmado = Emprestimo.objects.get(pk=emprestimo)
+
+    #__import__('ipdb').set_trace()
+    if request.method == 'POST':
+        form = EmprestimoForm(request.POST, instance=emprestimo_confirmado)
+        if form.is_valid():
+
+            form.instance.status_emprestimo = 'OK'
 
             form.save()
 

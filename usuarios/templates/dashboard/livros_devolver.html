@@ -31,7 +31,9 @@
             </div>
             <h6><b>Status: {% if ola.status_emprestimo == 'EA'  %}
                     <font color='#e62e00'>Em Andamento</font>
-                        <br> <br> <br> <br> <br>
+                        <br> <br><button type="button" style="font-size:12pt;Black:white;background-color:white;border:2px solid #004d00;padding:5px"
+                        class="button buy-button" data-toggle="modal" data-target="#devolver_livro" data-whatever="@getbootstrap">Devolver</button>
+
                         {% endif %}
                         {% if ola.status_emprestimo == 'S'  %}
                         <font color='#330a00'>Solicitado</font>
@@ -52,7 +54,30 @@
                         </button>
                       </div>
                       <div class="modal-body">
-                        <form action="{% url 'usuarios:dev_cancelar_emprestimo' user=request.user.perfil.id emprestimo=ola.id  %}" method="post" enctype="multipart/form-data">
+                        <form action="{% url 'usuarios:cancelar_emprestimo' user=request.user.perfil.id emprestimo=ola.id  %}" method="post" enctype="multipart/form-data">
+                          {% csrf_token %}
+                          {{ form.NON_FIELD_ERRORS }}
+                          <button type="submit" class="btn btn-primary">Confirmar</button>
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+
+                <div class="modal fade" id="devolver_livro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Devolver Livro</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                          <span aria-hidden="true">&times;</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <form action="{% url 'usuarios:devolver_livro' user=request.user.perfil.id emprestimo=ola.id  %}" method="post" enctype="multipart/form-data">
                           {% csrf_token %}
                           {{ form.NON_FIELD_ERRORS }}
                           <button type="submit" class="btn btn-primary">Confirmar</button>
