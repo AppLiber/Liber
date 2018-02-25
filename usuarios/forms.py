@@ -53,7 +53,7 @@ class AvaliaForm(ModelForm):
 class PedirLivroEmprestadoForm(ModelForm):
     class Meta:
         model = Emprestimo
-        fields = [ 'data_devolucao', 'mensagem_de_quem_pede']
+        fields = ['data_devolucao', 'mensagem_de_quem_pede']
 
 class EmprestimoForm(ModelForm):
     class Meta:

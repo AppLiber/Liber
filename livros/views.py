@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 
 from .models import Autor, Categoria, Livro
-from usuarios.models import Perfil, Estante, EstanteLivro, AvaliaLido
+from usuarios.models import Perfil, Estante, EstanteLivro, AvaliaLido, Emprestimo
 from usuarios.forms import AvaliaForm, EmprestimoForm , PedirLivroEmprestadoForm
 from .forms import LivroForm
 

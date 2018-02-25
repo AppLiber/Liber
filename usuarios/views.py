@@ -11,7 +11,7 @@ from django.shortcuts import render
 
 
 from livros.models import Livro
-from .forms import CadastroForm, AvaliaForm, EmprestimoForm #, PedirLivroEmprestadoForm
+from .forms import CadastroForm, AvaliaForm, EmprestimoForm, PedirLivroEmprestadoForm
 from .models import Perfil, Estante, Emprestimo, AvaliaLido, EstanteLivro, AvaliaEmprestimo
 
 class UserCreate(generic.CreateView):
@@ -108,23 +108,18 @@ class PerfilEstanteList(generic.DetailView):
 def fazer_pedido_de_emprestimo(request, user, livro):
     perfil_solicitante = request.user.perfil
     perfil_do_dono = get_object_or_404(Perfil, pk=user)
-    #livro_detail = Livro.objects.get(pk=livro)
 
     estante_livro = perfil_do_dono.estante.estantelivro_set.get(livro_adicionado=livro)
-    livroxx = estante_livro.livro_adicionado
-    pedido_emprestimo = Emprestimo()
+
     if request.method == 'POST':
-        form = EmprestimoForm(request.POST, instance=pedido_emprestimo)
+        form = PedirLivroEmprestadoForm(request.POST)
         if form.is_valid():
-            #livro_que_quer_emprestado = Livro.objects.get(pk=estante_livro.livro_adicionado.id)
             form.instance.perfil_do_dono=perfil_do_dono
             form.instance.perfil_solicitante=perfil_solicitante
             form.instance.livro_emprestado = estante_livro
-            #form.instance.livro_emprestado=livro_que_quer_emprestado
             form.save()
         else:
-            form = EmprestimoForm()
-
+            form = PedirLivroEmprestadoForm()
 
     #emprestimo = Emprestimo.objects.create(perfil_do_dono=perfil_do_dono, perfil_solicitante=perfil_solicitante, livro_emprestado=estante_livro)
     #return redirect('usuarios:estante', user=request.user.perfil.id)
@@ -605,7 +600,7 @@ class livros_devolver (generic.ListView):
         perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
         context['solicitado'] = listaSolicitado(self.request)
         context['solicitante'] = listSolicitante(self.request)
-        context['form'] = EmprestimoForm()
+        context['form'] = PedirLivroEmprestadoForm()
 
         #__import__('ipdb').set_trace()
         return context
