@@ -9,8 +9,8 @@
 {% block listas %}
 
 <div class="tab-pane fade in active">
-    {% if solicitante %}
-      {% for ola in solicitante %}
+    {% if solicitado %}
+      {% for ola in solicitado %}
     <div class="bk-img" style="width:300px">
         {% if ola.status_emprestimo == 'C' or ola.status_emprestimo == 'OK' %}
 

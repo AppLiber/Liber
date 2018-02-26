@@ -17,6 +17,7 @@ urlpatterns = [
     path('<int:pk>', views.UserDetail.as_view(), name='home'),
     path('<int:user>/estante', login_required(views.PerfilEstanteList.as_view()), name='estante'),
     path('<int:user>/estante/<int:livro>/apagar', apagar_livro_da_estante, name='apagar_livro' ),
+    path('<int:user>/estante/<int:livro>', views.LivroEmprestimoDetail.as_view(), name='pedir_emprestado_detail'),
     path('<int:user>/estante/<int:livro>/emprestimo', views.fazer_pedido_de_emprestimo, name='pedir_emprestado'),
     path('<int:user>/avaliacaolivro',(views.LivrosAvaliados.as_view()), name='avaliacaolivro'),
     path('<int:user>/sugestao', views.SugestaoLivro.as_view(), name='sugestao' ),

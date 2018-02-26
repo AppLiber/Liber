@@ -117,56 +117,19 @@
                             </div>
                             <div class="col-xs-6">
                                 <h5>
-                                <a href="{% url 'usuarios:estante' estante.estante.perfil_dono.id %}">
-                                <b> {{ estante.estante.perfil_dono }} </b>
+                                  <a href="{% url 'usuarios:estante' estante.estante.perfil_dono.id %}">
+                                    <b> {{ estante.estante.perfil_dono }}, {{ estante.estante.perfil_dono.id }}</b>
+                                  </a>
+                                  <br/>
+                                  <span class="text-success"><small>  <b> 5 km</b>  </small></span>
+                                </h5>
+                                <a class="btn btn-sm btn-success btn-icon" href="{% url 'usuarios:pedir_emprestado_detail' user=estante.estante.perfil_dono.id livro=estante.livro_adicionado.id %}"><i class="fa fa-plus"></i></a>
 
-                                </a>
-                                <br />
-                               <span class="text-success"><small>  <b> 5 km</b>  </small></span>
-                           </h5>
-
-                            </div>
-
-                            <div class="col-xs-3 text-right">
-                              <!--<button type="button" class="button buy-button" data-toggle="modal" data-target="#avaliacaoLivro" data-whatever="@getbootstrap">Lido</button> -->
-                                <a class="btn btn-sm btn-success btn-icon" data-toggle="modal" data-target="#emprestimoLivro" data-whatever="@getbootstrap"><i class="fa fa-plus"></i></a>
-
-                                <div class="modal fade" id="emprestimoLivro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                  <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
-                                      <div class="modal-header">
-                                        <h5 class="modal-title" id="exampleModalLabel">Pedido de empréstimo</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                      </div>
-                                      <div class="modal-body">
-                                        <form action="{% url 'usuarios:pedir_emprestado' user=estante.estante.perfil_dono.id livro=estante.livro_adicionado.id %}" method="post" enctype="multipart/form-data">
-                                          {% csrf_token %}
-                                          {{ form_emprestimo.non_field_errors }}
-                                          <div class='fieldWrapper'>
-                                            {{ form_emprestimo.data_devolucao.errors }}
-                                            <label for="{{form.nota.id_for_label}}">Data de devolução desejada:</label>
-                                            {{ form_emprestimo.data_devolucao }}
-                                          </div>
-                                          <div class='fieldWrapper'>
-                                            {{ form_emprestimo.mensagem_de_quem_pede.errors }}
-                                            <label for="{{form.nota.id_for_label}}">Quer acrescentar alguma mensagem:</label>
-                                            {{ form_emprestimo.mensagem_de_quem_pede }}
-                                          </div>
-                                          <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                                            <button class="btn btn-primary" type="submit" value="OK">Fazer pedido</button>
-                                          </div>
-
-                                        </form>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
                             </div>
                         </div>
                     </li>
+
+
                     {% endif %}
                     {% endfor %}
                 </ul>
@@ -182,4 +145,58 @@
 	<script src="{% static 'assets/js/bootstrap.min.js'%}" type="text/javascript"></script>
 	<script src="{% static 'assets/js/paper-kit.js?v=2.1.0'%}"></script>
 
+
+
 {% endblock %}
+
+<div class="col-xs-3 text-right">
+
+<!--<button type="button" class="button buy-button" data-toggle="modal" data-target="#avaliacaoLivro" data-whatever="@getbootstrap">Lido</button> -->
+  <a class="btn btn-sm btn-success btn-icon" data-toggle="modal" data-target="#emprestimoLivro" data-whatever="@getbootstrap">Pedir</a>
+
+  <div class="modal fade" id="emprestimoLivro" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">Pedido de empréstimo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'usuarios:pedir_emprestado' user=estante.estante.perfil_dono.id livro=estante.livro_adicionado.id %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form_emprestimo.non_field_errors }}
+            <div class='fieldWrapper'>
+              {{ form_emprestimo.data_devolucao.errors }}
+              <label for="{{form.nota.id_for_label}}">Data de devolução desejada:</label>
+              {{ form_emprestimo.data_devolucao }}
+            </div>
+            <div class='fieldWrapper'>
+              {{ form_emprestimo.mensagem_de_quem_pede.errors }}
+              <label for="{{form.nota.id_for_label}}">Quer acrescentar alguma mensagem:</label>
+              {{ form_emprestimo.mensagem_de_quem_pede }}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+              <button class="btn btn-primary" type="submit" value="OK">Fazer pedido</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    $('#emprestimoLivro').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var recipient = button.data('whatever') // Extract info from data-* attributes
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var modal = $(this)
+      modal.find('.modal-title').text('New message to ' + recipient)
+      modal.find('.modal-body input').val(recipient)
+    })
+</script>

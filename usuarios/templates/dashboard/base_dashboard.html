@@ -147,7 +147,7 @@
                             </a>
                             </li>
                             <li>
-                                <a href="{% url 'usuarios:emprestados' user=perfil.id %}">
+                                <a href="{% url 'usuarios:emprestados' user=request.user.perfil.id %}">
                                     <i class="ti-clipboard"></i>
                                     <p>Meus Empréstimos</p>
                                 </a>
