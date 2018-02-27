@@ -520,6 +520,9 @@ class Avaliacao (generic.ListView):
         perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
         context['sugestao'] = sugestoes(self.request)
         #__import__('ipdb').set_trace()
+        #context['emprestimo'] = Emprestimo.objects.get(pk=self.kwargs['emprestimo'])
+        context['emprestimos'] = Emprestimo.objects.filter(perfil_solicitante=perfil, status_emprestimo='OK')
+
 
         return context
 
