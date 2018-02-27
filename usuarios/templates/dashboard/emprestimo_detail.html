@@ -45,8 +45,8 @@
                         {% if oi.status_emprestimo == 'S'  %}
                         <font color='#330a00'>Solicitado</font>
                         <br> <br>
-                        <button type="button" style="font-size:12pt;Black:white;background-color:white;border:2px solid #004d00;padding:5px"
-                        class="button buy-button" data-toggle="modal" data-target="#confirmar_emprestimo"  data-whatever="@getbootstrap"> Aceitar</button> 
+                        <button type="button" style="font-size:12pt;Color:Black:white;background-color:white;border:2px solid #004d00;padding:5px"
+                        class="button buy-button" onclick="window.location.href= '{% url 'usuarios:aceita_emprestimo' user=request.user.perfil.id emprestimo=oi.id %}'"> Aceitar</button>
                         <button type="button" style="font-size:12pt;Black:white;background-color:white;border:2px solid #990000;padding:5px"
                         class="button buy-button" data-toggle="modal" data-target="#cancelar_emprestimo"  data-whatever="@getbootstrap">Negar</button>
 

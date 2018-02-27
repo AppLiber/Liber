@@ -666,25 +666,16 @@ def aceitar_emprestimo(request, user, emprestimo):
     emprestimo_confirmado = Emprestimo.objects.get(pk=emprestimo)
     livroEstante=EstanteLivro.objects.filter(estante=emprestimo_confirmado.perfil_do_dono_id, livro_adicionado=emprestimo_confirmado.livro_emprestado.livro_adicionado_id)
 
-    #__import__('ipdb').set_trace()
-    if request.method == 'POST':
-        form = EmprestimoForm(request.POST, instance=emprestimo_confirmado)
-        if form.is_valid():
+    emprestimo_confirmado.status_emprestimo = 'EA'
+    emprestimo_confirmado.save()
 
-            form.instance.status_emprestimo = 'EA'
+    for i in livroEstante:
+        mudaStatus=i
 
-            form.save()
+    mudaStatus.status = 'E'
+    mudaStatus.save()
 
-            for i in livroEstante:
-                mudaStatus=i
-
-            mudaStatus.status = 'E'
-            mudaStatus.save()
-
-        else:
-            form = EmprestimoForm()
-
-    return redirect('usuarios:estante', user=request.user.perfil.id)
+    return redirect('usuarios:emprestados', user=request.user.perfil.id)
 
 def cancelar_emprestimo(request, user, emprestimo):
 
