@@ -23,7 +23,7 @@
                 </p>
             </div>
             <br>
-            <div class="col-xs-6.5 info">
+            <div class="col-xs-6.5 info" style="height:120px">
                 <h4><b>Quer emprestado:</b> <a href="{% url 'usuarios:avaliacao' oi.perfil_solicitante.id %}">{{ oi.perfil_solicitante }}</a></h4>
                 <h8><b>Telefone:</b> {{oi.perfil_solicitante.telefone}}</h8> <br>
                 <h8><b>Solicitado em:</b> {{ oi.data_emprestimo}}</h8> <br>
@@ -35,6 +35,8 @@
 
  -->
             </div>
+<div class="">
+
 
             <h6><b>
                 Status: {% if oi.status_emprestimo == 'EA'  %}
@@ -54,8 +56,7 @@
                         class="button buy-button" href="{% url 'usuarios:emprestimo_detail' user=request.user.perfil.id emprestimo=oi.id  %}">Responder</a>
 
                     {% endif %}
-
-
+</div>
                 </b></h6>
 
         </center>
