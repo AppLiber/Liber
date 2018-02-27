@@ -11,10 +11,9 @@ from django.shortcuts import render
 
 
 from livros.models import Livro
-from .forms import CadastroForm, AvaliaForm
+from .forms import CadastroForm, AvaliaForm, EmprestimoForm, PedirLivroEmprestadoForm
+from .models import Perfil, Estante, Emprestimo, AvaliaLido, EstanteLivro, AvaliaEmprestimo
 
-
-from .models import Perfil, Estante, Emprestimo, AvaliaLido
 class UserCreate(generic.CreateView):
     template_name = 'perfil/new.html'
     form_class = CadastroForm
@@ -24,8 +23,8 @@ class UserCreate(generic.CreateView):
         user = form.save()
         user.perfil = Perfil.objects.create(telefone=form.cleaned_data['telefone'],
                 data_de_nascimento=form.cleaned_data['data_de_nascimento'],
-                sexo=form.cleaned_data['sexo'],usuario=user)
-                #imagem_perfil=form.cleaned_data['imagem_perfil'])
+                sexo=form.cleaned_data['sexo'], #imagem_perfil=form.cleaned_data['imagem_perfil'],
+                usuario=user)
 
         user.save()
         user.perfil.estante = Estante.objects.create(perfil_dono = user.perfil)
@@ -98,9 +97,13 @@ class PerfilEstanteList(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
+        #livro = Livro.objects.get(pk=self.kwargs['pk'])
         context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
         perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
         context['estante_livros'] = perfil.estante.estantelivro_set.all()
+        #context['estantes_com_livro'] = EstanteLivro.objects.filter(livro_adicionado=livro)
+        context['form_emprestimo'] = PedirLivroEmprestadoForm()
+
         return context
 
         #return get_object_or_404(Estante, usuario_dono_id = self.kwargs['user'])
@@ -109,12 +112,24 @@ class PerfilEstanteList(generic.DetailView):
 def fazer_pedido_de_emprestimo(request, user, livro):
     perfil_solicitante = request.user.perfil
     perfil_do_dono = get_object_or_404(Perfil, pk=user)
-    livro = Livro.objects.get(pk=livro)
-
+    #livros_da_estante = perfil_do_dono.estante.livros.all()
     estante_livro = perfil_do_dono.estante.estantelivro_set.get(livro_adicionado=livro)
-    emprestimo = Emprestimo.objects.create(perfil_do_dono=perfil_do_dono, perfil_solicitante=perfil_solicitante, livro_emprestado=estante_livro)
+    #__import__('ipdb').set_trace()
+    #if (livro in livros_da_estante):
+    if request.method == 'POST':
+        form = PedirLivroEmprestadoForm(request.POST)
+        if form.is_valid():
+            form.instance.perfil_do_dono=perfil_do_dono
+            form.instance.perfil_solicitante=perfil_solicitante
+            form.instance.livro_emprestado = estante_livro
+            form.save()
+        else:
+            form = PedirLivroEmprestadoForm()
 
-    return redirect('usuarios:estante', user=request.user.perfil.id)
+    #emprestimo = Emprestimo.objects.create(perfil_do_dono=perfil_do_dono, perfil_solicitante=perfil_solicitante, livro_emprestado=estante_livro)
+    #return redirect('usuarios:estante', user=request.user.perfil.id)
+    #return redirect('livros:livros_detail_logado', pk=livro.id)
+    return redirect('livros_index')
 
 @login_required
 def marcar_livro_lido(request, pk):
@@ -372,14 +387,13 @@ def sugestoes(request):
             if terrorTotal == listaSugestao[x]:
                 listaSugestao[x]='terror'
 
+        livrossugerido1=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[0])#está retornando uma queryset
+        livrossugerido2=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[1])#tente pegar os livros e mostrar no template
+        livrossugerido3=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[2])
+        livrossugerido4=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[3])
+        livrossugerido5=Livro.objects.filter(categorias__descricao__icontains=listaSugestao[4])
 
-        livrossugerido1=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[0])#está retornando uma queryset
-        livrossugerido2=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[1])#tente pegar os livros e mostrar no template
-        livrossugerido3=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[2])
-        livrossugerido4=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[3])
-        livrossugerido5=AvaliaLido.objects.filter(livro__categorias__descricao__icontains=listaSugestao[4])
-
-        lista_todos =[livrossugerido1.order_by('-nota'), livrossugerido2.order_by('-nota'), livrossugerido3.order_by('-nota'), livrossugerido4.order_by('-nota'), livrossugerido5.order_by('-nota')]
+        lista_todos =[livrossugerido1, livrossugerido2, livrossugerido3, livrossugerido4, livrossugerido5]
 
         lista_final = []
 
@@ -388,20 +402,14 @@ def sugestoes(request):
                     if sug not in lista_final:
                         lista_final.append(sug)
 
-        livrosLidos=perfil.avalialido_set.all()
+        livrosLidos=perfil.avalialido_set.all().order_by('-nota')
 
-        listafinalfinal=[]
         for y in livrosLidos:
             for x in lista_final:
-                if x.livro.titulo == y.livro.titulo:
+                if x.titulo == y.livro.titulo:
                     lista_final.remove(x)
 
         return lista_final
-
-
-
-
-        return render(request, 'sugestao.html', {"lista_sugere3": lista})
 
 
 class LivrosAvaliados(generic.ListView):
@@ -468,6 +476,7 @@ class SugestaoLivro(generic.ListView):
     def get_queryset(self):
         usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
         return AvaliaLido.objects.filter(perfil_avaliador=usuario)
+
 """
 def livro3(request):
     perfil=request.user.perfil
@@ -477,10 +486,12 @@ def livro3(request):
         lista3.append(sugestao[i].titulo)
     return lista3
 """
+"""
+apagar aqui do usuários e deixar no livros
 
 class AvaliaLidoCreate(generic.CreateView):
     model = AvaliaLido
-    template_name = 'dashboard/avaliacao.html'
+    template_name = 'livros/detail_logado.html'
     success_url = reverse_lazy('livros_index')
     form_class = AvaliaForm
 
@@ -497,7 +508,7 @@ class AvaliaLidoCreate(generic.CreateView):
 
         return context
 
-
+"""
 class Avaliacao (generic.ListView):
 
     context_object_name = 'lista_sugere3'
@@ -520,3 +531,193 @@ class Avaliacao (generic.ListView):
     def get_queryset(self):
         usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
         return AvaliaLido.objects.filter(perfil_avaliador=usuario)
+
+
+"""
+class historico_emprestimo (generic.ListView):
+
+    context_object_name = 'emprestimos'
+    template_name = 'dashboard/emprestimos.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        context['sugestao'] = sugestoes(self.request)
+        #__import__('ipdb').set_trace()
+
+        return context
+
+    def get_object(self):
+    #    __import__('ipdb').set_trace()
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return AvaliaLido.objects.get(perfil_avaliador=usuario)
+
+    def get_queryset(self):
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return AvaliaLido.objects.filter(perfil_avaliador=usuario)
+"""
+class livros_emprestados (generic.ListView):
+
+    model=Emprestimo
+    context_object_name = 'emprestimo'
+    template_name = 'dashboard/emprestimos_feitos.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        context['solicitado'] = listaSolicitado(self.request)
+        context['solicitante'] = listSolicitante(self.request)
+        context['form'] = EmprestimoForm()
+
+        #__import__('ipdb').set_trace()
+        return context
+
+    def get_object(self):
+    #    __import__('ipdb').set_trace()
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return AvaliaLido.objects.get(perfil_avaliador=usuario)
+
+
+def listaSolicitado(request):
+    perfil = request.user.perfil
+    donoEmprestimos=Emprestimo.objects.filter(perfil_do_dono=perfil).order_by('-status_emprestimo', 'data_emprestimo')
+
+    return donoEmprestimos
+
+def listSolicitante(request):
+    perfil = request.user.perfil
+    solicitanteEmprestimos=Emprestimo.objects.filter(perfil_solicitante=perfil).order_by('data_emprestimo')
+
+    return solicitanteEmprestimos
+
+
+class livros_devolver (generic.ListView):
+
+    model=Emprestimo
+    context_object_name = 'devolver'
+    template_name = 'dashboard/livros_devolver.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        context['solicitado'] = listaSolicitado(self.request)
+        context['solicitante'] = listSolicitante(self.request)
+        context['form'] = PedirLivroEmprestadoForm()
+
+        #__import__('ipdb').set_trace()
+        return context
+
+    def get_object(self):
+    #    __import__('ipdb').set_trace()
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return AvaliaLido.objects.get(perfil_avaliador=usuario)
+
+
+class historico (generic.ListView):
+
+    model=Emprestimo
+    context_object_name = 'historico'
+    template_name = 'dashboard/historico.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        context['solicitado'] = listaSolicitado(self.request)
+        context['solicitante'] = listSolicitante(self.request)
+        context['form'] = EmprestimoForm()
+
+        #__import__('ipdb').set_trace()
+        return context
+
+    def get_object(self):
+    #    __import__('ipdb').set_trace()
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return AvaliaLido.objects.get(perfil_avaliador=usuario)
+
+def aceitar_emprestimo(request, user, emprestimo):
+
+    emprestimo_confirmado = Emprestimo.objects.get(pk=emprestimo)
+    livroEstante=EstanteLivro.objects.filter(estante=emprestimo_confirmado.perfil_do_dono_id, livro_adicionado=emprestimo_confirmado.livro_emprestado.livro_adicionado_id)
+
+    #__import__('ipdb').set_trace()
+    if request.method == 'POST':
+        form = EmprestimoForm(request.POST, instance=emprestimo_confirmado)
+        if form.is_valid():
+
+            form.instance.status_emprestimo = 'EA'
+
+            form.save()
+
+            for i in livroEstante:
+                mudaStatus=i
+
+            mudaStatus.status = 'E'
+            mudaStatus.save()
+
+        else:
+            form = EmprestimoForm()
+
+    return redirect('usuarios:estante', user=request.user.perfil.id)
+
+def cancelar_emprestimo(request, user, emprestimo):
+
+    emprestimo_confirmado = Emprestimo.objects.get(pk=emprestimo)
+
+    #__import__('ipdb').set_trace()
+    if request.method == 'POST':
+        form = EmprestimoForm(request.POST, instance=emprestimo_confirmado)
+        if form.is_valid():
+
+            form.instance.status_emprestimo = 'C'
+
+            form.save()
+
+        else:
+            form = EmprestimoForm()
+
+    return redirect('usuarios:livros_devolver', user=request.user.perfil.id)
+
+def devolver_livro(request, user, emprestimo):
+
+    emprestimo_confirmado = Emprestimo.objects.get(pk=emprestimo)
+
+    #__import__('ipdb').set_trace()
+    if request.method == 'POST':
+        form = EmprestimoForm(request.POST, instance=emprestimo_confirmado)
+        if form.is_valid():
+
+            form.instance.status_emprestimo = 'OK'
+
+            form.save()
+
+        else:
+            form = EmprestimoForm()
+
+    return redirect('usuarios:livros_devolver', user=request.user.perfil.id)
+
+
+
+class LivroEmprestimoDetail(generic.DetailView):
+    model = Estante
+    template_name = 'dashboard/livro_emprestado_detail.html'
+
+    def get_object(self):
+    #    __import__('ipdb').set_trace()
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return Estante.objects.get(perfil_dono=usuario)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        livro = Livro.objects.get(pk=self.kwargs['livro'])
+        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        context['estante_livros'] = perfil.estante.estantelivro_set.all()
+        #context['estantes_com_livro'] = EstanteLivro.objects.filter(livro_adicionado=livro)
+        context['form_emprestimo'] = PedirLivroEmprestadoForm()
+        context['estante_livro'] = perfil.estante.estantelivro_set.get(livro_adicionado=livro)
+
+        return context

@@ -1,0 +1,33 @@
+{% extends 'dashboard/base_dashboard.html' %} {% load staticfiles %} {% block body %}
+
+<!--  Paper Dashboard core CSS    -->
+<link href="https://cdn.jsdelivr.net/foundation/6.2.0/foundation.min.css">
+<link href="{% static 'assets/css/estante.css'%}" rel="stylesheet" />
+
+
+<div class="container">
+    <ul class="nav nav-tabs"> {% block meus_livros_emprestados %}
+        <li> {% endblock %}
+            <a href="{% url 'usuarios:emprestados' user=perfil.id %}">Meus Livros Emprestados</a>
+        </li>
+        {% block livros_devolver %}
+        <li> {% endblock %}
+            <a href="{% url 'usuarios:livros_devolver' user=perfil.id %}">Livros a Devolver</a>
+        </li>
+        {% block historico %}
+        <li> {% endblock %}
+            <a href="{% url 'usuarios:historico' user=perfil.id %}">Histórico</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+    {% block listas %}
+
+    {% endblock %}
+    </div>
+
+
+    <script src="{% static 'assets/js/main.js'%}"></script>
+
+    {% endblock %}
+
+</div>

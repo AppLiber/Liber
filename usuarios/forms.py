@@ -3,18 +3,23 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
-from .models import Perfil, AvaliaLido
+from .models import Perfil, AvaliaLido, Emprestimo
+
+SEXO_USUARIO = (
+    ('F', 'Feminino'),
+    ('M', 'Masculino'),
+)
 
 class CadastroForm(UserCreationForm):
 
     telefone = forms.CharField()
     data_de_nascimento = forms.DateField()
-    sexo = forms.CharField()
+    sexo = forms.ChoiceField(widget=forms.Select, choices=SEXO_USUARIO) #SelectCharWidget(sexo=SEXO_USUARIO))
     #imagem_perfil = forms.ImageField()
 
     class Meta:
         model = User
-        fields = ('username','password1','password2','telefone','data_de_nascimento','sexo')
+        fields = ('username','password1','password2','telefone','data_de_nascimento','sexo')#,'imagem_perfil')
 
 """
 class RegistrarUsuarioForm(forms.Form):
@@ -48,4 +53,15 @@ class RegistrarUsuarioForm(forms.Form):
 class AvaliaForm(ModelForm):
     class Meta:
         model = AvaliaLido
-        fields = ['nota']
+        fields = ['nota','comentario']
+
+class PedirLivroEmprestadoForm(ModelForm):
+    class Meta:
+        model = Emprestimo
+        fields = ['data_devolucao', 'mensagem_de_quem_pede']
+
+class EmprestimoForm(ModelForm):
+    class Meta:
+        model = Emprestimo
+        fields = ['mensagem_resposta']
+        #mensagem_de_quem_pede = forms.CharField(required=False, widget=forms.Textarea(attrs={'class':'form-control','rows':1,'cols':10,'placeholder':'keword values'}))

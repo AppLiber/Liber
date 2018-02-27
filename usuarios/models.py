@@ -23,6 +23,7 @@ NOTA_LIDO = (
 )
 
 STATUS_EMPRESTIMO = (
+    ('S', 'Solicitado'),
     ('EA', 'Em andamento'),
     ('OK', 'Concluído'),
     ('C', 'Cancelado')
@@ -83,6 +84,7 @@ class AvaliaLido (models.Model):
     perfil_avaliador= models.ForeignKey(Perfil, on_delete=models.CASCADE)
     livro = models.ForeignKey(Livro, on_delete=models.CASCADE)
     nota = models.IntegerField(choices=NOTA_LIDO, null=False)
+    comentario = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return '{} {} {}'.format(self.livro, self.perfil_avaliador, self.nota)
@@ -94,7 +96,9 @@ class Emprestimo (models.Model):
     livro_emprestado = models.ForeignKey(EstanteLivro, on_delete=models.CASCADE)
     data_emprestimo= models.DateField(auto_now=True)
     data_devolucao= models.DateField(null=True)
-    status_emprestimo = models.CharField(max_length=2, choices=STATUS_EMPRESTIMO, blank=False , null=False, default='EA')
+    status_emprestimo = models.CharField(max_length=2, choices=STATUS_EMPRESTIMO, blank=False , null=False, default='S')
+    mensagem_de_quem_pede = models.CharField(null=True, blank=True, max_length=200)
+    mensagem_resposta = models.CharField(null=True, blank=True,max_length=200)
 
     def __str__(self):
         return'Dono >{}, para {},{}'.format(self.perfil_do_dono.usuario.username, self.perfil_solicitante, self.livro_emprestado)

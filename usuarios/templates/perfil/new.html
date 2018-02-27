@@ -13,24 +13,42 @@
                                 <h3 class="title">Crie sua conta</h3>
                                 <form class="register-form" action="{% url 'cadastrar' %}" method="post" >
                                   {% csrf_token %}
-                                    <label>Nome</label>
-                                    {{ form.username }}
-                                  </br>
-                                    <label>Senha</label>
-                                    {{ form.password1 }}
-                                  </br>
-                                    <label>Confirme a Senha</label>
-                                    {{ form.password2 }}
-                                  </br>
-                                    <label>Telefone</label>
-                                    {{ form.telefone }}
-                                  </br>
-                                    <label>Data de Nascimento</label>
-                                    {{ form.data_de_nascimento }}
-                                  </br>
-                                    <label>Sexo</label>
-                                    {{ form.sexo }}
-                                  </br>
+                                    {{ form.non_field_errors}}
+                                    <div class='fieldWrapper'>
+                                      {{form.username.errors}}
+                                      <label for="{{form.username.id_for_label}}">Nome</label>
+                                      {{ form.username }}
+                                    </div>
+                                    <div class='fieldWrapper'>
+                                      {{form.password1.errors}}
+                                      <label for="{{form.password1.id_for_label}}">Senha</label>
+                                      {{ form.password1 }}
+                                    </div>
+                                    <div class='fieldWrapper'>
+                                      {{form.password2.errors}}
+                                      <label for="{{form.password2.id_for_label}}">Confirme a Senha</label>
+                                      {{ form.password2 }}
+                                    </div>
+                                    <div class='fieldWrapper'>
+                                      {{form.telefone.errors}}
+                                      <label for="{{form.telefone.id_for_label}}">Telefone</label>
+                                      {{ form.telefone }}
+                                    </div>
+                                    <div class='fieldWrapper'>
+                                      {{form.data_de_nascimento.errors}}
+                                      <label for="{{form.data_de_nascimento.id_for_label}}">Data de Nascimento</label>
+                                      {{ form.data_de_nascimento }}
+                                    </div>
+                                    <div class='fieldWrapper'>
+                                      {{form.sexo.errors}}
+                                      <label for="{{form.sexo.id_for_label}}">Sexo</label>
+                                      {{ form.sexo }}
+                                    </div> <!--
+                                    <div class='fieldWrapper'>
+                                      {{form.imagem_perfil.errors}}
+                                      <label for="{{form.imagem_perfil.id_for_label}}">Imagem</label>
+                                      {{ form.imagem_perfil }}
+                                    </div> -->
                                     <input type="submit" value="Cadastrar">
                                 </forms>
                             </div>

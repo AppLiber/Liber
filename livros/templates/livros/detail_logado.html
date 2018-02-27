@@ -21,36 +21,71 @@
 <div class="book-container">
   <article class="item-pane">
     <div class="item-preview">
-      {% if livros_lidos %}
-        <button type="button" class="btn btn-info" disabled>Já Lido</button>
-      {% else %}
-        <a type="button" class="button buy-button" href="{% url 'livros:avalia_livro' pk=livro.id %}">Lido</a>
-      {% endif %}
+      <div>
+        {% if livros_lidos %}
+          <button type="button" class="btn btn-info" disabled>Já Lido</button> <br> <br><br>
+        {% else %}
+          <button type="button" class="button buy-button" data-toggle="modal" data-target="#avaliacaoLivro" data-whatever="@getbootstrap">Lido</button> <br> <br><br>
+          <div class="modal fade" id="avaliacaoLivro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">Avalie o livro</h5>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form action="{% url 'livros:avalia_livro' pk=livro.id %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.non_field_errors }}
+                    <div class='fieldWrapper'>
+                      {{ form.nota.errors }}
+                      <label for="{{form.nota.id_for_label}}">Nota:</label>
+                      {{ form.nota }}
+                    </div>
+                    <div class='fieldWrapper'>
+                      {{ form.comentario.errors }}
+                      <label for="{{form.nota.id_for_label}}">Sobre o livro:</label>
+                      {{ form.comentario }}
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                      <button class="btn btn-primary" type="submit" value="OK">Avalia</button>
+                    </div>
+
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      </div>
       <div class="book">
         <img src="{{ livro.imagem.url }}"/>
       </div>
     </div>
-    <div class="item-details">
+    <div class="item-details" style="width:500px">
       <h1>{{ livro.titulo }}</h1>
       {% for autor in livro.autores.all %}
       <span class="subtitle">{{ autor.nome }}</span>
       {% endfor %}
-      <div class="pane__section">
+      <div class="pane__section"  style="width:385px" >
         <p>
           {{ livro.descricao }}
         </p>
       </div>
       <div class="pane__section">
                       <dl>
-                              <dt>Ano</dt>
-                              <dd>2013</dd>
-                              <dt>Páginas</dt>
-                              <dd>208</dd>
-                              <dt>Edição</dt>
-                              <dd>1</dd>
-                              <dt>ISBN</dt>
-                              <dd>1234567890</dd>
-                            </dl>
+                        <dt>Ano</dt>
+                        <dd>{{livro.ano}}</dd>
+                        <dt>Páginas</dt>
+                        <dd>{{livro.paginas}}</dd>
+                        <dt>Edição</dt>
+                        <dd>{{livro.edicao}}</dd>
+                        <dt>ISBN</dt>
+                        <dd>{{livro.isbn13}}</dd>
+                      </dl>
       </div>
       <div class="pane__section clearfix">
         {% if estante_livros %}
@@ -60,69 +95,45 @@
       </div>
     </div>
 
-          <div class="content">
-              <ul class="list-unstyled team-members">
-                          <li>
-                                  <div class="row">
-                                          <div class="header">
-                                                  <h4 class="title">Veja quem tem esse livro próximo de você</h4>
-                                              </div>
-                                  </div>
-                              <div class="row">
-                                  <div class="col-xs-3">
-                                      <div class="avatar">
-                                          <img src="{% static "assets/img/faces/face-0.jpg"%}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                                      </div>
-                                  </div>
-                                  <div class="col-xs-6">
-                                      Júlia
-                                      <br />
-                                      <span class="text-success"><small>10 km</small></span>
-                                  </div>
+    <div class="content">
+        <ul class="list-unstyled team-members">
+                    <li>
+                            <center>
+                            <div class="row" style="margin:0">
+                                    <div class="header">
+                                            <h4 class="title">Veja quem tem esse livro <br> próximo a você</h4>
+                                        </div>
+                            </div>
+                        </center>
+                    </li>
+                    {% for estante in estantes_com_livro %}
+                    {% if estante.estante.perfil_dono != request.user.perfil %}
+                    <li>
+                        <div class="row" style="margin:5px">
+                            <div class="col-xs-3">
+                                <div class="avatar">
+                                    <img src="{{ estante.estante.perfil_dono.imagem_perfil.url }}" style="margin:5px; width:40px"  alt="Circle Image" class="img-circle img-no-padding img-responsive" onclick="window.location.href= '{% url 'usuarios:estante' estante.estante.perfil_dono.id %}'" >
+                                </div>
+                            </div>
+                            <div class="col-xs-6">
+                                <h5>
+                                  <a href="{% url 'usuarios:estante' estante.estante.perfil_dono.id %}">
+                                    <b> {{ estante.estante.perfil_dono }}, {{ estante.estante.perfil_dono.id }}</b>
+                                  </a>
+                                  <br/>
+                                  <span class="text-success"><small>  <b> 5 km</b>  </small></span>
+                                </h5>
+                                <a class="btn btn-sm btn-success btn-icon" href="{% url 'usuarios:pedir_emprestado_detail' user=estante.estante.perfil_dono.id livro=estante.livro_adicionado.id %}"><i class="fa fa-plus"></i></a>
 
-                                  <div class="col-xs-3 text-right">
-                                      <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-plus"></i></btn>
-                                  </div>
-                              </div>
-                          </li>
-                          <li>
-                              <div class="row">
-                                  <div class="col-xs-3">
-                                      <div class="avatar">
-                                          <img src="{% static "assets/img/faces/face-1.jpg"%}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                                      </div>
-                                  </div>
-                                  <div class="col-xs-6">
-                                      Pedro
-                                      <br />
-                                      <span class="text-success"><small>5 km</small></span>
-                                  </div>
+                            </div>
+                        </div>
+                    </li>
 
-                                  <div class="col-xs-3 text-right">
-                                      <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-plus"></i></btn>
-                                  </div>
-                              </div>
-                          </li>
-                          <li>
-                              <div class="row">
-                                  <div class="col-xs-3">
-                                      <div class="avatar">
-                                          <img src="{% static "assets/img/faces/face-3.jpg"%}" alt="Circle Image" class="img-circle img-no-padding img-responsive">
-                                      </div>
-                                  </div>
-                                  <div class="col-xs-6">
-                                      Júlio
-                                      <br />
-                                      <span class="text-success"><small>9 km</small></span>
-                                  </div>
 
-                                  <div class="col-xs-3 text-right">
-                                      <btn class="btn btn-sm btn-success btn-icon"><i class="fa fa-plus"></i></btn>
-                                  </div>
-                              </div>
-                          </li>
-                      </ul>
-          </div>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+    </div>
       </div>
   </article>
   </div>
@@ -134,4 +145,58 @@
 	<script src="{% static 'assets/js/bootstrap.min.js'%}" type="text/javascript"></script>
 	<script src="{% static 'assets/js/paper-kit.js?v=2.1.0'%}"></script>
 
+
+
 {% endblock %}
+
+<div class="col-xs-3 text-right">
+
+<!--<button type="button" class="button buy-button" data-toggle="modal" data-target="#avaliacaoLivro" data-whatever="@getbootstrap">Lido</button> -->
+  <a class="btn btn-sm btn-success btn-icon" data-toggle="modal" data-target="#emprestimoLivro" data-whatever="@getbootstrap">Pedir</a>
+
+  <div class="modal fade" id="emprestimoLivro" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">Pedido de empréstimo</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form action="{% url 'usuarios:pedir_emprestado' user=estante.estante.perfil_dono.id livro=estante.livro_adicionado.id %}" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form_emprestimo.non_field_errors }}
+            <div class='fieldWrapper'>
+              {{ form_emprestimo.data_devolucao.errors }}
+              <label for="{{form.nota.id_for_label}}">Data de devolução desejada:</label>
+              {{ form_emprestimo.data_devolucao }}
+            </div>
+            <div class='fieldWrapper'>
+              {{ form_emprestimo.mensagem_de_quem_pede.errors }}
+              <label for="{{form.nota.id_for_label}}">Quer acrescentar alguma mensagem:</label>
+              {{ form_emprestimo.mensagem_de_quem_pede }}
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+              <button class="btn btn-primary" type="submit" value="OK">Fazer pedido</button>
+            </div>
+
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+    $('#emprestimoLivro').on('show.bs.modal', function (event) {
+      var button = $(event.relatedTarget) // Button that triggered the modal
+      var recipient = button.data('whatever') // Extract info from data-* attributes
+      // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+      // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+      var modal = $(this)
+      modal.find('.modal-title').text('New message to ' + recipient)
+      modal.find('.modal-body input').val(recipient)
+    })
+</script>

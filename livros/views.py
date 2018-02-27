@@ -6,7 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 
 from .models import Autor, Categoria, Livro
-from usuarios.models import Perfil, Estante, EstanteLivro
+from usuarios.models import Perfil, Estante, EstanteLivro, AvaliaLido, Emprestimo
+from usuarios.forms import AvaliaForm, EmprestimoForm , PedirLivroEmprestadoForm
 from .forms import LivroForm
 
 import operator
@@ -67,6 +68,9 @@ class LivroDetailLogado(generic.DetailView):
             context['livros_lidos_total'] = perfil.avalialido_set.all()
             context['livros_lidos'] = perfil.avalialido_set.filter(livro=livro)
             context['medialivros'] = media_cada_livro(self.request, pk=self.kwargs['pk'])
+            context['estantes_com_livro'] = EstanteLivro.objects.filter(livro_adicionado=livro)
+            context['form'] = AvaliaForm()
+            context['form_emprestimo'] = PedirLivroEmprestadoForm()
 
         return context
 
@@ -129,3 +133,32 @@ def media_cada_livro(request, pk):
         medialivros=somaNotas/notas.count()
 
     return medialivros
+
+
+class AvaliaLidoCreate(generic.CreateView):
+    model = AvaliaLido
+    template_name = 'livros/detail_logado.html'
+    success_url = reverse_lazy('livros_index')
+    form_class = AvaliaForm
+
+    def form_valid(self, form):
+        livro = Livro.objects.get(pk=self.kwargs['pk'])
+        form.instance.perfil_avaliador = self.request.user.perfil
+        form.instance.livro = livro
+        form.instance.lido = True
+        return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['livro'] = get_object_or_404(Livro, pk=self.kwargs['pk'])
+
+        return context
+
+
+"""
+apagar isso se funcionar
+def retorna_estantes_com_o_livro(request):
+    estantes = Estante.objects.all()
+    livro = Livro.objects.get(pk=livro)
+    estantes_com_livro = EstanteLivro.objects.filter(livro_adicionado=livro)
+"""

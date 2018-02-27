@@ -31,7 +31,7 @@
 
                         <div class="grid-shuffle">
                             <ul id="grid" class="row">
-                              {% for estante_livro in estante_livros.all %}
+                              {% if estante_livro %}
                                 <li class="book-item col-lg-6 col-sm-6 card" data-groups='["classic"]' data-date-created='1937' data-title='Of Mice and Men'
                                     data-color='#fcc278'>
                                     <div class="bk-img">
@@ -117,7 +117,7 @@
                                     </div>
 
                                 </li>
-                              {% endfor %}
+
                             </ul>
                           </div>
 
@@ -135,6 +135,6 @@
 
 </div>
 <!-- /main-container -->
-
+{% endif %}
 
 {% endblock %}

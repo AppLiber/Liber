@@ -1,0 +1,125 @@
+{% extends 'dashboard/base_emprestimos.html' %}
+
+ {% load staticfiles %}
+
+{% block meus_livros_emprestados %}
+<li class="active">
+{% endblock %}
+
+{% block listas %}
+
+<div class="tab-pane fade in active">
+    {% if solicitado %} {% for oi in solicitado %}
+    <div class="bk-img" style="width:300px">
+        {% if oi.status_emprestimo == 'S' or oi.status_emprestimo == 'EA' %}
+
+        <center>
+            <br>
+            <div style="height:240px">
+                <img src="{{ oi.livro_emprestado.livro_adicionado.imagem.url }}" />
+                <h3 class="book-item_title"> <a href="{% url 'livros:livros_detail_logado' pk=oi.livro_emprestado.livro_adicionado.id %}"> {{oi.livro_emprestado.livro_adicionado.titulo}}</a></h3>
+
+                <p class="author">
+                </p>
+            </div>
+            <br>
+            <div class="col-xs-6.5 info">
+                <h4><b>Quer emprestado:</b> <a href="{% url 'usuarios:avaliacao' oi.perfil_solicitante.id %}">{{ oi.perfil_solicitante }}</a></h4>
+                <h8><b>Telefone:</b> {{oi.perfil_solicitante.telefone}}</h8> <br>
+                <h8><b>Solicitado em:</b> {{ oi.data_emprestimo}}</h8> <br>
+                <h8><b>Devolução em:</b> {{ oi.data_devolucao }}</h8>
+                {% if oi.mensagem_de_quem_pede %}
+                <h8><b>Mensagem:</b> {{ oi.mensagem_de_quem_pede }}</h8>
+                {% endif %}
+                <!-- botão confirmar
+
+ -->
+            </div>
+
+            <h6><b>
+                Status: {% if oi.status_emprestimo == 'EA'  %}
+                        <font color='#e62e00'>Em Andamento</font>
+                        <br> <br> <br> <br> <br>
+
+                        {% endif %}
+                        {% if oi.status_emprestimo == 'S'  %}
+                        <font color='#330a00'>Solicitado</font>
+                        <br> <br>
+                        <button type="button" style="font-size:12pt;Black:white;background-color:white;border:2px solid #004d00;padding:5px"
+                        class="button buy-button" data-toggle="modal" data-target="#confirmar_emprestimo"  data-whatever="@getbootstrap"> Aceitar</button>
+                        <button type="button" style="font-size:12pt;Black:white;background-color:white;border:2px solid #990000;padding:5px"
+                        class="button buy-button" data-toggle="modal" data-target="#cancelar_emprestimo" data-whatever="@getbootstrap">Negar</button>
+
+                    {% endif %}
+
+
+                </b></h6>
+
+            <h5>
+              <!-- botão confirmar -->
+              <div class="modal fade" id="confirmar_emprestimo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Confirmar empréstimo</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="{% url 'usuarios:aceita_emprestimo' user=request.user.perfil.id emprestimo=oi.id  %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.NON_FIELD_ERRORS }}
+                        <div class='fieldWrapper'>
+                          {{ form.mensagem_resposta.errors }}
+                          <label for={{form.mensagem_resposta.id_for_label}}>Mensagem:</label>
+                          {{form.mensagem_resposta}}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- fim botão confirmar -->
+
+              <!-- botão cancelar -->
+              <div class="modal fade" id="cancelar_emprestimo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h5 class="modal-title" id="exampleModalLabel">Cancelar Empréstimo</h5>
+                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                      </button>
+                    </div>
+                    <div class="modal-body">
+                      <form action="{% url 'usuarios:cancelar_emprestimo' user=request.user.perfil.id emprestimo=oi.id  %}" method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        {{ form.NON_FIELD_ERRORS }}
+
+                        <div class='fieldWrapper'>
+                          {{ form.mensagem_resposta.errors }}
+                          <label for={{form.mensagem_resposta.id_for_label}}>Porque não vai acontecer o empréstimo:</label>
+                          {{form.mensagem_resposta}}
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Confirmar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+
+                      </form>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- fim botão cancelar -->
+
+        </h5>
+        </center>
+
+    </div>
+    {% endif %} {% endfor %} {% endif %}
+</div>
+
+{% endblock %}

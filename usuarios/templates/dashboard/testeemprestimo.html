@@ -1,0 +1,53 @@
+{% extends 'dashboard/base_dashboard.html' %} {% load staticfiles %}
+<!doctype html> {% block body %}
+<div class="">
+    {% if solicitado %}
+    <li>
+        <center>
+        <h2 > Meus Empréstimos:</h2>
+        </center>
+    </li>
+    <h3>
+    <ul>Querem pegar eprestado</h3>
+        {% for oi in solicitado %}
+
+        <div class="bk-book bk-bookdefault">
+            <div class="bk-front">
+
+                <img src="{{ oi.livro_emprestado.livro_adicionado.imagem.url }}" height="-90" onclick="window.location.href= '#' " />
+                <a href="{% url 'usuarios:avaliacao' oi.perfil_solicitante.id %}">{{ oi.perfil_solicitante }}</a> quer o livro <a href="{% url 'livros:livros_detail' pk=oi.livro_emprestado.livro_adicionado.id %}"> {{oi.livro_emprestado.livro_adicionado.titulo}}</a>  emprestado <button type="button"  class="button buy-button">Aceitar</button> - <button type="button" class="button buy-button">Negar</button></li>
+
+            </div>
+            <div class="bk-back"></div>
+            <div class="bk-left"></div>
+        </div>
+        <br>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No momento ninguém quer seus livros emprestado</p>
+    {% endif %}
+</div>
+
+<div class="">
+    {% if solicitante %}
+    <h3> <ul>Pedi Emprestado {% for ola in solicitante %}</h3>
+        <div class="bk-book bk-bookdefault">
+            <div class="bk-front">
+                <li>
+                <img src="{{ ola.livro_emprestado.livro_adicionado.imagem.url }}" height="-90" onclick="window.location.href= '#' " />
+                 Solicitei o livro <a href="{% url 'livros:livros_detail' pk=ola.livro_emprestado.livro_adicionado.id %}"> {{ ola.livro_emprestado.livro_adicionado.titulo}} </a> emprestado de <a href="{% url 'usuarios:estante' ola.perfil_do_dono.id %}">{{ ola.perfil_do_dono }}</a>            - Devolução em {{ ola.data_devolucao }} <button type="button" class="button buy-button">Cancelar Solicitação</button>
+                </li>
+            </div>
+            <div class="bk-back"></div>
+            <div class="bk-left"></div>
+        </div>
+        <br>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>Não tem livro registrado</p>
+    {% endif %}
+
+</div>
+{% endblock %}

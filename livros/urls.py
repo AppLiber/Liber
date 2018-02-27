@@ -6,7 +6,8 @@ from django.conf.urls.static import static
 
 # Django local
 from . import views
-from usuarios.views import marcar_livro_lido, AvaliaLidoCreate
+from usuarios.views import marcar_livro_lido
+#, AvaliaLidoCreate
 
 
 app_name = 'livros'
@@ -21,7 +22,7 @@ urlpatterns = [
     path('<int:pk>/adiciona', views.adiciona_livro_na_estante, name='adiciona'),
     path('<int:pk>/lido', marcar_livro_lido, name='livrolido'),
     path('<int:pk>/medialivros', views.media_cada_livro, name='medialivros'),
-    path('<int:pk>/avalia', AvaliaLidoCreate.as_view(), name='avalia_livro'),
+    path('<int:pk>/avalia', views.AvaliaLidoCreate.as_view(), name='avalia_livro'),
 
 
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

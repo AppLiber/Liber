@@ -42,6 +42,7 @@
                         <img src="{{ perfil.imagem_perfil.url }}"></img>
                         <h2> {{ perfil.usuario }}</h2>
                     </li>
+                    {% if request.user.perfil == perfil %}
                     {% block acompanhamento %}
                     <li class="active">{% endblock %}
                         <a href="{% url 'usuarios:home' perfil.id %}">
@@ -49,13 +50,15 @@
                             <p>Acompanhamento</p>
                         </a>
                     </li>
+                    {% endif %}
                     <li>
                         <a href="#">
                             <i class="ti-user"></i>
                             <p>Perfil de Usuário</p>
                         </a>
                     </li>
-                    <li>
+                    {% block avaliacao %}
+                    <li> {% endblock %}
                         <a href="{% url 'usuarios:avaliacao' user=perfil.id %}">
                             <i class="ti-search"></i>
                             <p>Ver Avaliações</p>
@@ -65,9 +68,14 @@
                     <li> {% endblock %}
                         <a href="{% url 'usuarios:estante' perfil.id %}">
                             <i class="ti-book"></i>
-                            <p>Minha Estante</p>
+                              {% if request.user.perfil == perfil %}
+                                <p>Minha Estante</p>
+                              {% else %}
+                              <p>Estante</p>
+                              {% endif %}
                         </a>
                     </li>
+                      {% if request.user.perfil == perfil %}
                     <li>
                         <a href="#" data-toggle="modal" data-target="#myModal">
                             <i class="ti-bookmark"></i>
@@ -86,8 +94,8 @@
                                         {% if sugestao %}
                                           <ul>
                                             {% for livross in sugestao %}
-                                            <li><a href= "{% url 'livros:livros_detail' pk=livross.id %}" >{{ livross.livro.titulo }}, de {{livross.livro.autores.first}}</a></li>
-                                                {%for cat in livross.livro.categorias.all%}
+                                            <li><a href= "{% url 'livros:livros_detail' pk=livross.id %}" >{{ livross.titulo }}, de {{livross.autores.first}}</a></li>
+                                                {%for cat in livross.categorias.all%}
                                                     {{cat}},
                                                 {% endfor %}
                                             {% endfor %}
@@ -107,6 +115,7 @@
                             </div>
                         </div>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </div>
@@ -121,12 +130,24 @@
                             <span class="icon-bar bar2"></span>
                             <span class="icon-bar bar3"></span>
                         </button>
-                        <a class="navbar-brand" href="#">Minha Conta</a>
+                        <a class="navbar-brand" href="{% url 'usuarios:home' pk=request.user.perfil.id %}">Minha Conta</a>
                     </div>
                     <div class="collapse navbar-collapse">
                         <ul class="nav navbar-nav navbar-right">
                             <li>
-                                <a href="emprestimos.html">
+                                <a class="buy-button" href="{% url 'usuarios:usuarios_index' %}">
+                                    <i class="fa fa-user-circle-o"></i>
+                                    <br>
+                                </a>
+                            </li>
+                            <li>
+                            <a class="buy-button" href="{% url 'livros:lista_livros' %}">
+                                <i class="fa fa-book"></i>
+                                <br>
+                            </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'usuarios:emprestados' user=request.user.perfil.id %}">
                                     <i class="ti-clipboard"></i>
                                     <p>Meus Empréstimos</p>
                                 </a>
