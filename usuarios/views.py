@@ -11,7 +11,7 @@ from django.shortcuts import render
 
 
 from livros.models import Livro
-from .forms import CadastroForm, AvaliaForm, EmprestimoForm, PedirLivroEmprestadoForm
+from .forms import CadastroForm, AvaliaForm, EmprestimoForm, PedirLivroEmprestadoForm, AvaliacaoEmprestimoForm
 from .models import Perfil, Estante, Emprestimo, AvaliaLido, EstanteLivro, AvaliaEmprestimo
 
 class UserCreate(generic.CreateView):
@@ -656,6 +656,7 @@ class EmprestimoDetail(generic.DetailView):
         context['oi']=Emprestimo.objects.get(pk=self.kwargs['emprestimo']) #emprestimo
         #context['estantes_com_livro'] = EstanteLivro.objects.filter(livro_adicionado=livro)
         context['form'] = EmprestimoForm()
+        context['form_avaliacao'] = AvaliacaoEmprestimoForm()
         #context['estante_livro'] = perfil.estante.estantelivro_set.get(livro_adicionado=livro)
 
         return context
@@ -666,14 +667,25 @@ def aceitar_emprestimo(request, user, emprestimo):
     emprestimo_confirmado = Emprestimo.objects.get(pk=emprestimo)
     livroEstante=EstanteLivro.objects.filter(estante=emprestimo_confirmado.perfil_do_dono_id, livro_adicionado=emprestimo_confirmado.livro_emprestado.livro_adicionado_id)
 
-    emprestimo_confirmado.status_emprestimo = 'EA'
-    emprestimo_confirmado.save()
+    #emprestimo_confirmado.status_emprestimo = 'EA'
+    #emprestimo_confirmado.save()
 
-    for i in livroEstante:
-        mudaStatus=i
+    if request.method == 'POST':
+        form = EmprestimoForm(request.POST, instance=emprestimo_confirmado)
+        if form.is_valid():
 
-    mudaStatus.status = 'E'
-    mudaStatus.save()
+            form.instance.status_emprestimo = 'EA'
+
+            form.save()
+
+            for i in livroEstante:
+                mudaStatus=i
+
+            mudaStatus.status = 'E'
+            mudaStatus.save()
+        else:
+            form = EmprestimoForm()
+
 
     return redirect('usuarios:emprestados', user=request.user.perfil.id)
 
@@ -682,14 +694,19 @@ def cancelar_emprestimo(request, user, emprestimo):
     emprestimo_confirmado = Emprestimo.objects.get(pk=emprestimo)
     livroEstante=EstanteLivro.objects.filter(estante=emprestimo_confirmado.perfil_do_dono_id, livro_adicionado=emprestimo_confirmado.livro_emprestado.livro_adicionado_id)
 
-    emprestimo_confirmado.status_emprestimo = 'C'
-    emprestimo_confirmado.save()
+    #emprestimo_confirmado.status_emprestimo = 'C'
+    #emprestimo_confirmado.save()
 
-    for i in livroEstante:
-        mudaStatus=i
+    if request.method == 'POST':
+        form = EmprestimoForm(request.POST, instance=emprestimo_confirmado)
+        if form.is_valid():
 
-    mudaStatus.status = 'D'
-    mudaStatus.save()
+            form.instance.status_emprestimo = 'C'
+
+            form.save()
+
+        else:
+            form = EmprestimoForm()
 
     return redirect('usuarios:livros_devolver', user=request.user.perfil.id)
 
@@ -704,7 +721,31 @@ def devolver_livro(request, user, emprestimo):
 
     return redirect('usuarios:livros_devolver', user=request.user.perfil.id)
 
+def confirmar_devolucao(request, user, emprestimo):
 
+    emprestimo = Emprestimo.objects.get(pk=emprestimo)
+    #livroEstante=EstanteLivro.objects.filter(estante=emprestimo_confirmado.perfil_do_dono_id, livro_adicionado=emprestimo_confirmado.livro_emprestado.livro_adicionado_id)
+    #perfil_solicitante = request.user.perfil
+    #perfil_do_dono = get_object_or_404(Perfil, pk=user)
+
+    #emprestimo_confirmado.status_emprestimo = 'OK'
+    #emprestimo_confirmado.save()
+
+    if request.method == 'POST':
+        form = AvaliacaoEmprestimoForm(request.POST)
+        if form.is_valid():
+
+            form.instance.Emprestimo_avaliado = emprestimo
+            form.save()
+
+            emprestimo.status_emprestimo = 'OK'
+            emprestimo.save()
+
+        else:
+            form = EmprestimoForm()
+
+
+    return redirect('usuarios:livros_devolver', user=request.user.perfil.id)
 
 class LivroEmprestimoDetail(generic.DetailView):
     model = Estante
