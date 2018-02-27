@@ -23,6 +23,7 @@ urlpatterns = [
     path('<int:user>/sugestao', views.SugestaoLivro.as_view(), name='sugestao' ),
     path('<int:user>/avaliacao',views.Avaliacao.as_view(), name='avaliacao'),
     path('<int:user>/emprestimos', views.livros_emprestados.as_view(), name='emprestados'),
+    path('<int:user>/emprestimos/<int:emprestimo>', views.EmprestimoDetail.as_view(), name='emprestimo_detail'),
     path('<int:user>/emprestimos/<int:emprestimo>/aceita', views.aceitar_emprestimo, name='aceita_emprestimo'),
     path('<int:user>/emprestimos/<int:emprestimo>/cancela', views.cancelar_emprestimo, name='cancelar_emprestimo'),
     path('<int:user>/devolver/<int:emprestimo>/devolver', views.devolver_livro, name='devolver_livro'),

@@ -638,6 +638,29 @@ class historico (generic.ListView):
         usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
         return AvaliaLido.objects.get(perfil_avaliador=usuario)
 
+class EmprestimoDetail(generic.DetailView):
+    model = Emprestimo
+    template_name = 'dashboard/emprestimo_detail.html'
+
+    def get_object(self):
+    #    __import__('ipdb').set_trace()
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return Estante.objects.get(perfil_dono=usuario)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        #livro = Livro.objects.get(pk=self.kwargs['livro'])
+        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        context['estante_livros'] = perfil.estante.estantelivro_set.all()
+        context['oi']=Emprestimo.objects.get(pk=self.kwargs['emprestimo']) #emprestimo
+        #context['estantes_com_livro'] = EstanteLivro.objects.filter(livro_adicionado=livro)
+        context['form'] = EmprestimoForm()
+        #context['estante_livro'] = perfil.estante.estantelivro_set.get(livro_adicionado=livro)
+
+        return context
+
+
 def aceitar_emprestimo(request, user, emprestimo):
 
     emprestimo_confirmado = Emprestimo.objects.get(pk=emprestimo)
