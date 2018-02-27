@@ -35,22 +35,22 @@ class LivroDetail(generic.DetailView):
 
     model = Livro
     template_name = 'livros/detail.html'
-"""
+
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data()
         #perfil = self.request.user.perfil
-
+        context['medialivros'] = media_cada_livro(self.request, pk=self.kwargs['pk'])
         if self.request.user.is_authenticated:
             perfil = get_object_or_404(Perfil, pk=self.request.user.perfil.id)
             livro = Livro.objects.get(pk=self.kwargs['pk'])
             context['estante_livros'] = perfil.estante.estantelivro_set.filter(livro_adicionado=livro)
             context['livros_lidos_total'] = perfil.avalialido_set.all()
             context['livros_lidos'] = perfil.avalialido_set.filter(livro=livro)
-            context['medialivros'] = media_cada_livro(self.request, pk=self.kwargs['pk'])
+
 
         return context
-"""
+
 
 class LivroDetailLogado(generic.DetailView):
     model = Livro
