@@ -100,7 +100,7 @@ class PerfilEstanteList(generic.DetailView):
         #livro = Livro.objects.get(pk=self.kwargs['pk'])
         context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
         perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
-        context['estante_livros'] = perfil.estante.estantelivro_set.all()
+        context['estante_livros'] = perfil.estante.estantelivro_set.all().order_by('status')
         #context['estantes_com_livro'] = EstanteLivro.objects.filter(livro_adicionado=livro)
         context['form_emprestimo'] = PedirLivroEmprestadoForm()
 
@@ -588,7 +588,7 @@ def listaSolicitado(request):
 
 def listSolicitante(request):
     perfil = request.user.perfil
-    solicitanteEmprestimos=Emprestimo.objects.filter(perfil_solicitante=perfil).order_by('data_emprestimo')
+    solicitanteEmprestimos=Emprestimo.objects.filter(perfil_solicitante=perfil).order_by('status_emprestimo', 'data_emprestimo')
 
     return solicitanteEmprestimos
 
@@ -680,36 +680,27 @@ def aceitar_emprestimo(request, user, emprestimo):
 def cancelar_emprestimo(request, user, emprestimo):
 
     emprestimo_confirmado = Emprestimo.objects.get(pk=emprestimo)
+    livroEstante=EstanteLivro.objects.filter(estante=emprestimo_confirmado.perfil_do_dono_id, livro_adicionado=emprestimo_confirmado.livro_emprestado.livro_adicionado_id)
 
-    #__import__('ipdb').set_trace()
-    if request.method == 'POST':
-        form = EmprestimoForm(request.POST, instance=emprestimo_confirmado)
-        if form.is_valid():
+    emprestimo_confirmado.status_emprestimo = 'C'
+    emprestimo_confirmado.save()
 
-            form.instance.status_emprestimo = 'C'
+    for i in livroEstante:
+        mudaStatus=i
 
-            form.save()
-
-        else:
-            form = EmprestimoForm()
+    mudaStatus.status = 'D'
+    mudaStatus.save()
 
     return redirect('usuarios:livros_devolver', user=request.user.perfil.id)
 
 def devolver_livro(request, user, emprestimo):
 
     emprestimo_confirmado = Emprestimo.objects.get(pk=emprestimo)
+    livroEstante=EstanteLivro.objects.filter(estante=emprestimo_confirmado.perfil_do_dono_id, livro_adicionado=emprestimo_confirmado.livro_emprestado.livro_adicionado_id)
 
-    #__import__('ipdb').set_trace()
-    if request.method == 'POST':
-        form = EmprestimoForm(request.POST, instance=emprestimo_confirmado)
-        if form.is_valid():
+    emprestimo_confirmado.status_emprestimo = 'ED'
+    emprestimo_confirmado.save()
 
-            form.instance.status_emprestimo = 'OK'
-
-            form.save()
-
-        else:
-            form = EmprestimoForm()
 
     return redirect('usuarios:livros_devolver', user=request.user.perfil.id)
 

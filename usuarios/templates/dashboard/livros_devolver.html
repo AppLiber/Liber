@@ -10,17 +10,14 @@
 <div class="tab-pane fade in active">
     {% if solicitante %}
       {% for ola in solicitante %}
-    <div class="bk-img" style="width:300px">
-        {% if ola.status_emprestimo == 'S' or ola.status_emprestimo == 'EA' %}
+    <div class="bk-img" style="width:325px">
+        {% if ola.status_emprestimo == 'S' or ola.status_emprestimo == 'EA' or  ola.status_emprestimo == 'ED'%}
 
         <center>
             <br>
             <div style="height:240px" >
                 <img src="{{ ola.livro_emprestado.livro_adicionado.imagem.url }}"   />
                 <h3 class="book-item_title"> <a href="{% url 'livros:livros_detail_logado' pk=ola.livro_emprestado.livro_adicionado.id %}"> {{ola.livro_emprestado.livro_adicionado.titulo}}</a></h3>
-                <p class="author">{% for autor in livro.autores.all %}
-                    <span class="subtitle">{{ autor.nome }}</span> {% endfor %}
-                </p>
             </div>
             <br>
             <div class="col-xs-6.5 info" style="height:110px">
@@ -29,20 +26,27 @@
                 <h8><b>Solicitado em:</b> {{ ola.data_emprestimo}}</h8> <br>
                 <h8><b>Devolução em:</b> {{ ola.data_devolucao }}</h8>
             </div>
-            <h6><b>Status: {% if ola.status_emprestimo == 'EA'  %}
-                    <font color='#e62e00'>Em Andamento</font>
-                        <br><br> <button type="button" style="font-size:12pt;Black:white;background-color:white;border:2px solid #004d00;padding:5px"
-                        class="button buy-button" data-toggle="modal" data-target="#devolver_livro" data-whatever="@getbootstrap">Devolver</button>
+            <h6><b>Status:
+                        {% if ola.status_emprestimo == 'EA'  %}
+                            <font color='#e62e00'>Em Andamento</font>
+                            <br><br>
+                            <a type="button" style="font-size:12pt;Color:gray;Black:white;background-color:white;border:2px solid #004d00;padding:5px"
+                             href="{% url 'usuarios:devolver_livro' user=request.user.perfil.id emprestimo=ola.id %}" class="button buy-button">Devolver</a>
 
                         {% endif %}
                         {% if ola.status_emprestimo == 'S'  %}
-                        <font color='#330a00'>Solicitado</font>
-                        <br> <br>
-                        <a type="button" style="font-size:12pt;Color:gray;Black:white;background-color:white;border:2px solid #ff3300;padding:5px"
-                        class="button buy-button">Cancelar</a>
+                            <font color='#330a00'>Solicitado</font>
+                            <br> <br>
+
+                            <a type="button" style="font-size:12pt;Color:gray;Black:white;background-color:white;border:2px solid #ff3300;padding:5px"
+                             href="{% url 'usuarios:cancelar_emprestimo' user=request.user.perfil.id emprestimo=ola.id %}" class="button buy-button">Cancelar</a>
+                        {% endif %}
+                        {% if ola.status_emprestimo == 'ED'  %}
+                                <font color='#e62e00'>Em Devolução</font>
+                                    <br><br><br><br>
+                        {% endif %}
 
 
-                    {% endif %}
                 </b></h6>
 
                 <div class="modal fade" id="cancelar_emprestimo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

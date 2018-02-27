@@ -23,9 +23,9 @@
     <div class="item-preview">
       <div>
         {% if livros_lidos %}
-          <button type="button" class="btn btn-info" disabled>Já Lido</button> <br> <br><br>
+          <button type="button" class="btn btn-info" disabled>Já Lido</button>
         {% else %}
-          <button type="button" class="button buy-button" data-toggle="modal" data-target="#avaliacaoLivro" data-whatever="@getbootstrap">Lido</button> <br> <br><br>
+          <button type="button" class="button buy-button" data-toggle="modal" data-target="#avaliacaoLivro" data-whatever="@getbootstrap">Lido</button>
           <div class="modal fade" id="avaliacaoLivro" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
               <div class="modal-content">
@@ -60,9 +60,201 @@
             </div>
           </div>
         {% endif %}
+
       </div>
+      {% if medialivros > 9 %}
+          <div class="pane__section clearfix">
+              <fieldset class="rating">
+                  <input type="radio" id="star5" name="rating" value="5"  defaultvalue="N" checked="true"/>
+                  <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                  <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                  <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                  <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                  <label class="full" for="star3" title="Meh - 3 stars"></label>
+                  <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                  <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                  <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                  <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                  <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                  <li href="{% url 'livros:medialivros' pk=livro.id %}">Avaliação Média: {{medialivros}}</li>
+
+              </fieldset>
+          </div>
+      {% elif medialivros > 8 %}
+          <div class="pane__section clearfix">
+              <fieldset class="rating">
+                  <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                  <input type="radio" id="star4half" name="rating" value="4 and a half"  defaultvalue="N" checked="true"/>
+                  <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                  <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                  <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                  <label class="full" for="star3" title="Meh - 3 stars"></label>
+                  <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                  <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                  <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                  <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                  <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                  <li href="{% url 'livros:medialivros' pk=livro.id %}">Avaliação Média: {{medialivros}}</li>
+
+              </fieldset>
+          </div>
+      {% elif medialivros > 7 %}
+          <div class="pane__section clearfix">
+              <fieldset class="rating">
+                  <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                  <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                  <input type="radio" id="star4" name="rating" value="4"  defaultvalue="N" checked="true"/>
+                  <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                  <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                  <label class="full" for="star3" title="Meh - 3 stars"></label>
+                  <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                  <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                  <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                  <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                  <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                  <li href="{% url 'livros:medialivros' pk=livro.id %}">Avaliação Média: {{medialivros}}</li>
+              </fieldset>
+          </div>
+      {% elif medialivros > 6 %}
+          <div class="pane__section clearfix">
+              <fieldset class="rating">
+                  <input type="radio" id="star5" name="rating" value="5"  defaultvalue="N" checked="true"/>
+                  <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                  <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                  <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                  <input type="radio" id="star3half" name="rating" value="3 and a half"  defaultvalue="N" checked="true"/>
+                  <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                  <label class="full" for="star3" title="Meh - 3 stars"></label>
+                  <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                  <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                  <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                  <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                  <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                  <li href="{% url 'livros:medialivros' pk=livro.id %}">Avaliação Média: {{medialivros}}</li>
+
+              </fieldset>
+          </div>
+      {% elif medialivros > 5  %}
+          <div class="pane__section clearfix">
+              <fieldset class="rating">
+                  <input type="radio" id="star5" name="rating" value="5"  defaultvalue="N" checked="true"/>
+                  <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                  <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                  <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                  <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                  <input type="radio" id="star3" name="rating" value="3"  defaultvalue="N" checked="true"/>
+                  <label class="full" for="star3" title="Meh - 3 stars"></label>
+                  <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                  <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                  <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                  <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                  <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                  <li href="{% url 'livros:medialivros' pk=livro.id %}">Avaliação Média: {{medialivros}}</li>
+
+              </fieldset>
+          </div>
+      {% elif medialivros > 4  %}
+          <div class="pane__section clearfix">
+              <fieldset class="rating">
+                  <input type="radio" id="star5" name="rating" value="5"  defaultvalue="N" checked="true"/>
+                  <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                  <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                  <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                  <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                  <label class="full" for="star3" title="Meh - 3 stars"></label>
+                  <input type="radio" id="star2half" name="rating" value="2 and a half"  defaultvalue="N" checked="true"/>
+                  <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                  <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                  <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                  <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                  <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                  <li href="{% url 'livros:medialivros' pk=livro.id %}">Avaliação Média: {{medialivros}}</li>
+
+              </fieldset>
+          </div>
+      {% elif medialivros > 3  %}
+          <div class="pane__section clearfix">
+              <fieldset class="rating">
+                  <input type="radio" id="star5" name="rating" value="5"  defaultvalue="N" checked="true"/>
+                  <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                  <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                  <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                  <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                  <label class="full" for="star3" title="Meh - 3 stars"></label>
+                  <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                  <input type="radio" id="star2" name="rating" value="2"  defaultvalue="N" checked="true"/>
+                  <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                  <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                  <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                  <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                  <li href="{% url 'livros:medialivros' pk=livro.id %}">Avaliação Média: {{medialivros}}</li>
+
+              </fieldset>
+          </div>
+      {% elif medialivros > 2  %}
+          <div class="pane__section clearfix">
+              <fieldset class="rating">
+                  <input type="radio" id="star5" name="rating" value="5"  defaultvalue="N" checked="true"/>
+                  <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                  <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                  <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                  <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                  <label class="full" for="star3" title="Meh - 3 stars"></label>
+                  <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                  <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                  <input type="radio" id="star1half" name="rating" value="1 and a half"  defaultvalue="N" checked="true"/>
+                  <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                  <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                  <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                  <li href="{% url 'livros:medialivros' pk=livro.id %}">Avaliação Média: {{medialivros}}</li>
+
+              </fieldset>
+          </div>
+      {% elif medialivros > 1  %}
+          <div class="pane__section clearfix">
+              <fieldset class="rating">
+                  <input type="radio" id="star5" name="rating" value="5"  defaultvalue="N" checked="true"/>
+                  <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                  <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                  <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                  <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                  <label class="full" for="star3" title="Meh - 3 stars"></label>
+                  <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                  <input type="radio" id="star2" name="rating" value="2"  defaultvalue="N" checked="true"/>
+                  <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                  <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                  <input type="radio" id="star1" name="rating" value="1"  defaultvalue="N" checked="true"/>
+                  <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                  <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                  <li href="{% url 'livros:medialivros' pk=livro.id %}">Avaliação Média: {{medialivros}}</li>
+
+              </fieldset>
+          </div>
+      {% elif medialivros > 0  %}
+          <div class="pane__section clearfix">
+              <fieldset class="rating">
+                  <input type="radio" id="star5" name="rating" value="5"  defaultvalue="N" checked="true"/>
+                  <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                  <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                  <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                  <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                  <label class="full" for="star3" title="Meh - 3 stars"></label>
+                  <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                  <input type="radio" id="star2" name="rating" value="2"  defaultvalue="N" checked="true"/>
+                  <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                  <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                  <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                  <input type="radio" id="starhalf" name="rating" value="0 and a half"  defaultvalue="N" checked="true"/>
+                  <label class="half" for="starhalf" title="Sucks big time - 0.5 stars"></label>
+                  <li href="{% url 'livros:medialivros' pk=livro.id %}">Avaliação Média: {{medialivros}}</li>
+
+              </fieldset>
+          </div>
+          {%endif%}
+
       <div class="book">
         <img src="{{ livro.imagem.url }}"/>
+
       </div>
     </div>
     <div class="item-details" style="width:500px">
@@ -76,6 +268,7 @@
         </p>
       </div>
       <div class="pane__section">
+
                       <dl>
                         <dt>Ano</dt>
                         <dd>{{livro.ano}}</dd>
