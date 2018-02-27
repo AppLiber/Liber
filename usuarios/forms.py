@@ -5,16 +5,21 @@ from django.forms import ModelForm
 
 from .models import Perfil, AvaliaLido, Emprestimo
 
+SEXO_USUARIO = (
+    ('F', 'Feminino'),
+    ('M', 'Masculino'),
+)
+
 class CadastroForm(UserCreationForm):
 
     telefone = forms.CharField()
     data_de_nascimento = forms.DateField()
-    sexo = forms.CharField()
+    sexo = forms.ChoiceField(widget=forms.Select, choices=SEXO_USUARIO) #SelectCharWidget(sexo=SEXO_USUARIO))
     #imagem_perfil = forms.ImageField()
 
     class Meta:
         model = User
-        fields = ('username','password1','password2','telefone','data_de_nascimento','sexo')
+        fields = ('username','password1','password2','telefone','data_de_nascimento','sexo')#,'imagem_perfil')
 
 """
 class RegistrarUsuarioForm(forms.Form):

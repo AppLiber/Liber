@@ -23,8 +23,8 @@ class UserCreate(generic.CreateView):
         user = form.save()
         user.perfil = Perfil.objects.create(telefone=form.cleaned_data['telefone'],
                 data_de_nascimento=form.cleaned_data['data_de_nascimento'],
-                sexo=form.cleaned_data['sexo'],usuario=user)
-                #imagem_perfil=form.cleaned_data['imagem_perfil'])
+                sexo=form.cleaned_data['sexo'], #imagem_perfil=form.cleaned_data['imagem_perfil'],
+                usuario=user)
 
         user.save()
         user.perfil.estante = Estante.objects.create(perfil_dono = user.perfil)
