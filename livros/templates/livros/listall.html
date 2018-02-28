@@ -36,12 +36,16 @@
                           <a href="{% url 'livros_index' %}" class="simple-text">
                               <img src="{% static "assets/img/logo-letras.png"%}" class="logotipo" />
                           </a>
+
                     </div >
                     </div>
                     </div>
                     <center>
                         <font color='#660066'> <b><h1>Todos os livros</h1> </b>
-                        </font>
+                        </font> <h5> <a class="buy-button" href="{% url 'livros:livros_new' %}">
+                            Adicionar livro<i class="fa fa-plus"></i>
+                            <br>
+                        </a></h5>
                     {% if livro_list %}      {% for livro in livro_list %}
                           <li class="book-item col-lg-4" data-color='#fcc278'>
                               <div class="book-item col-lg-2">
@@ -62,10 +66,10 @@
                     </div>
                 </div>                        </li>
 
-                <a class="buy-button" href="{% url 'livros:livros_new' %}">
-                    Adicionar livro<i class="fa fa-book"></i>
+                <h3> <a class="buy-button" href="{% url 'livros:livros_new' %}">
+                    Adicionar livro<i class="fa fa-plus"></i>
                     <br>
-                </a>
+                </a></h3>
           </center>
           </div>
       </div>
