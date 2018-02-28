@@ -670,9 +670,10 @@ def aceitar_emprestimo(request, user, emprestimo):
     emprestimo_confirmado = Emprestimo.objects.get(pk=emprestimo)
     livroEstante=EstanteLivro.objects.filter(estante=emprestimo_confirmado.perfil_do_dono_id, livro_adicionado=emprestimo_confirmado.livro_emprestado.livro_adicionado_id)
 
-    #emprestimo_confirmado.status_emprestimo = 'EA'
-    #emprestimo_confirmado.save()
-
+    emprestimo_confirmado.status_emprestimo = 'EA'
+    emprestimo_confirmado.save()
+    #__import__('ipdb').set_trace()
+    """
     if request.method == 'POST':
         form = EmprestimoForm(request.POST, instance=emprestimo_confirmado)
         if form.is_valid():
@@ -688,6 +689,7 @@ def aceitar_emprestimo(request, user, emprestimo):
             mudaStatus.save()
         else:
             form = EmprestimoForm()
+    """
 
 
     return redirect('usuarios:emprestados', user=request.user.perfil.id)

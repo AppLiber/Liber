@@ -11,12 +11,12 @@
 {% block body %}
     <link href="{% static 'assets/css/avaliacoes.css'%}" rel="stylesheet" />
 
-          {% for emp in emprestimos %}
+
 
             <div class="content">
                 <div class="container-fluid">
                     <div class="comments">
-
+                      {% for emp in emprestimos %}
 
                         <div class="col-lg-12 col-sm-6 comment-wrap">
                             <div class="photo">
@@ -41,12 +41,12 @@
                                 </div>
                             </div>
                         </div>
-
+                        {% endfor %}
                     </div>
 
                 </div>
             </div>
-        {% endfor %}
+
 {% endblock %}
 
 
