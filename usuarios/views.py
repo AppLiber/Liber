@@ -673,6 +673,11 @@ def aceitar_emprestimo(request, user, emprestimo):
     emprestimo_confirmado.status_emprestimo = 'EA'
     emprestimo_confirmado.save()
     #__import__('ipdb').set_trace()
+    for i in livroEstante:
+         mudaStatus=i
+
+    mudaStatus.status = 'E'
+    mudaStatus.save()
     """
     if request.method == 'POST':
         form = EmprestimoForm(request.POST, instance=emprestimo_confirmado)
@@ -729,6 +734,8 @@ def devolver_livro(request, user, emprestimo):
 def confirmar_devolucao(request, user, emprestimo):
 
     emprestimo = Emprestimo.objects.get(pk=emprestimo)
+    livroEstante=EstanteLivro.objects.filter(estante=emprestimo.perfil_do_dono_id, livro_adicionado=emprestimo.livro_emprestado.livro_adicionado_id)
+
     #livroEstante=EstanteLivro.objects.filter(estante=emprestimo_confirmado.perfil_do_dono_id, livro_adicionado=emprestimo_confirmado.livro_emprestado.livro_adicionado_id)
     #perfil_solicitante = request.user.perfil
     #perfil_do_dono = get_object_or_404(Perfil, pk=user)
@@ -746,10 +753,16 @@ def confirmar_devolucao(request, user, emprestimo):
             emprestimo.status_emprestimo = 'OK'
             emprestimo.save()
 
+            for i in livroEstante:
+                 mudaStatus=i
+
+            mudaStatus.status = 'D'
+            mudaStatus.save()
+
         else:
             form = EmprestimoForm()
 
-
+    #__import__('ipdb').set_trace()
     return redirect('usuarios:livros_devolver', user=request.user.perfil.id)
 
 class LivroEmprestimoDetail(generic.DetailView):
