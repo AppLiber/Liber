@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from .models import Autor, Categoria, Livro
 from usuarios.models import Perfil, Estante, EstanteLivro, AvaliaLido, Emprestimo
 from usuarios.forms import AvaliaForm, EmprestimoForm , PedirLivroEmprestadoForm
-from .forms import LivroForm
+from .forms import LivroForm, AutorForm
 
 import operator
 
@@ -81,6 +81,13 @@ class LivroCreate(generic.CreateView):
     template_name = 'livros/new.html'
     success_url = reverse_lazy('livros:livros_index')
     form_class = LivroForm
+
+class AutorCreate(generic.CreateView):
+    model = Autor
+    template_name = 'livros/newautor.html'
+    success_url = reverse_lazy('livros:livros_new')
+    form_class = AutorForm
+
 
 class LivroUpdate(generic.UpdateView):
     model = Livro

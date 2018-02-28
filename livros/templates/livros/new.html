@@ -40,9 +40,62 @@
               <center>
                   <font color='#660066'> <b><h1>Adicionar livro</h1> </b>
                   </font>
+                  <a type="button" href="{% url 'livros:autor_new' %}">Adicionar autor</a>
+                  <br><br>
                   <form action="{% url 'livros:livros_new' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    {{ form }}
+                    {{ form.non_fields_errors }}
+                    <div class='fieldWrapper'>
+                      {{ form.titulo.errors }}
+                      <label for={{form.titulo.id_for_label}}>Título:</label>
+                      {{ form.titulo }}
+                    </div>
+                    <div class='fieldWrapper'>
+                      {{ form.editora.errors }}
+                      <label for={{form.editora.id_for_label}}>Editora:</label>
+                      {{ form.editora }}
+                    </div>
+                    <div class='fieldWrapper'>
+                      {{ form.isbn10.errors }}
+                      <label for={{form.isbn10.id_for_label}}>ISBN10:</label>
+                      {{ form.isbn10 }}
+                    </div>
+                    <div class='fieldWrapper'>
+                      {{ form.isbn13.errors }}
+                      <label for={{form.isbn13.id_for_label}}>ISBN13:</label>
+                      {{ form.isbn13 }}
+                    </div>
+                    <div class='fieldWrapper'>
+                      {{ form.paginas.errors }}
+                      <label for={{form.paginas.id_for_label}}>Páginas:</label>
+                      {{ form.paginas }}
+                    </div>
+                    <div class='fieldWrapper'>
+                      {{ form.edicao.errors }}
+                      <label for={{form.edicao.id_for_label}}>Edição:</label>
+                      {{ form.edicao }}
+                    </div>
+                    <div class='fieldWrapper'>
+                      {{ form.ano.errors }}
+                      <label for={{form.ano.id_for_label}}>Ano:</label>
+                      {{ form.ano }}
+                    </div>
+                    <div class='fieldWrapper'>
+                      {{ form.autores.errors }}
+                      <label for={{form.autores.id_for_label}}>Autores:</label>
+                      {{ form.autores }}
+                    </div>
+                    <div class='fieldWrapper'>
+                      {{ form.categorias.errors }}
+                      <label for={{form.categorias.id_for_label}}>Categorias:</label>
+                      {{ form.categorias }}
+                    </div>
+                    <div class='fieldWrapper'>
+                      {{ form.imagem.errors }}
+                      <label for={{form.imagem.id_for_label}}>Imagem:</label>
+                      {{ form.imagem }}
+                    </div>
+
                     <input type="submit" value="OK">
                   </form>
 
