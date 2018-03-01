@@ -62,6 +62,8 @@ class UserDetail(generic.DetailView):
         context['var'] = paginas_lidas_total(self.request)
         context['sugestao'] = sugestoes(self.request)
 #        context['sugestao'] = perfil_de_sugestao(self.request)
+        context['livros_que_peguei_emprestado'] = Emprestimo.objects.filter(perfil_solicitante=perfil,status_emprestimo='OK').count()
+        context['livros_que_emprestei'] = Emprestimo.objects.filter(perfil_do_dono=perfil,status_emprestimo='OK').count()
 
 
 
