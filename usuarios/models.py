@@ -111,4 +111,4 @@ class AvaliaEmprestimo (models.Model):
     mensagem_de_avaliacao = models.CharField(null=True, blank=True,max_length=200)
 
     def __str__(self):
-        return self.Emprestimo_avaliado
+        return '{}'.format(self.Emprestimo_avaliado)
