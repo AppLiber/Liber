@@ -80,6 +80,7 @@ class LivroCreate(generic.CreateView):
     model = Livro
     template_name = 'livros/new.html'
     success_url = reverse_lazy('livros:livros_index')
+    #__import__('ipdb').set_trace()
     form_class = LivroForm
 
 class AutorCreate(generic.CreateView):
