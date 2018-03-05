@@ -130,6 +130,28 @@ def apagar_livro_da_estante(request, livro, user):
     return redirect('usuarios:estante', user=request.user.perfil.id)
 
 
+def altera_status_livro(request, livro, user):
+
+    #perfil = get_object_or_404(Perfil, pk=kwargs['user'])
+    #estantes = perfil.estante.estantelivro_set.all().order_by('status')
+    estante = Estante.objects.get(perfil_dono = request.user.perfil)
+    livros_da_estante = estante.livros.all()
+    livro = Livro.objects.get(pk=livro)
+    #__import__('ipdb').set_trace()
+    if (livro in livros_da_estante):
+        livro_para_alterar = estante.estantelivro_set.get(livro_adicionado=livro)
+        if (livro_para_alterar.status == 'E'):
+            livro_para_alterar.status = 'D'
+            livro_para_alterar.save()
+        elif (livro_para_alterar.status == 'D'):
+            livro_para_alterar.status = 'E'
+            livro_para_alterar.save()
+
+    return redirect('usuarios:estante', user=request.user.perfil.id)
+
+
+
+
 def media_cada_livro(request, pk):
 
     livroComNotas =  Livro.objects.get(pk=pk)

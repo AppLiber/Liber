@@ -109,6 +109,9 @@
                                         <br>
                                         {% if request.user.perfil.id == perfil.id %}
                                           <div>
+                                            <a class="btn btn-danger" href="{% url 'usuarios:altera_status_livro' user=perfil.id livro=estante_livro.livro_adicionado.id %}">Alterar status</a>
+                                          </div>
+                                          <div>
                                             <a class="btn btn-danger" href="{% url 'usuarios:apagar_livro' user=perfil.id livro=estante_livro.livro_adicionado.id %} ">Apagar livro</a>
                                           </div>
                                         {% endif %}
