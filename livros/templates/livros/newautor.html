@@ -40,7 +40,7 @@
               <center>
                   <font color='#660066'> <b><h1>Adicionar Autor</h1> </b>
                   </font>
-                  <form action="{% url 'livros:livros_new' %}" method="post" enctype="multipart/form-data">
+                  <form action="{% url 'livros:autor_new' %}" method="post" enctype="multipart/form-data">
                     {% csrf_token %}
                     {{ form }}
                     <input type="submit" value="OK">

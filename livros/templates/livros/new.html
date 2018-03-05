@@ -80,21 +80,21 @@
                       <label for={{form.ano.id_for_label}}>Ano:</label>
                       {{ form.ano }}
                     </div>
-                    <div class='fieldWrapper'>
+                    <select multiple="multiple">
                       {{ form.autores.errors }}
                       <label for={{form.autores.id_for_label}}>Autores:</label>
                       {{ form.autores }}
-                    </div>
+                    </select>
                     <div class='fieldWrapper'>
                       {{ form.categorias.errors }}
                       <label for={{form.categorias.id_for_label}}>Categorias:</label>
                       {{ form.categorias }}
                     </div>
-                    <div class='fieldWrapper'>
+                  <!--  <div class='fieldWrapper'>
                       {{ form.imagem.errors }}
                       <label for={{form.imagem.id_for_label}}>Imagem:</label>
                       {{ form.imagem }}
-                    </div>
+                    </div> -->
 
                     <input type="submit" value="OK">
                   </form>
