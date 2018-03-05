@@ -423,6 +423,7 @@ class LivrosAvaliados(generic.ListView):
         context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
         perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
         context['estante_livros'] = perfil.estante.estantelivro_set.all()
+
         return context
 
     def get_object(self):
@@ -509,8 +510,28 @@ class AvaliaLidoCreate(generic.CreateView):
         context['livro'] = get_object_or_404(Livro, pk=self.kwargs['pk'])
 
         return context
-
 """
+class PerfilEstanteList(generic.DetailView):
+    model = Estante
+    template_name = 'dashboard/estante.html'
+
+    def get_object(self):
+    #    __import__('ipdb').set_trace()
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return Estante.objects.get(perfil_dono=usuario)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        #livro = Livro.objects.get(pk=self.kwargs['pk'])
+        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        context['estante_livros'] = perfil.estante.estantelivro_set.all().order_by('status')
+        #context['estantes_com_livro'] = EstanteLivro.objects.filter(livro_adicionado=livro)
+        context['form_emprestimo'] = PedirLivroEmprestadoForm()
+
+        return context
+
+
 class Avaliacao (generic.ListView):
 
     context_object_name = 'lista_sugere3'
@@ -524,7 +545,17 @@ class Avaliacao (generic.ListView):
         #__import__('ipdb').set_trace()
         #context['emprestimo'] = Emprestimo.objects.get(pk=self.kwargs['emprestimo'])
         context['emprestimos'] = Emprestimo.objects.filter(perfil_solicitante=perfil, status_emprestimo='OK')
+        context['media'] = media_usuario(self.request)
 
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        notas=AvaliaEmprestimo.objects.filter(Emprestimo_avaliado__perfil_solicitante=perfil, Emprestimo_avaliado__status_emprestimo = 'OK')
+        mediaUsuario=0
+        somaNotas=0
+        for nota in notas:
+            somaNotas += nota.nota
+            mediaUsuario=somaNotas/notas.count()
+
+        context['media'] = mediaUsuario
 
         return context
 
@@ -709,7 +740,7 @@ def cancelar_emprestimo(request, user, emprestimo):
     emprestimo_confirmado.status_emprestimo = 'C'
     emprestimo_confirmado.save()
 
-    
+
 
     return redirect('usuarios:livros_devolver', user=request.user.perfil.id)
 
@@ -800,22 +831,14 @@ class UsuarioDetail(generic.DetailView):
 
         return context
 
-"""
-def media_usuario(request, pk):
 
+def media_usuario(request):
     perfil = request.user.perfil
-    livroComNotas =  Livro.objects.get(pk=pk)
-    notas=livroComNotas.avalialido_set.all()
+    notas=AvaliaEmprestimo.objects.filter(Emprestimo_avaliado__perfil_solicitante=perfil, Emprestimo_avaliado__status_emprestimo = 'OK')
+    mediaUsuario=0
     somaNotas=0
-    medialivros=0
     for nota in notas:
         somaNotas += nota.nota
-        medialivros=somaNotas/notas.count()
+        mediaUsuario=somaNotas/notas.count()
 
-    return medialivros
-
-    def hour(request):
-now = datetime.now()
-list = ['Bern','Bob','Eufronio','Epifanio','El pug']
-return render_to_response('hour.html',list)
-"""
+    return mediaUsuario

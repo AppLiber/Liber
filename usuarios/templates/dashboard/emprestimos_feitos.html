@@ -32,21 +32,21 @@
 
  -->
             <h6><b>
-                Status: {% if oi.status_emprestimo == 'EA'  %}
-                        <font color='#e62e00'>Em Andamento</font>
-                        <br><br><br><br><br>
-                        {% endif %}
+                        {% if oi.status_emprestimo == 'EA'  %}
+                        Status: <font color='#e62e00'>Em Andamento</font>
+                        <br>
 
-                        {% if oi.status_emprestimo == 'S' %}
-                        <font color='#330a00'>Solicitado</font>
+
+                        {% elif oi.status_emprestimo == 'S' %}
+                        Status: <font color='#330a00'>Solicitado</font>
                         <br> <br>
 
                         <a type="button" style="font-size:12pt;Color:gray;Black:white;background-color:white;border:2px solid #ff3300;padding:5px"
                         class="button buy-button" href="{% url 'usuarios:emprestimo_detail' user=request.user.perfil.id emprestimo=oi.id  %}">Responder</a>
-                        {% endif %}
 
-                        {% if oi.status_emprestimo == 'ED'  %}
-                            <font color='#e62e00'>Em Devolução</font>
+
+                        {% elif oi.status_emprestimo == 'ED'  %}
+                            Status: <font color='#e62e00'>Em Devolução</font>
                             <br> <br>
                             <a type="button" style="font-size:12pt;Color:gray;Black:white;background-color:white;border:2px solid #ff3300;padding:5px"
                             class="button buy-button" href="{% url 'usuarios:emprestimo_detail' user=request.user.perfil.id emprestimo=oi.id  %}">Confirmar Devolução</a>
