@@ -116,13 +116,10 @@
             </div>
             <br>
             <div class="col-xs-6.5 info">
-                <h4><b>Quer emprestado:</b> <a href="{% url 'usuarios:avaliacao' oi.perfil_solicitante.id %}">{{ oi.perfil_solicitante }}</a></h4>
+                <h4><b>Pegou emprestado:</b> <a href="{% url 'usuarios:avaliacao' oi.perfil_solicitante.id %}">{{ oi.perfil_solicitante }}</a></h4>
                 <h8><b>Telefone:</b> {{oi.perfil_solicitante.telefone}}</h8> <br>
                 <h8><b>Solicitado em:</b> {{ oi.data_emprestimo}}</h8> <br>
                 <h8><b>Devolução em:</b> {{ oi.data_devolucao }}</h8>
-                {% if oi.mensagem_de_quem_pede %}
-                <h8><b>Mensagem:</b> {{ oi.mensagem_de_quem_pede }}</h8>
-                {% endif %}
                 <!-- botão confirmar
 
  -->
@@ -140,11 +137,7 @@
                         <h5>
 
                           <h6><b>
-                Status: {% if oi.status_emprestimo == 'EA'  %}
-                        <font color='#e62e00'>Em Andamento</font>
-                        <br> <br> <br> <br> <br>
 
-                        {% endif %}
                         {% if oi.status_emprestimo == 'S'  %}
                         <font color='#330a00'>Solicitado</font>
                         <br> <br>

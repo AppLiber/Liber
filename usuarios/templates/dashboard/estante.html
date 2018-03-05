@@ -57,9 +57,12 @@
                                             </div>
                                         </div>
                                         <div class="col-xs-5">
-                                            <h4>{{estante_livro.get_status_display }}</h4>
+                                            {% if estante_livro.status == 'D'  %}
+                                            <h4> <font color='green'> {{estante_livro.get_status_display }}</font> </h4>
+                                            {% endif %}
 
                                             {% if estante_livro.status == 'E'  %}
+                                            <h4> <font color='red'> {{estante_livro.get_status_display }}</font> </h4>
                                             {% endif %}
 
                                         </div>

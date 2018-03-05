@@ -54,7 +54,7 @@
                     <li>
                         <div class="">
                             <a class="buy-button" href="{% url 'usuarios:usuarios_index' %}">
-                                <i class="fa fa-user-circle-o">Usuarios</i>
+                                <h5> <b> <font color=purple>  <i class="fa fa-user-circle-o">Usuarios</i> </font> </b> </h5>
                                 <br>
                             </a>
                         </div>
@@ -62,7 +62,7 @@
                     <li>
                         <div class="">
                             <a class="buy-button" href="{% url 'livros:lista_livros' %}">
-                                <i class="fa fa-book">Lista de livros</i>
+                                <h5> <b> <font color=purple> <i class="fa fa-book">Lista de livros</i> </font> </b> </h5>
                                 <br>
                             </a>
                         </div>
@@ -71,8 +71,9 @@
 
             {% if user.is_authenticated %}
                     <li class="nav-item">
+                        <br>
                         <a href="{% url 'usuarios:home' pk=request.user.perfil.id %}" class="nav-link">
-                            <i class="nc-icon nc-circle-10"></i>Dashboard</a>
+                        <h4>  <font color=purple>  <b> <i class="nc-icon nc-circle-10"></i>Meu Perfil</a></b> </h4>
                     </li>
 
             {%else %}

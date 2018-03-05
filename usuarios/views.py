@@ -706,19 +706,10 @@ def cancelar_emprestimo(request, user, emprestimo):
     emprestimo_confirmado = Emprestimo.objects.get(pk=emprestimo)
     livroEstante=EstanteLivro.objects.filter(estante=emprestimo_confirmado.perfil_do_dono_id, livro_adicionado=emprestimo_confirmado.livro_emprestado.livro_adicionado_id)
 
-    #emprestimo_confirmado.status_emprestimo = 'C'
-    #emprestimo_confirmado.save()
+    emprestimo_confirmado.status_emprestimo = 'C'
+    emprestimo_confirmado.save()
 
-    if request.method == 'POST':
-        form = EmprestimoForm(request.POST, instance=emprestimo_confirmado)
-        if form.is_valid():
-
-            form.instance.status_emprestimo = 'C'
-
-            form.save()
-
-        else:
-            form = EmprestimoForm()
+    
 
     return redirect('usuarios:livros_devolver', user=request.user.perfil.id)
 
@@ -787,3 +778,44 @@ class LivroEmprestimoDetail(generic.DetailView):
         context['estante_livro'] = perfil.estante.estantelivro_set.get(livro_adicionado=livro)
 
         return context
+
+class UsuarioDetail(generic.DetailView):
+    model = Estante
+    template_name = 'dashboard/livro_emprestado_detail.html'
+
+    def get_object(self):
+    #    __import__('ipdb').set_trace()
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return Estante.objects.get(perfil_dono=usuario)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        livro = Livro.objects.get(pk=self.kwargs['livro'])
+        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        context['estante_livros'] = perfil.estante.estantelivro_set.all()
+        #context['estantes_com_livro'] = EstanteLivro.objects.filter(livro_adicionado=livro)
+        context['form_emprestimo'] = PedirLivroEmprestadoForm()
+        context['estante_livro'] = perfil.estante.estantelivro_set.get(livro_adicionado=livro)
+
+        return context
+
+"""
+def media_usuario(request, pk):
+
+    perfil = request.user.perfil
+    livroComNotas =  Livro.objects.get(pk=pk)
+    notas=livroComNotas.avalialido_set.all()
+    somaNotas=0
+    medialivros=0
+    for nota in notas:
+        somaNotas += nota.nota
+        medialivros=somaNotas/notas.count()
+
+    return medialivros
+
+    def hour(request):
+now = datetime.now()
+list = ['Bern','Bob','Eufronio','Epifanio','El pug']
+return render_to_response('hour.html',list)
+"""
