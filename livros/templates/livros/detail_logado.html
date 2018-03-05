@@ -300,7 +300,7 @@
                         </center>
                     </li>
                     {% for estante in estantes_com_livro %}
-                    {% if estante.estante.perfil_dono != request.user.perfil and estante.livro_adicionado.status == 'D' %}
+                    {% if estante.estante.perfil_dono != request.user.perfil and estante.status == 'D' %}
                     <li>
                         <div class="row" style="margin:5px">
                             <div class="col-xs-3">
