@@ -8,7 +8,7 @@ from django.shortcuts import get_object_or_404
 from .models import Autor, Categoria, Livro
 from usuarios.models import Perfil, Estante, EstanteLivro, AvaliaLido, Emprestimo
 from usuarios.forms import AvaliaForm, EmprestimoForm , PedirLivroEmprestadoForm
-from .forms import LivroForm
+from .forms import LivroForm, AutorForm
 
 import operator
 
@@ -35,22 +35,22 @@ class LivroDetail(generic.DetailView):
 
     model = Livro
     template_name = 'livros/detail.html'
-"""
+
     def get_context_data(self, **kwargs):
 
         context = super().get_context_data()
         #perfil = self.request.user.perfil
-
+        context['medialivros'] = media_cada_livro(self.request, pk=self.kwargs['pk'])
         if self.request.user.is_authenticated:
             perfil = get_object_or_404(Perfil, pk=self.request.user.perfil.id)
             livro = Livro.objects.get(pk=self.kwargs['pk'])
             context['estante_livros'] = perfil.estante.estantelivro_set.filter(livro_adicionado=livro)
             context['livros_lidos_total'] = perfil.avalialido_set.all()
             context['livros_lidos'] = perfil.avalialido_set.filter(livro=livro)
-            context['medialivros'] = media_cada_livro(self.request, pk=self.kwargs['pk'])
+
 
         return context
-"""
+
 
 class LivroDetailLogado(generic.DetailView):
     model = Livro
@@ -80,7 +80,15 @@ class LivroCreate(generic.CreateView):
     model = Livro
     template_name = 'livros/new.html'
     success_url = reverse_lazy('livros:livros_index')
+    #__import__('ipdb').set_trace()
     form_class = LivroForm
+
+class AutorCreate(generic.CreateView):
+    model = Autor
+    template_name = 'livros/newautor.html'
+    success_url = reverse_lazy('livros:livros_new')
+    form_class = AutorForm
+
 
 class LivroUpdate(generic.UpdateView):
     model = Livro
@@ -120,6 +128,28 @@ def apagar_livro_da_estante(request, livro, user):
         livro_para_apagar.delete()
 
     return redirect('usuarios:estante', user=request.user.perfil.id)
+
+
+def altera_status_livro(request, livro, user):
+
+    #perfil = get_object_or_404(Perfil, pk=kwargs['user'])
+    #estantes = perfil.estante.estantelivro_set.all().order_by('status')
+    estante = Estante.objects.get(perfil_dono = request.user.perfil)
+    livros_da_estante = estante.livros.all()
+    livro = Livro.objects.get(pk=livro)
+    #__import__('ipdb').set_trace()
+    if (livro in livros_da_estante):
+        livro_para_alterar = estante.estantelivro_set.get(livro_adicionado=livro)
+        if (livro_para_alterar.status == 'E'):
+            livro_para_alterar.status = 'D'
+            livro_para_alterar.save()
+        elif (livro_para_alterar.status == 'D'):
+            livro_para_alterar.status = 'E'
+            livro_para_alterar.save()
+
+    return redirect('usuarios:estante', user=request.user.perfil.id)
+
+
 
 
 def media_cada_livro(request, pk):

@@ -57,20 +57,18 @@
                                             </div>
                                         </div>
                                         <div class="col-xs-5">
-                                            <h4>{{estante_livro.get_status_display }}</h4>
+                                            {% if estante_livro.status == 'D'  %}
+                                            <h4> <font color='green'> {{estante_livro.get_status_display }}</font> </h4>
+                                            {% endif %}
 
                                             {% if estante_livro.status == 'E'  %}
+                                            <h4> <font color='red'> {{estante_livro.get_status_display }}</font> </h4>
                                             {% endif %}
-                                            {% if solicitado %}
-                                            {% for oi in solicitado %}
-                                            <a href="{% url 'usuarios:avaliacao' oi.perfil_solicitante.id %}">{{ oi.perfil_solicitante }}</a>
-                                            {% endfor %}
 
-                                            {% endif %}
                                         </div>
                                         {% if request.user.perfil.id != perfil.id and estante_livro.status == 'D'  %}
                                           <div>
-                                              <a class="btn btn-primary" data-toggle="modal" data-target="#emprestimoLivro" data-whatever="@getbootstrap">Pedir emprestado</a>
+                                              <a class="btn btn-sm btn-success btn-icon" href="{% url 'usuarios:pedir_emprestado_detail' user=estante_livro.estante.perfil_dono.id livro=estante_livro.livro_adicionado.id %}">Pedir emprestado</a>
                                           </div>
                                           <div class="modal fade" id="emprestimoLivro" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
@@ -110,6 +108,9 @@
                                         {% endif %}
                                         <br>
                                         {% if request.user.perfil.id == perfil.id %}
+                                          <div>
+                                            <a class="btn btn-danger" href="{% url 'usuarios:altera_status_livro' user=perfil.id livro=estante_livro.livro_adicionado.id %}">Alterar status</a>
+                                          </div>
                                           <div>
                                             <a class="btn btn-danger" href="{% url 'usuarios:apagar_livro' user=perfil.id livro=estante_livro.livro_adicionado.id %} ">Apagar livro</a>
                                           </div>

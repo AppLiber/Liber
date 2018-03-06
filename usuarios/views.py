@@ -11,7 +11,7 @@ from django.shortcuts import render
 
 
 from livros.models import Livro
-from .forms import CadastroForm, AvaliaForm, EmprestimoForm, PedirLivroEmprestadoForm
+from .forms import CadastroForm, AvaliaForm, EmprestimoForm, PedirLivroEmprestadoForm, AvaliacaoEmprestimoForm
 from .models import Perfil, Estante, Emprestimo, AvaliaLido, EstanteLivro, AvaliaEmprestimo
 
 class UserCreate(generic.CreateView):
@@ -62,6 +62,8 @@ class UserDetail(generic.DetailView):
         context['var'] = paginas_lidas_total(self.request)
         context['sugestao'] = sugestoes(self.request)
 #        context['sugestao'] = perfil_de_sugestao(self.request)
+        context['livros_que_peguei_emprestado'] = Emprestimo.objects.filter(perfil_solicitante=perfil,status_emprestimo='OK').count()
+        context['livros_que_emprestei'] = Emprestimo.objects.filter(perfil_do_dono=perfil,status_emprestimo='OK').count()
 
 
 
@@ -100,7 +102,7 @@ class PerfilEstanteList(generic.DetailView):
         #livro = Livro.objects.get(pk=self.kwargs['pk'])
         context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
         perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
-        context['estante_livros'] = perfil.estante.estantelivro_set.all()
+        context['estante_livros'] = perfil.estante.estantelivro_set.all().order_by('status')
         #context['estantes_com_livro'] = EstanteLivro.objects.filter(livro_adicionado=livro)
         context['form_emprestimo'] = PedirLivroEmprestadoForm()
 
@@ -421,6 +423,7 @@ class LivrosAvaliados(generic.ListView):
         context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
         perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
         context['estante_livros'] = perfil.estante.estantelivro_set.all()
+
         return context
 
     def get_object(self):
@@ -507,8 +510,28 @@ class AvaliaLidoCreate(generic.CreateView):
         context['livro'] = get_object_or_404(Livro, pk=self.kwargs['pk'])
 
         return context
-
 """
+class PerfilEstanteList(generic.DetailView):
+    model = Estante
+    template_name = 'dashboard/estante.html'
+
+    def get_object(self):
+    #    __import__('ipdb').set_trace()
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return Estante.objects.get(perfil_dono=usuario)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        #livro = Livro.objects.get(pk=self.kwargs['pk'])
+        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        context['estante_livros'] = perfil.estante.estantelivro_set.all().order_by('status')
+        #context['estantes_com_livro'] = EstanteLivro.objects.filter(livro_adicionado=livro)
+        context['form_emprestimo'] = PedirLivroEmprestadoForm()
+
+        return context
+
+
 class Avaliacao (generic.ListView):
 
     context_object_name = 'lista_sugere3'
@@ -520,6 +543,19 @@ class Avaliacao (generic.ListView):
         perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
         context['sugestao'] = sugestoes(self.request)
         #__import__('ipdb').set_trace()
+        #context['emprestimo'] = Emprestimo.objects.get(pk=self.kwargs['emprestimo'])
+        context['emprestimos'] = Emprestimo.objects.filter(perfil_solicitante=perfil, status_emprestimo='OK')
+        context['media'] = media_usuario(self.request)
+
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        notas=AvaliaEmprestimo.objects.filter(Emprestimo_avaliado__perfil_solicitante=perfil, Emprestimo_avaliado__status_emprestimo = 'OK')
+        mediaUsuario=0
+        somaNotas=0
+        for nota in notas:
+            somaNotas += nota.nota
+            mediaUsuario=somaNotas/notas.count()
+
+        context['media'] = mediaUsuario
 
         return context
 
@@ -588,7 +624,7 @@ def listaSolicitado(request):
 
 def listSolicitante(request):
     perfil = request.user.perfil
-    solicitanteEmprestimos=Emprestimo.objects.filter(perfil_solicitante=perfil).order_by('data_emprestimo')
+    solicitanteEmprestimos=Emprestimo.objects.filter(perfil_solicitante=perfil).order_by('status_emprestimo', 'data_emprestimo')
 
     return solicitanteEmprestimos
 
@@ -638,12 +674,44 @@ class historico (generic.ListView):
         usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
         return AvaliaLido.objects.get(perfil_avaliador=usuario)
 
+class EmprestimoDetail(generic.DetailView):
+    model = Emprestimo
+    template_name = 'dashboard/emprestimo_detail.html'
+
+    def get_object(self):
+    #    __import__('ipdb').set_trace()
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return Estante.objects.get(perfil_dono=usuario)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        #livro = Livro.objects.get(pk=self.kwargs['livro'])
+        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        context['estante_livros'] = perfil.estante.estantelivro_set.all()
+        context['oi']=Emprestimo.objects.get(pk=self.kwargs['emprestimo']) #emprestimo
+        #context['estantes_com_livro'] = EstanteLivro.objects.filter(livro_adicionado=livro)
+        context['form'] = EmprestimoForm()
+        context['form_avaliacao'] = AvaliacaoEmprestimoForm()
+        #context['estante_livro'] = perfil.estante.estantelivro_set.get(livro_adicionado=livro)
+
+        return context
+
+
 def aceitar_emprestimo(request, user, emprestimo):
 
     emprestimo_confirmado = Emprestimo.objects.get(pk=emprestimo)
     livroEstante=EstanteLivro.objects.filter(estante=emprestimo_confirmado.perfil_do_dono_id, livro_adicionado=emprestimo_confirmado.livro_emprestado.livro_adicionado_id)
 
+    emprestimo_confirmado.status_emprestimo = 'EA'
+    emprestimo_confirmado.save()
     #__import__('ipdb').set_trace()
+    for i in livroEstante:
+         mudaStatus=i
+
+    mudaStatus.status = 'E'
+    mudaStatus.save()
+    """
     if request.method == 'POST':
         form = EmprestimoForm(request.POST, instance=emprestimo_confirmado)
         if form.is_valid():
@@ -657,49 +725,69 @@ def aceitar_emprestimo(request, user, emprestimo):
 
             mudaStatus.status = 'E'
             mudaStatus.save()
-
         else:
             form = EmprestimoForm()
+    """
 
-    return redirect('usuarios:estante', user=request.user.perfil.id)
+
+    return redirect('usuarios:emprestados', user=request.user.perfil.id)
 
 def cancelar_emprestimo(request, user, emprestimo):
 
     emprestimo_confirmado = Emprestimo.objects.get(pk=emprestimo)
+    livroEstante=EstanteLivro.objects.filter(estante=emprestimo_confirmado.perfil_do_dono_id, livro_adicionado=emprestimo_confirmado.livro_emprestado.livro_adicionado_id)
 
-    #__import__('ipdb').set_trace()
-    if request.method == 'POST':
-        form = EmprestimoForm(request.POST, instance=emprestimo_confirmado)
-        if form.is_valid():
+    emprestimo_confirmado.status_emprestimo = 'C'
+    emprestimo_confirmado.save()
 
-            form.instance.status_emprestimo = 'C'
 
-            form.save()
-
-        else:
-            form = EmprestimoForm()
 
     return redirect('usuarios:livros_devolver', user=request.user.perfil.id)
 
 def devolver_livro(request, user, emprestimo):
 
     emprestimo_confirmado = Emprestimo.objects.get(pk=emprestimo)
+    livroEstante=EstanteLivro.objects.filter(estante=emprestimo_confirmado.perfil_do_dono_id, livro_adicionado=emprestimo_confirmado.livro_emprestado.livro_adicionado_id)
 
-    #__import__('ipdb').set_trace()
+    emprestimo_confirmado.status_emprestimo = 'ED'
+    emprestimo_confirmado.save()
+
+
+    return redirect('usuarios:livros_devolver', user=request.user.perfil.id)
+
+def confirmar_devolucao(request, user, emprestimo):
+
+    emprestimo = Emprestimo.objects.get(pk=emprestimo)
+    livroEstante=EstanteLivro.objects.filter(estante=emprestimo.perfil_do_dono_id, livro_adicionado=emprestimo.livro_emprestado.livro_adicionado_id)
+
+    #livroEstante=EstanteLivro.objects.filter(estante=emprestimo_confirmado.perfil_do_dono_id, livro_adicionado=emprestimo_confirmado.livro_emprestado.livro_adicionado_id)
+    #perfil_solicitante = request.user.perfil
+    #perfil_do_dono = get_object_or_404(Perfil, pk=user)
+
+    #emprestimo_confirmado.status_emprestimo = 'OK'
+    #emprestimo_confirmado.save()
+
     if request.method == 'POST':
-        form = EmprestimoForm(request.POST, instance=emprestimo_confirmado)
+        form = AvaliacaoEmprestimoForm(request.POST)
         if form.is_valid():
 
-            form.instance.status_emprestimo = 'OK'
-
+            form.instance.Emprestimo_avaliado = emprestimo
             form.save()
+
+            emprestimo.status_emprestimo = 'OK'
+            emprestimo.save()
+
+            for i in livroEstante:
+                 mudaStatus=i
+
+            mudaStatus.status = 'D'
+            mudaStatus.save()
 
         else:
             form = EmprestimoForm()
 
+    #__import__('ipdb').set_trace()
     return redirect('usuarios:livros_devolver', user=request.user.perfil.id)
-
-
 
 class LivroEmprestimoDetail(generic.DetailView):
     model = Estante
@@ -721,3 +809,36 @@ class LivroEmprestimoDetail(generic.DetailView):
         context['estante_livro'] = perfil.estante.estantelivro_set.get(livro_adicionado=livro)
 
         return context
+
+class UsuarioDetail(generic.DetailView):
+    model = Estante
+    template_name = 'dashboard/livro_emprestado_detail.html'
+
+    def get_object(self):
+    #    __import__('ipdb').set_trace()
+        usuario = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        return Estante.objects.get(perfil_dono=usuario)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        livro = Livro.objects.get(pk=self.kwargs['livro'])
+        context['perfil'] = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        perfil = get_object_or_404(Perfil, pk=self.kwargs['user'])
+        context['estante_livros'] = perfil.estante.estantelivro_set.all()
+        #context['estantes_com_livro'] = EstanteLivro.objects.filter(livro_adicionado=livro)
+        context['form_emprestimo'] = PedirLivroEmprestadoForm()
+        context['estante_livro'] = perfil.estante.estantelivro_set.get(livro_adicionado=livro)
+
+        return context
+
+
+def media_usuario(request):
+    perfil = request.user.perfil
+    notas=AvaliaEmprestimo.objects.filter(Emprestimo_avaliado__perfil_solicitante=perfil, Emprestimo_avaliado__status_emprestimo = 'OK')
+    mediaUsuario=0
+    somaNotas=0
+    for nota in notas:
+        somaNotas += nota.nota
+        mediaUsuario=somaNotas/notas.count()
+
+    return mediaUsuario

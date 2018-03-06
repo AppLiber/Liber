@@ -17,6 +17,7 @@ urlpatterns = [
     path('<int:pk>/', views.LivroDetail.as_view(), name='livros_detail'),
     path('<int:pk>/detail', login_required(views.LivroDetailLogado.as_view()), name='livros_detail_logado'),
     path('new', views.LivroCreate.as_view(), name='livros_new'),
+    path('autor/new', views.AutorCreate.as_view(), name='autor_new'),
     path('<int:pk>/edit', views.LivroUpdate.as_view(), name='livros_edit'),
     path('<int:pk>/delete', views.LivroDelete.as_view(), name='livros_delete'),
     path('<int:pk>/adiciona', views.adiciona_livro_na_estante, name='adiciona'),

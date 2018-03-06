@@ -26,6 +26,7 @@ STATUS_EMPRESTIMO = (
     ('S', 'Solicitado'),
     ('EA', 'Em andamento'),
     ('OK', 'Concluído'),
+    ('ED', 'Em Devolução'),
     ('C', 'Cancelado')
 )
 
@@ -107,6 +108,7 @@ class Emprestimo (models.Model):
 class AvaliaEmprestimo (models.Model):
     nota = models.IntegerField(choices=NOTA_LIDO)
     Emprestimo_avaliado = models.OneToOneField(Emprestimo, on_delete=models.CASCADE)
+    mensagem_de_avaliacao = models.CharField(null=True, blank=True,max_length=200)
 
     def __str__(self):
-        return self.Emprestimo_avaliado
+        return '{}'.format(self.Emprestimo_avaliado)

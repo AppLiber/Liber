@@ -1,7 +1,104 @@
-<h2>Adicionar livro</h2>
+{% load staticfiles %}
+<!doctype html>
+<html lang="en">
 
-<form action="{% url 'livros:livros_new' %}" method="post" enctype="multipart/form-data">
-  {% csrf_token %}
-  {{ form }}
-  <input type="submit" value="OK">
-</form>
+<head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="{% static "assets/img/apple-icon.png"%}">
+    <link rel="icon" type="image/png" sizes="96x96" href="{% static "assets/img/favicon.png"%}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+    <meta name="viewport" content="width=device-width" />
+
+    <link href="{% static "assets/css/bootstrap2.min.css"%}" rel="stylesheet" />
+
+    <!-- Animation library for notifications   -->
+    <link href="{% static "assets/css/animate.min.css"%}" rel="stylesheet" />
+
+    <!--  Paper Dashboard core CSS    -->
+    <link href="{% static "assets/css/paper-dashboard.css"%}" rel="stylesheet" />
+    <link href="{% static "assets/css/dashboard.css"%}" rel="stylesheet" />
+
+    <!--  Fonts and icons     -->
+    <link href="http://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=Muli:400,300' rel='stylesheet' type='text/css'>
+    <link href="{% static "assets/css/themify-icons.css"%}" rel="stylesheet">
+
+</head>
+
+<body>
+    <div>
+        <div data-background-color="white" data-active-color="danger">
+            <div class="sidebar-wrapper">
+                    <a href="{% url 'livros_index' %}" class="simple-text">
+                        <img src="{% static "assets/img/logo-letras.png"%}" class="logotipo" />
+                    </a>
+              </div >
+              </div>
+              </div>
+              <center>
+                  <font color='#660066'> <b><h1>Adicionar livro</h1> </b>
+                  </font>
+                  <a type="button" href="{% url 'livros:autor_new' %}">Adicionar autor</a>
+                  <br><br>
+                  <form action="{% url 'livros:livros_new' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.non_fields_errors }}
+                    <div class='fieldWrapper'>
+                      {{ form.titulo.errors }}
+                      <label for={{form.titulo.id_for_label}}>Título:</label>
+                      {{ form.titulo }}
+                    </div>
+                    <div class='fieldWrapper'>
+                      {{ form.editora.errors }}
+                      <label for={{form.editora.id_for_label}}>Editora:</label>
+                      {{ form.editora }}
+                    </div>
+                    <div class='fieldWrapper'>
+                      {{ form.isbn10.errors }}
+                      <label for={{form.isbn10.id_for_label}}>ISBN10:</label>
+                      {{ form.isbn10 }}
+                    </div>
+                    <div class='fieldWrapper'>
+                      {{ form.isbn13.errors }}
+                      <label for={{form.isbn13.id_for_label}}>ISBN13:</label>
+                      {{ form.isbn13 }}
+                    </div>
+                    <div class='fieldWrapper'>
+                      {{ form.paginas.errors }}
+                      <label for={{form.paginas.id_for_label}}>Páginas:</label>
+                      {{ form.paginas }}
+                    </div>
+                    <div class='fieldWrapper'>
+                      {{ form.edicao.errors }}
+                      <label for={{form.edicao.id_for_label}}>Edição:</label>
+                      {{ form.edicao }}
+                    </div>
+                    <div class='fieldWrapper'>
+                      {{ form.ano.errors }}
+                      <label for={{form.ano.id_for_label}}>Ano:</label>
+                      {{ form.ano }}
+                    </div>
+                    <select multiple="multiple">
+                      {{ form.autores.errors }}
+                      <label for={{form.autores.id_for_label}}>Autores:</label>
+                      {{ form.autores }}
+                    </select>
+                    <div class='fieldWrapper'>
+                      {{ form.categorias.errors }}
+                      <label for={{form.categorias.id_for_label}}>Categorias:</label>
+                      {{ form.categorias }}
+                    </div>
+                  <!--  <div class='fieldWrapper'>
+                      {{ form.imagem.errors }}
+                      <label for={{form.imagem.id_for_label}}>Imagem:</label>
+                      {{ form.imagem }}
+                    </div> -->
+
+                    <input type="submit" value="OK">
+                  </form>
+
+    </center>
+    </div>
+</div>

@@ -1,155 +1,240 @@
 {% extends 'dashboard/base_dashboard.html' %}
 {% load staticfiles %}
-{% block acompanhamento %}
-<li>
-{% endblock %}
-{% block avaliacao %}
-<li class="active">
-{% endblock %}
-
+{% load static %}
 
 {% block body %}
-    <link href="{% static 'assets/css/avaliacoes.css'%}" rel="stylesheet" />
+<head>
+  <link href="{% static 'assets/css/paper-dashboard.css' %}'" rel="stylesheet"/>
+  <link href='http://fonts.googleapis.com/css?family=Montserrat:400,300,700' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="{% static 'assets/css/bookdetails.css' %}" >
+</head>
 
-            <div class="content">
-                <div class="container-fluid">
+{% block acompanhamento %}
+{% endblock %}
+{% block avaliacao %}
+<li class="active"> {% endblock %}
+
+
+            <link href="{% static 'assets/css/avaliacoes.css'%}" rel="stylesheet" />
+
+                    {% if media > 9 %}
+                        <h3>
+                            <fieldset class="rating">
+                                <input id="star5" name="rating" value="5"  defaultvalue="N" checked="true"/>
+                                <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                                <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                                <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                                <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                                <label class="full" for="star3" title="Meh - 3 stars"></label>
+                                <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                                <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                                <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                                <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                                <li>Avaliação Média: {{media}}</li>
+
+                                <br>
+                            </fieldset>
+                        </h3>
+                        </div>
+                    {% elif media > 8 %}
+                        <h3>
+                            <fieldset class="rating">
+                                <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                                <input type="radio" id="star4half" name="rating" value="4 and a half"  defaultvalue="N" checked="true"/>
+                                <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                                <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                                <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                                <label class="full" for="star3" title="Meh - 3 stars"></label>
+                                <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                                <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                                <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                                <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                                <li>Avaliação Média: {{media}}</li>
+                                <br>
+                            </fieldset>
+                        </h3>
+                        </div>
+                    {% elif media > 7 %}
+                        <h3>
+                            <fieldset class="rating">
+                                <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                                <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                                <input type="radio" id="star4" name="rating" value="4"  defaultvalue="N" checked="true"/>
+                                <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                                <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                                <label class="full" for="star3" title="Meh - 3 stars"></label>
+                                <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                                <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                                <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                                <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                                <li>Avaliação Média: {{media}}</li>
+                                <br>
+                            </fieldset>
+                        </h3>
+                        </div>
+                    {% elif media > 6 %}
+                        <h3>
+                            <fieldset class="rating">
+                                <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                                <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                                <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                                <input type="radio" id="star3half" name="rating" value="3 and a half"  defaultvalue="N" checked="true"/>
+                                <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                                <label class="full" for="star3" title="Meh - 3 stars"></label>
+                                <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                                <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                                <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                                <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                                <li>Avaliação Média: {{media}}</li>
+                                <br>
+                            </fieldset>
+                        </h3
+                        </div>
+                    {% elif media > 5  %}
+                        <h3>
+                           <fieldset class="rating">
+                                <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                                <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                                <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                                <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                                <input type="radio" id="star3" name="rating" value="3"  defaultvalue="N" checked="true"/>
+                                <label class="full" for="star3" title="Meh - 3 stars"></label>
+                                <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                                <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                                <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                                <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                                <li>Avaliação Média: {{media}}</li>
+                                <br>
+                            </fieldset>
+                        </h3>
+
+                    {% elif media > 4 %}
+                        <h3>
+                            <fieldset class="rating">
+                                <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                                <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                                <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                                <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                                <label class="full" for="star3" title="Meh - 3 stars"></label>
+                                <input type="radio" checked="true"/>
+                                <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                                <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                                <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                                <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                                <li>Avaliação Média: {{media}}</li>
+                                <br>
+                            </fieldset>
+                        </h3>
+
+                    {% elif media > 3  %}
+            <h3>
+                            <fieldset class="rating">
+                                <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                                <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                                <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                                <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                                <label class="full" for="star3" title="Meh - 3 stars"></label>
+                                <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                                <input type="radio" id="star2" name="rating" value="2"  defaultvalue="N" checked="true"/>
+                                <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                                <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                                <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                                <li>Avaliação Média: {{media}}</li>
+                                <br>
+                            </fieldset>
+                        </h3>
+
+                    {% elif media > 2  %}
+                    <h3>
+                            <fieldset class="rating">
+                                <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                                <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                                <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                                <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                                <label class="full" for="star3" title="Meh - 3 stars"></label>
+                                <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                                <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                                <input type="radio" id="star1half" name="rating" value="1 and a half"  defaultvalue="N" checked="true"/>
+                                <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                                <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                                <li>Avaliação Média: {{media}}</li>
+                                <br>
+                            </fieldset>
+                        </h3
+                    </div>
+                    {% elif media > 1  %}
+        <h3>
+                            <fieldset class="rating">
+                                <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                                <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                                <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                                <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                                <label class="full" for="star3" title="Meh - 3 stars"></label>
+                                <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                                <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                                <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                                <input type="radio" id="star1" name="rating" value="1"  defaultvalue="N" checked="true"/>
+                                <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                                <li>Avaliação Média: {{media}}</li>
+                                <br>
+                            </fieldset>
+                        </h3>
+                        </div>
+                    {% elif media > 0  %}
+        <h3>
+                            <fieldset class="rating">
+                                <label class="full" for="star5" title="Awesome - 5 stars"></label>
+                                <label class="half" for="star4half" title="Pretty good - 4.5 stars"></label>
+                                <label class="full" for="star4" title="Pretty good - 4 stars"></label>
+                                <label class="half" for="star3half" title="Meh - 3.5 stars"></label>
+                                <label class="full" for="star3" title="Meh - 3 stars"></label>
+                                <label class="half" for="star2half" title="Kinda bad - 2.5 stars"></label>
+                                <label class="full" for="star2" title="Kinda bad - 2 stars"></label>
+                                <label class="half" for="star1half" title="Meh - 1.5 stars"></label>
+                                <label class="full" for="star1" title="Sucks big time - 1 star"></label>
+                                <input type="radio" id="starhalf" name="rating" value="0 and a half"  defaultvalue="N" checked="true"/>
+                                <li>Avaliação Média: {{media}}</li>
+                                <br>
+                            </fieldset>
+                        </h3>
+                        </div>
+                        {%endif%}
                     <div class="comments">
+                      {% for emp in emprestimos %}
 
 
                         <div class="col-lg-12 col-sm-6 comment-wrap">
                             <div class="photo">
-                                <div class="avatar" style="background-image: url('https://randomuser.me/api/portraits/med/men/18.jpg')"></div>
+                                <div class="avatar" style="background-image: url('{{emp.perfil_do_dono.imagem_perfil.url}}')" onclick="window.location.href= '{% url 'usuarios:estante' user=emp.perfil_do_dono.id %}' "  ></div>
                             </div>
                             <div class="comment-block">
                                 <ul class="comment-actions">
+                                <h5>    Nota: {{emp.avaliaemprestimo.nota}} </h5>
                                     <div class="Review-rating">
                                         <span class="Review-star Review-star--active">&#9733;</span>
                                         <span class="Review-star Review-star--active">&#9733;</span>
                                         <span class="Review-star Review-star--active">&#9733;</span>
                                         <span class="Review-star">&#9733;</span>
                                         <span class="Review-star">&#9733;</span>
-                                    </div>
+        <h3>                 </div>
                                 </ul>
-                                <h3>Livro: 1984</h3>
-                                <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto temporibus iste nostrum dolorem
-                                    natus recusandae incidunt voluptatum. Eligendi voluptatum ducimus architecto tempore,
-                                    quaerat explicabo veniam fuga corporis totam reprehenderit quasi sapiente modi tempora
-                                    at perspiciatis mollitia, dolores voluptate. Cumque, corrupti?</p>
+                                <h3>Livro: {{ emp.livro_emprestado.livro_adicionado.titulo }}</h3>
+                              <!--  <h5><b>Emprestado para:</b> {{ emp.perfil_solicitante }}</h5> -->
+                              <h5><b>Quem emprestou:</b> <a href="{% url 'usuarios:estante' emp.perfil_do_dono.id %}">{{ emp.perfil_do_dono }} </a></h5>
+                                <p class="comment-text">{{emp.avaliaemprestimo.mensagem_de_avaliacao}}</p>
                                 <div class="bottom-comment">
-                                    <div class="comment-date">24/08/2017 @ 2:35 PM</div>
+                                    <div class="comment-date">{{emp.data_emprestimo}} </div>
 
                                 </div>
                             </div>
                         </div>
-
-                        <div class="col-lg-12 col-sm-6 comment-wrap">
-                            <div class="photo">
-                                <div class="avatar" style="background-image: url('https://randomuser.me/api/portraits/med/women/18.jpg')"></div>
-                            </div>
-                            <div class="comment-block">
-                                <ul class="comment-actions">
-                                    <div class="Review-rating">
-                                        <span class="Review-star Review-star--active">&#9733;</span>
-                                        <span class="Review-star Review-star--active">&#9733;</span>
-                                        <span class="Review-star Review-star--active">&#9733;</span>
-                                        <span class="Review-star Review-star--active">&#9733;</span>
-                                        <span class="Review-star">&#9733;</span>
-                                    </div>
-                                </ul>
-                                <h3>Livro: Harry Potter</h3>
-                                <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto temporibus iste nostrum dolorem
-                                    natus recusandae incidunt voluptatum. Eligendi voluptatum ducimus architecto tempore,
-                                    quaerat explicabo veniam fuga corporis totam.</p>
-                                <div class="bottom-comment">
-                                    <div class="comment-date">23/7/2017 @ 10:32 AM</div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-12 col-sm-6 comment-wrap">
-                            <div class="photo">
-                                <div class="avatar" style="background-image: url('https://randomuser.me/api/portraits/med/women/22.jpg')"></div>
-                            </div>
-                            <div class="comment-block">
-                                <ul class="comment-actions">
-                                    <div class="Review-rating">
-                                        <span class="Review-star Review-star--active">&#9733;</span>
-                                        <span class="Review-star">&#9733;</span>
-                                        <span class="Review-star">&#9733;</span>
-                                        <span class="Review-star">&#9733;</span>
-                                        <span class="Review-star">&#9733;</span>
-                                    </div>
-                                </ul>
-                                <h3>Livro: Moby Dick</h3>
-                                <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto temporibus iste nostrum dolorem
-                                    natus recusandae incidunt voluptatum. Eligendi voluptatum ducimus architecto tempore,
-                                    quaerat explicabo veniam fuga corporis totam reprehenderit quasi sapiente modi tempora
-                                    at perspiciatis mollitia, dolores voluptate. Cumque, corrupti?</p>
-                                <div class="bottom-comment">
-                                    <div class="comment-date">24/08/2017 @ 2:35 PM</div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-12 col-sm-6 comment-wrap">
-                            <div class="photo">
-                                <div class="avatar" style="background-image: url('https://randomuser.me/api/portraits/med/men/1.jpg')"></div>
-                            </div>
-                            <div class="comment-block">
-                                <ul class="comment-actions">
-                                    <div class="Review-rating">
-                                        <span class="Review-star Review-star--active">&#9733;</span>
-                                        <span class="Review-star Review-star--active">&#9733;</span>
-                                        <span class="Review-star">&#9733;</span>
-                                        <span class="Review-star">&#9733;</span>
-                                        <span class="Review-star">&#9733;</span>
-                                    </div>
-                                </ul>
-                                <h3>Livro: Rapunzel</h3>
-                                <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto temporibus iste nostrum dolorem
-                                    natus recusandae incidunt voluptatum. Eligendi voluptatum ducimus architecto tempore,
-                                    quaerat explicabo veniam fuga corporis totam reprehenderit quasi sapiente modi tempora
-                                    at perspiciatis mollitia, dolores voluptate. Cumque, corrupti?</p>
-                                <div class="bottom-comment">
-                                    <div class="comment-date">24/08/2017 @ 2:35 PM</div>
-
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-12 col-sm-6 comment-wrap">
-                            <div class="photo">
-                                <div class="avatar" style="background-image: url('https://randomuser.me/api/portraits/med/women/1.jpg')"></div>
-                            </div>
-                            <div class="comment-block">
-                                <ul class="comment-actions">
-                                    <div class="Review-rating">
-                                        <span class="Review-star Review-star--active">&#9733;</span>
-                                        <span class="Review-star Review-star--active">&#9733;</span>
-                                        <span class="Review-star Review-star--active">&#9733;</span>
-                                        <span class="Review-star Review-star--active">&#9733;</span>
-                                        <span class="Review-star Review-star--active">&#9733;</span>
-                                    </div>
-                                </ul>
-                                <h3>Livro: Scrum</h3>
-                                <p class="comment-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iusto temporibus iste nostrum dolorem
-                                    natus recusandae incidunt voluptatum. Eligendi voluptatum ducimus architecto tempore,
-                                    quaerat explicabo veniam fuga corporis totam reprehenderit quasi sapiente modi tempora
-                                    at perspiciatis mollitia, dolores voluptate. Cumque, corrupti?</p>
-                                <div class="bottom-comment">
-                                    <div class="comment-date">24/08/2017 @ 2:35 PM</div>
-
-                                </div>
-                            </div>
-                        </div>
+                        {% endfor %}
                     </div>
 
                 </div>
             </div>
-        </div>
-{% endblock %}
+
+
 
 
 <!--   Core JS Files   -->
@@ -168,3 +253,4 @@
 
 
 </html>
+{% endblock %}

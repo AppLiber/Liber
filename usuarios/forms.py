@@ -3,7 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.forms import ModelForm
 
-from .models import Perfil, AvaliaLido, Emprestimo
+from .models import Perfil, AvaliaLido, Emprestimo, AvaliaEmprestimo
 
 SEXO_USUARIO = (
     ('F', 'Feminino'),
@@ -65,3 +65,9 @@ class EmprestimoForm(ModelForm):
         model = Emprestimo
         fields = ['mensagem_resposta']
         #mensagem_de_quem_pede = forms.CharField(required=False, widget=forms.Textarea(attrs={'class':'form-control','rows':1,'cols':10,'placeholder':'keword values'}))
+
+
+class AvaliacaoEmprestimoForm(ModelForm):
+    class Meta:
+        model = AvaliaEmprestimo
+        fields = ['nota','mensagem_de_avaliacao']

@@ -9,10 +9,38 @@
 {% block listas %}
 
 <div class="tab-pane fade in active">
-    {% if solicitado %}
-      {% for ola in solicitado %}
+
+  {% if solicitado %}
+    {% for ola in solicitado %}
+  <div class="bk-img" style="width:300px">
+      {% if ola.status_emprestimo == 'OK' %}
+
+      <center>
+          <br>
+          <div style="height:240px">
+              <img src="{{ ola.livro_emprestado.livro_adicionado.imagem.url }}"   />
+              <h3 class="book-item_title"> <a href="{% url 'livros:livros_detail_logado' pk=ola.livro_emprestado.livro_adicionado.id %}"> {{ola.livro_emprestado.livro_adicionado.titulo}}</a></h3>
+              <p class="author">{% for autor in livro.autores.all %}
+                  <span class="subtitle">{{ autor.nome }}</span> {% endfor %}
+              </p>
+          </div>
+          <br>
+          <div class="col-xs-6.5 info">
+              <h4><b>Pediu emprestado:</b> <a href="{% url 'usuarios:avaliacao' ola.perfil_solicitante.id %}">{{ ola.perfil_solicitante }}</a></h4>
+              <h8><b>Telefone:</b> {{ola.perfil_solicitante.telefone}}</h8> <br>
+              <h8><b>Solicitado em:</b> {{ ola.data_emprestimo}}</h8> <br>
+              <h8><b>Devolução em:</b> {{ ola.data_devolucao }}</h8>
+              <h8><b>Status:</b> {{ ola.get_status_emprestimo_display }} </h8>
+          </div>
+      </center>
+      {% endif %}
+  </div>
+  {% endfor %}
+  {% endif %}
+    {% if solicitante %}
+      {% for ola in solicitante %}
     <div class="bk-img" style="width:300px">
-        {% if ola.status_emprestimo == 'C' or ola.status_emprestimo == 'OK' %}
+        {% if ola.status_emprestimo == 'OK' %}
 
         <center>
             <br>
@@ -33,10 +61,33 @@
             </div>
         </center>
         {% endif %}
+        {% if ola.status_emprestimo == 'C' %}
+
+        <center>
+            <br>
+            <div style="height:240px">
+                <img src="{{ ola.livro_emprestado.livro_adicionado.imagem.url }}"   />
+                <h3 class="book-item_title"> <a href="{% url 'livros:livros_detail_logado' pk=ola.livro_emprestado.livro_adicionado.id %}"> {{ola.livro_emprestado.livro_adicionado.titulo}}</a></h3>
+                <p class="author">{% for autor in livro.autores.all %}
+                    <span class="subtitle">{{ autor.nome }}</span> {% endfor %}
+                </p>
+            </div>
+            <br>
+            <div class="col-xs-6.5 info">
+                <h4><b>Pedi emprestado:</b> <a href="{% url 'usuarios:avaliacao' ola.perfil_do_dono.id %}">{{ ola.perfil_do_dono }}</a></h4>
+                <h8><b>Telefone:</b> {{ola.perfil_solicitante.telefone}}</h8> <br>
+                <h8><b>Solicitado em:</b> {{ ola.data_emprestimo}}</h8> <br>
+                <h8><b>Devolução em:</b> {{ ola.data_devolucao }}</h8>
+                <h8><b>Status:</b> {{ ola.get_status_emprestimo_display }}
+                  {% if ola.mensagem_resposta %}
+                <h8><b>Mensagem:</b> {{ ola.mensagem_resposta }}
+                  {% endif %}
+            </div>
+        </center>
     </div>
+    {% endif %}
     {% endfor %}
-    {% else %}
-    <p>Não tem nenhum histórico ainda.</p>
+
      {% endif %}
 </div>
 
